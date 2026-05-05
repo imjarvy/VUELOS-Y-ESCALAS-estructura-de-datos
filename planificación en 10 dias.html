@@ -1,0 +1,300 @@
+
+<style>
+.tabs{display:flex;gap:4px;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:1.5rem}
+.tab{padding:8px 16px;font-size:13px;cursor:pointer;border:none;border-bottom:2px solid transparent;color:var(--color-text-secondary);background:none;font-weight:400}
+.tab.on{color:var(--color-text-primary);border-bottom-color:var(--color-text-primary);font-weight:500}
+.panel{display:none}.panel.on{display:block}
+
+.accord{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);margin-bottom:8px;overflow:hidden}
+.accord-h{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;font-size:13px;font-weight:500}
+.accord-h:hover{background:var(--color-background-secondary)}
+.accord-b{padding:0 14px 12px;display:none;font-size:13px;color:var(--color-text-secondary);line-height:1.6}
+.accord-b.on{display:block}
+.accord-b code{font-family:var(--font-mono);font-size:11px;background:var(--color-background-secondary);padding:1px 5px;border-radius:4px;color:var(--color-text-primary)}
+.badge{font-size:11px;padding:2px 9px;border-radius:10px;font-weight:500}
+.bs{background:#E6F1FB;color:#0C447C}.bo{background:#EAF3DE;color:#27500A}
+.bl{background:#FAEEDA;color:#633806}.bi{background:#FBEAF0;color:#72243E}
+.bd{background:#FAECE7;color:#712B13}
+.rule-row{display:flex;gap:8px;padding:5px 0;border-bottom:0.5px solid var(--color-border-tertiary);align-items:flex-start}
+.rule-row:last-child{border-bottom:none}
+.rule-file{font-family:var(--font-mono);font-size:11px;min-width:180px;color:var(--color-text-primary);padding-top:2px}
+.rule-why{font-size:12px;color:var(--color-text-secondary);line-height:1.5}
+
+.filter-bar{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.fbt{padding:5px 12px;font-size:12px;border:0.5px solid var(--color-border-secondary);border-radius:20px;cursor:pointer;background:none;color:var(--color-text-secondary)}
+.fbt.sel{border-color:transparent;font-weight:500}
+.fbt.f-all.sel{background:var(--color-background-secondary);color:var(--color-text-primary)}
+.fbt.f-i1.sel{background:#E6F1FB;color:#0C447C}
+.fbt.f-me.sel{background:#EAF3DE;color:#27500A}
+.fbt.f-i3.sel{background:#FAEEDA;color:#633806}
+
+.day-card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);margin-bottom:8px;overflow:hidden}
+.day-hdr{display:flex;align-items:center;gap:8px;padding:9px 14px;cursor:pointer;font-size:13px}
+.day-hdr:hover{background:var(--color-background-secondary)}
+.day-num{font-weight:500;min-width:48px}
+.day-title{color:var(--color-text-secondary);font-size:12px}
+.day-tags{margin-left:auto;display:flex;gap:5px}
+.day-body{display:none;padding:0 14px 10px}
+.day-body.on{display:block}
+.arr{color:var(--color-text-tertiary);font-size:11px;margin-left:auto}
+
+.task{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.task:last-child{border-bottom:none}
+.task input[type=checkbox]{margin-top:2px;flex-shrink:0;accent-color:var(--color-text-success)}
+.task-txt{font-size:12px;line-height:1.5;color:var(--color-text-primary)}
+.task-txt.done{text-decoration:line-through;color:var(--color-text-tertiary)}
+.who{font-size:10px;padding:1px 7px;border-radius:10px;font-weight:500;flex-shrink:0;margin-top:2px}
+.w-i1{background:#E6F1FB;color:#0C447C}
+.w-me{background:#EAF3DE;color:#27500A}
+.w-i3{background:#FAEEDA;color:#633806}
+.w-all{background:var(--color-background-secondary);color:var(--color-text-secondary);border:0.5px solid var(--color-border-secondary)}
+.dep{font-size:10px;padding:1px 7px;border-radius:10px;background:#FCEBEB;color:#791F1F;font-weight:500;flex-shrink:0;margin-top:2px}
+.note-box{font-size:11px;color:var(--color-text-secondary);background:var(--color-background-secondary);border-radius:6px;padding:7px 10px;margin-top:6px;border-left:2px solid var(--color-border-secondary)}
+.note-box.crit{border-left-color:#E24B4A}
+
+.tag-all{background:var(--color-background-secondary);color:var(--color-text-secondary);border:0.5px solid var(--color-border-secondary)}
+.tag-crit{background:#FCEBEB;color:#791F1F}
+</style>
+
+<h2 class="sr-only">Justificación SOLID de la estructura del proyecto SkyRoute y plan de 10 días para el equipo</h2>
+
+<div style="padding:.5rem 0 1rem">
+<div class="tabs">
+  <button class="tab on" onclick="showTab('solid',this)">Justificación SOLID</button>
+  <button class="tab" onclick="showTab('dias',this)">Plan 10 días</button>
+</div>
+
+<div id="p-solid" class="panel on">
+
+  <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:14px">Haz clic en cada principio para ver cómo aplica concretamente en el proyecto.</div>
+
+  <div class="accord">
+    <div class="accord-h" onclick="tog(this)">
+      <span class="badge bs">S</span>
+      <span>Single Responsibility — cada archivo hace una sola cosa</span>
+      <span class="arr">▼</span>
+    </div>
+    <div class="accord-b">
+      <p style="margin:0 0 10px">La regla es: si tienes que usar "y" para describir lo que hace un archivo, está violando S. Ejemplos concretos en el proyecto:</p>
+      <div class="rule-row"><span class="rule-file">models/airport.py</span><span class="rule-why">Solo guarda datos del aeropuerto (id, ciudad, esHub, etc.). No calcula rutas, no dibuja nada.</span></div>
+      <div class="rule-row"><span class="rule-file">core/graph.py</span><span class="rule-why">Solo administra la estructura de lista de adyacencia: agregar nodos, agregar aristas, consultar vecinos. No sabe qué es un aeropuerto.</span></div>
+      <div class="rule-row"><span class="rule-file">services/graph_loader.py</span><span class="rule-why">Solo convierte JSON → objetos Graph. No optimiza rutas, no dibuja.</span></div>
+      <div class="rule-row"><span class="rule-file">services/route_optimizer.py</span><span class="rule-why">Solo ejecuta Dijkstra. No interactúa con la UI, no carga datos.</span></div>
+      <div class="rule-row"><span class="rule-file">ui/planner_panel.py</span><span class="rule-why">Solo muestra la interfaz de planificación. No corre algoritmos. Llama al servicio y muestra el resultado.</span></div>
+      <div class="note-box" style="margin-top:10px">Beneficio directo: si el profesor pregunta "¿dónde está Dijkstra?", hay un único archivo. Si algo falla en la UI, sabes que el algoritmo no está roto.</div>
+    </div>
+  </div>
+
+  <div class="accord">
+    <div class="accord-h" onclick="tog(this)">
+      <span class="badge bo">O</span>
+      <span>Open/Closed — extender sin modificar lo que ya funciona</span>
+      <span class="arr">▼</span>
+    </div>
+    <div class="accord-b">
+      <p style="margin:0 0 10px">El sistema está <em>abierto para extensión</em> pero <em>cerrado para modificación</em>. Ejemplo concreto:</p>
+      <div class="rule-row"><span class="rule-file">base_optimizer.py</span><span class="rule-why">Define el contrato: todo optimizador debe tener un método <code>optimize(graph, origin, dest, **params)</code>. Nadie lo modifica.</span></div>
+      <div class="rule-row"><span class="rule-file">route_optimizer.py</span><span class="rule-why">Contiene <code>CostOptimizer</code>, <code>TimeOptimizer</code> y <code>DistanceOptimizer</code>, cada uno extiende <code>BaseOptimizer</code>.</span></div>
+      <div class="rule-row"><span class="rule-file">constants.py</span><span class="rule-why">Agregar un nuevo tipo de aeronave (ej. hidroavión) no requiere tocar ningún algoritmo, solo agregar la entrada aquí.</span></div>
+      <div class="note-box" style="margin-top:10px">Beneficio directo: si el R3 necesita un optimizador especial para planificación avanzada, Int.3 crea su propia subclase sin romper el R2 de nadie.</div>
+    </div>
+  </div>
+
+  <div class="accord">
+    <div class="accord-h" onclick="tog(this)">
+      <span class="badge bl">L</span>
+      <span>Liskov Substitution — los hijos reemplazan al padre sin romper nada</span>
+      <span class="arr">▼</span>
+    </div>
+    <div class="accord-b">
+      <p style="margin:0 0 10px">Cualquier subclase de <code>BaseOptimizer</code> puede usarse en lugar de la clase padre sin que el código que la usa se entere.</p>
+      <div class="rule-row"><span class="rule-file">planner_panel.py</span><span class="rule-why">Recibe un objeto de tipo <code>BaseOptimizer</code>. No sabe si es Dijkstra por costo o por tiempo. Si mañana creas <code>HybridOptimizer</code>, el panel funciona igual.</span></div>
+      <div class="rule-row"><span class="rule-file">report_generator.py</span><span class="rule-why">Recibe un objeto <code>Itinerary</code>. No importa si fue generado por R2 o por R3, la estructura es la misma.</span></div>
+      <div class="note-box" style="margin-top:10px">En la sustentación puedes decir: "si el profesor pide un nuevo criterio de optimización, creamos una subclase y el resto del sistema no cambia."</div>
+    </div>
+  </div>
+
+  <div class="accord">
+    <div class="accord-h" onclick="tog(this)">
+      <span class="badge bi">I</span>
+      <span>Interface Segregation — interfaces pequeñas y enfocadas</span>
+      <span class="arr">▼</span>
+    </div>
+    <div class="accord-b">
+      <p style="margin:0 0 10px">Ningún módulo debe depender de métodos que no usa. Se aplica dividiendo responsabilidades en interfaces pequeñas.</p>
+      <div class="rule-row"><span class="rule-file">base_optimizer.py</span><span class="rule-why">Solo tiene <code>optimize()</code>. No mezcla métodos de reporte, carga de datos ni visualización. Cada implementador solo necesita definir ese método.</span></div>
+      <div class="rule-row"><span class="rule-file">ui/planner_panel.py</span><span class="rule-why">Solo conoce al optimizador. No tiene acceso directo a <code>graph_loader</code>, <code>advanced_planner</code> ni <code>network_manager</code>.</span></div>
+      <div class="rule-row"><span class="rule-file">ui/report_panel.py</span><span class="rule-why">Solo conoce a <code>report_generator</code>. No sabe cómo se calculó la ruta.</span></div>
+      <div class="note-box" style="margin-top:10px">Beneficio: si Int.3 cambia cómo funciona el avanzado por dentro, tu panel de reporte no se rompe porque depende de una interfaz estable, no de los detalles internos.</div>
+    </div>
+  </div>
+
+  <div class="accord">
+    <div class="accord-h" onclick="tog(this)">
+      <span class="badge bd">D</span>
+      <span>Dependency Inversion — la UI depende de abstracciones, no de implementaciones</span>
+      <span class="arr">▼</span>
+    </div>
+    <div class="accord-b">
+      <p style="margin:0 0 10px">Los módulos de alto nivel (UI) no deben depender de módulos de bajo nivel (implementaciones concretas). Ambos deben depender de abstracciones.</p>
+      <div class="rule-row"><span class="rule-file">ui/app.py</span><span class="rule-why">Crea los servicios una vez y los <em>inyecta</em> en los paneles. Ej: <code>planner = PlannerPanel(optimizer=CostOptimizer())</code>. El panel no crea al optimizador.</span></div>
+      <div class="rule-row"><span class="rule-file">report_generator.py</span><span class="rule-why">Recibe el itinerario como parámetro (<em>inyección</em>), no accede al JSON directamente. Puede trabajar con cualquier itinerario que tenga la misma estructura.</span></div>
+      <div class="note-box" style="margin-top:10px">Beneficio: para probar <code>planner_panel</code> sin tener el grafo real, le pasas un <code>MockOptimizer</code> que devuelve datos inventados. Eso es lo que harás los primeros días.</div>
+    </div>
+  </div>
+
+</div>
+
+<div id="p-dias" class="panel">
+  <div class="filter-bar">
+    <span style="font-size:12px;color:var(--color-text-secondary);padding:5px 0;align-self:center">Ver tareas de:</span>
+    <button class="fbt f-all sel" onclick="filtrar('all',this)">Todos</button>
+    <button class="fbt f-i1" onclick="filtrar('i1',this)">Int.1 — R1</button>
+    <button class="fbt f-me" onclick="filtrar('me',this)">Tú — R2+R5</button>
+    <button class="fbt f-i3" onclick="filtrar('i3',this)">Int.3 — R3+R4</button>
+  </div>
+
+  <div id="days-container"></div>
+</div>
+</div>
+
+<script>
+function showTab(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('p-'+id).classList.add('on');
+  btn.classList.add('on');
+}
+function tog(h){
+  const b=h.nextElementSibling;
+  const a=h.querySelector('.arr');
+  b.classList.toggle('on');
+  a.textContent=b.classList.contains('on')?'▲':'▼';
+}
+
+const DAYS=[
+  {num:1,title:"Setup inicial — todos juntos",crit:true,note:"El contrato de datos acordado aquí es la base de todo. Sin él, cada uno asume cosas distintas y habrá conflictos de merge el día 4.",tasks:[
+    {who:'all',txt:"Crear el repositorio en GitHub, acordar el nombre de branches y crear la estructura de carpetas vacía"},
+    {who:'all',txt:"Definir juntos el contrato de datos: qué campos tiene Airport, Route y Graph, y escribirlos como comentarios en los archivos stub"},
+    {who:'all',txt:"Crear utils/constants.py con tarifas de aeronaves (Comercial 0.18/km, Regional 0.25/km, Hélice 0.12/km) y valores default"},
+    {who:'all',txt:"Verificar que Tkinter corre en los tres PCs: python -m tkinter"},
+    {who:'me',txt:"Crear airports.json con 30 aeropuertos latinoamericanos siguiendo la estructura del JSON del proyecto (pedirle a Claude que lo genere)"},
+  ]},
+  {num:2,title:"Modelos, grafo y algoritmo base",tasks:[
+    {who:'i1',txt:"Implementar models/airport.py y models/route.py con todos los campos del JSON"},
+    {who:'i1',txt:"Crear core/graph.py: clase Graph con lista de adyacencia, métodos add_node, add_edge, get_neighbors"},
+    {who:'me',txt:"Crear models/itinerary.py: dataclass con lista de tramos, costo total, tiempo total, destinos visitados"},
+    {who:'me',txt:"Crear services/base_optimizer.py: clase abstracta con método optimize(graph, origin, dest, **params)"},
+    {who:'me',txt:"Implementar Dijkstra por costo en route_optimizer.py usando datos mock (Airport y Route inventados)"},
+    {who:'i3',txt:"Estudiar R3 en detalle y diseñar la estructura de advanced_planner.py: qué entradas recibe y qué devuelve"},
+  ]},
+  {num:3,title:"Grafo completo + algoritmos R2",tasks:[
+    {who:'i1',txt:"Terminar core/graph.py y crear services/graph_loader.py: leer airports.json y construir el grafo real",dep:"entrega a Int.2"},
+    {who:'me',txt:"Integrar el grafo real de Int.1 en route_optimizer.py y verificar que Dijkstra funciona con los 30 aeropuertos",dep:"recibe de Int.1"},
+    {who:'me',txt:"Agregar variantes de Dijkstra por tiempo y por distancia en route_optimizer.py (misma estructura, diferente peso)"},
+    {who:'me',txt:"Iniciar itinerary_planner.py: BFS para itinerario a (máx destinos sin exceder presupuesto)"},
+    {who:'i3',txt:"Crear estructura base de advanced_planner.py: método step() que presenta opciones al viajero y registra decisiones"},
+  ]},
+  {num:4,title:"Planificador completo + canvas base",tasks:[
+    {who:'i1',txt:"Iniciar ui/graph_canvas.py: dibujar nodos como círculos y aristas como líneas sobre el Canvas de Tkinter"},
+    {who:'me',txt:"Terminar itinerary_planner.py: itinerario b (máx destinos en menor tiempo), filtro por tipo de transporte y exclusión de aeropuertos secundarios"},
+    {who:'me',txt:"Acordar con Int.3 la estructura exacta del objeto que devuelve R3 (actividades, trabajos, decisiones) para poder incluirlo en el reporte",dep:"coordinar con Int.3"},
+    {who:'me',txt:"Crear services/report_generator.py: clase con método generate(itinerary) que produce el resumen estructurado"},
+    {who:'i3',txt:"Implementar lógica de actividades en advanced_planner: alojamiento cada 20h, alimentación cada 8h"},
+  ]},
+  {num:5,title:"UI de planificación + canvas visual",tasks:[
+    {who:'i1',txt:"graph_canvas.py: distinguir hubs (círculo grande) de secundarios (círculo pequeño), mostrar distancia sobre cada arista"},
+    {who:'i1',txt:"graph_canvas.py: al hacer clic en un nodo mostrar ciudad, país, zona horaria y aerolíneas"},
+    {who:'me',txt:"Crear ui/planner_panel.py: inputs de origen, presupuesto (USD) y tiempo disponible (horas)"},
+    {who:'me',txt:"planner_panel.py: checkboxes de criterio (distancia / tiempo / costo), selector de tipos de aeronave, toggle aeropuertos secundarios"},
+    {who:'me',txt:"planner_panel.py: mostrar los dos itinerarios alternativos en tabla (tramos, costos, tiempos acumulados)"},
+    {who:'i3',txt:"Implementar sistema de trabajos en advanced_planner: mostrar lista, calcular ingreso, actualizar presupuesto y tiempo restante"},
+  ]},
+  {num:6,title:"Integración UI-backend + R3 paso a paso",tasks:[
+    {who:'i1',txt:"Agregar método highlight_route(edge_list) en graph_canvas.py para que R2 y R5 puedan resaltar rutas",dep:"entrega a Int.2"},
+    {who:'me',txt:"Conectar planner_panel.py con route_optimizer.py e itinerary_planner.py: flujo completo R2 funcionando",dep:"recibe de Int.1"},
+    {who:'me',txt:"Llamar a highlight_route desde planner_panel cuando se calcula una ruta y resaltarla en el canvas"},
+    {who:'me',txt:"Iniciar ui/report_panel.py: estructura con secciones (destinos, tramos, actividades, trabajos, totales)"},
+    {who:'i3',txt:"advanced_panel.py: mostrar paso a paso las opciones disponibles, registrar cada decisión del viajero"},
+  ]},
+  {num:7,title:"Reporte completo + interrupciones R4",tasks:[
+    {who:'i1',txt:"Soporte visual para R4: método block_route(edge) que resalta en rojo la arista bloqueada en el canvas"},
+    {who:'me',txt:"Terminar report_panel.py y conectarlo con report_generator.py: mostrar todos los datos del viaje",dep:"recibe datos de Int.3"},
+    {who:'me',txt:"Integrar en report_generator los datos de R3 (actividades, trabajos) y R4 (interrupciones) en el resumen final"},
+    {who:'me',txt:"Resaltar todos los destinos y tramos del itinerario en el mapa al generar el reporte"},
+    {who:'i3',txt:"Implementar network_manager.py: bloquear aristas, detectar si el viajero está en tránsito, recalcular ruta usando route_optimizer",dep:"usa route_optimizer de Int.2"},
+  ]},
+  {num:8,title:"Pruebas de integración + corrección de bugs",tasks:[
+    {who:'all',txt:"Prueba de flujo completo: cargar JSON → planificar R2 → ver reporte → hacer R3 paso a paso → interrumpir ruta R4 → reporte final"},
+    {who:'i1',txt:"Corregir bugs en canvas y graph_loader encontrados durante la integración"},
+    {who:'me',txt:"Verificar que el reporte incluye TODOS los campos requeridos por R5: actividades, trabajos, totales, saldo final"},
+    {who:'i3',txt:"Corregir bugs en R3 y R4, asegurar que el recálculo de rutas funciona correctamente"},
+    {who:'all',txt:"Documentar en inglés con docstrings todos los archivos propios de cada integrante"},
+  ]},
+  {num:9,title:"Documentación y preparación para sustentación",tasks:[
+    {who:'all',txt:"Cada uno revisa el código de los otros dos: preguntas esperadas en sustentación son sobre TODO el proyecto"},
+    {who:'all',txt:"Redactar manual de usuario en PDF: cómo cargar JSON, cómo planificar, cómo generar reporte"},
+    {who:'all',txt:"Redactar manual técnico en PDF: arquitectura, decisiones de diseño, justificación de algoritmos"},
+    {who:'all',txt:"Grabar videotutorial (todos en cámara): demostrar el sistema funcionando de principio a fin"},
+  ]},
+  {num:10,title:"Entrega final",crit:true,tasks:[
+    {who:'all',txt:"Grabar video técnico en segundo idioma: explicar arquitectura y algoritmos (todos en cámara)"},
+    {who:'all',txt:"Verificar que el repo en GitHub tiene commits en inglés con aportes visibles de los tres integrantes"},
+    {who:'all',txt:"Enviar correo con repo, links a videos y PDFs adjuntos antes de las 8:00 PM"},
+    {who:'all',txt:"Cada uno hace una última revisión de su parte del código para la sustentación individual"},
+  ]},
+];
+
+const whoLabel={'all':'Todos','i1':'Int.1','me':'Tú','i3':'Int.3'};
+const whoClass={'all':'w-all','i1':'w-i1','me':'w-me','i3':'w-i3'};
+let activeFilter='all';
+
+function buildDays(){
+  const c=document.getElementById('days-container');
+  c.innerHTML='';
+  DAYS.forEach((d,di)=>{
+    const hasTasks=d.tasks.some(t=>activeFilter==='all'||t.who===activeFilter||t.who==='all');
+    if(!hasTasks)return;
+    const card=document.createElement('div');
+    card.className='day-card';
+
+    let tags='';
+    if(d.crit) tags+=`<span class="badge tag-crit">crítico</span>`;
+    else tags+=`<span class="badge tag-all">día normal</span>`;
+
+    card.innerHTML=`<div class="day-hdr" onclick="toggleDay(this)">
+      <span class="day-num">Día ${d.num}</span>
+      <span class="day-title">${d.title}</span>
+      <div class="day-tags">${tags}</div>
+      <span class="arr" style="margin-left:8px">▼</span>
+    </div>
+    <div class="day-body${di===0?' on':''}">
+      ${d.tasks.filter(t=>activeFilter==='all'||t.who===activeFilter||t.who==='all').map(t=>`
+        <div class="task">
+          <input type="checkbox" onchange="this.nextElementSibling.classList.toggle('done',this.checked)">
+          <span class="who ${whoClass[t.who]}">${whoLabel[t.who]}</span>
+          <span class="task-txt">${t.txt}</span>
+          ${t.dep?`<span class="dep">${t.dep}</span>`:''}
+        </div>`).join('')}
+      ${d.note?`<div class="note-box crit">${d.note}</div>`:''}
+    </div>`;
+    c.appendChild(card);
+  });
+}
+
+function toggleDay(h){
+  const b=h.nextElementSibling;
+  const a=h.querySelector('.arr');
+  b.classList.toggle('on');
+  a.textContent=b.classList.contains('on')?'▲':'▼';
+}
+
+function filtrar(f,btn){
+  activeFilter=f;
+  document.querySelectorAll('.fbt').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  buildDays();
+}
+
+buildDays();
+</script>
