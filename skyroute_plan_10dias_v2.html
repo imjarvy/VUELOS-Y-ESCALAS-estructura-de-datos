@@ -1,0 +1,208 @@
+
+<style>
+.filter-bar{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.fbt{padding:5px 12px;font-size:12px;border:0.5px solid var(--color-border-secondary);border-radius:20px;cursor:pointer;background:none;color:var(--color-text-secondary)}
+.fbt.sel{border-color:transparent;font-weight:500}
+.fbt.f-all.sel{background:var(--color-background-secondary);color:var(--color-text-primary);border:0.5px solid var(--color-border-secondary)}
+.fbt.f-i1.sel{background:#E6F1FB;color:#0C447C}
+.fbt.f-me.sel{background:#EAF3DE;color:#27500A}
+.fbt.f-i3.sel{background:#FAEEDA;color:#633806}
+.dcard{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);margin-bottom:8px;overflow:hidden}
+.dhdr{display:flex;align-items:center;gap:8px;padding:9px 14px;cursor:pointer;font-size:13px}
+.dhdr:hover{background:var(--color-background-secondary)}
+.dbody{display:none;padding:0 14px 10px}
+.dbody.on{display:block}
+.dnum{font-weight:500;min-width:48px}
+.dtitle{color:var(--color-text-secondary);font-size:12px}
+.dtags{margin-left:auto;display:flex;gap:5px}
+.arr{color:var(--color-text-tertiary);font-size:11px;margin-left:6px}
+.task{display:flex;align-items:flex-start;gap:7px;padding:5px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.task:last-child{border-bottom:none}
+.task input{margin-top:3px;flex-shrink:0;accent-color:var(--color-text-success)}
+.ttxt{font-size:12px;line-height:1.5;color:var(--color-text-primary);flex:1}
+.ttxt.done{text-decoration:line-through;color:var(--color-text-tertiary)}
+.who{font-size:10px;padding:1px 7px;border-radius:10px;font-weight:500;flex-shrink:0;margin-top:2px}
+.w-i1{background:#E6F1FB;color:#0C447C}
+.w-me{background:#EAF3DE;color:#27500A}
+.w-i3{background:#FAEEDA;color:#633806}
+.w-all{background:var(--color-background-secondary);color:var(--color-text-secondary);border:0.5px solid var(--color-border-secondary)}
+.dep{font-size:10px;padding:1px 7px;border-radius:10px;background:#FCEBEB;color:#791F1F;font-weight:500;flex-shrink:0;margin-top:2px}
+.ttype{font-size:10px;padding:1px 7px;border-radius:10px;font-weight:500;flex-shrink:0;margin-top:2px}
+.be{background:#EEEDFE;color:#3C3489}
+.fe{background:#E1F5EE;color:#085041}
+.bo{background:var(--color-background-secondary);color:var(--color-text-secondary);border:0.5px solid var(--color-border-secondary)}
+.nb{font-size:11px;color:var(--color-text-secondary);background:var(--color-background-secondary);border-radius:6px;padding:7px 10px;margin-top:7px;border-left:2px solid var(--color-border-secondary)}
+.nb.crit{border-left-color:#E24B4A}
+.badge{font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500}
+.tag-crit{background:#FCEBEB;color:#791F1F}
+.tag-norm{background:var(--color-background-secondary);color:var(--color-text-secondary);border:0.5px solid var(--color-border-secondary)}
+</style>
+
+<h2 class="sr-only">Plan de 10 días — Int.1 lleva R1 y R4, Int.2 lleva R2 y R5, Int.3 lleva R3</h2>
+
+<div style="padding:.5rem 0 1rem">
+
+<div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+  <div style="border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:8px 14px;font-size:12px">
+    <span style="font-weight:500;color:var(--color-text-primary)">Int.1</span>
+    <span style="margin-left:8px;background:#E6F1FB;color:#0C447C;padding:1px 7px;border-radius:10px;font-size:10px;font-weight:500">R1</span>
+    <span style="margin-left:4px;background:#E6F1FB;color:#0C447C;padding:1px 7px;border-radius:10px;font-size:10px;font-weight:500">R4</span>
+  </div>
+  <div style="border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:8px 14px;font-size:12px">
+    <span style="font-weight:500;color:var(--color-text-primary)">Tú (Int.2)</span>
+    <span style="margin-left:8px;background:#EAF3DE;color:#27500A;padding:1px 7px;border-radius:10px;font-size:10px;font-weight:500">R2</span>
+    <span style="margin-left:4px;background:#EAF3DE;color:#27500A;padding:1px 7px;border-radius:10px;font-size:10px;font-weight:500">R5</span>
+  </div>
+  <div style="border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:8px 14px;font-size:12px">
+    <span style="font-weight:500;color:var(--color-text-primary)">Int.3</span>
+    <span style="margin-left:8px;background:#FAEEDA;color:#633806;padding:1px 7px;border-radius:10px;font-size:10px;font-weight:500">R3</span>
+  </div>
+</div>
+
+<div class="filter-bar">
+  <span style="font-size:12px;color:var(--color-text-secondary)">Ver:</span>
+  <button class="fbt f-all sel" onclick="filtrar('all',this)">Todos</button>
+  <button class="fbt f-i1" onclick="filtrar('i1',this)">Int.1 — R1+R4</button>
+  <button class="fbt f-me" onclick="filtrar('me',this)">Tú — R2+R5</button>
+  <button class="fbt f-i3" onclick="filtrar('i3',this)">Int.3 — R3</button>
+</div>
+
+<div style="display:flex;gap:8px;margin-bottom:12px;font-size:11px;align-items:center;color:var(--color-text-secondary)">
+  <span class="be" style="padding:1px 7px;border-radius:10px;font-weight:500">Backend</span> Python
+  <span class="fe" style="padding:1px 7px;border-radius:10px;font-weight:500">Frontend</span> JS/D3
+  <span class="bo" style="padding:1px 7px;border-radius:10px;font-weight:500">Ambos</span>
+</div>
+
+<div id="dc"></div>
+</div>
+
+<script>
+const WL={all:'Todos',i1:'Int.1',me:'Tú',i3:'Int.3'};
+const WC={all:'w-all',i1:'w-i1',me:'w-me',i3:'w-i3'};
+const TL={be:'Backend',fe:'Frontend',both:'Ambos'};
+const TC={be:'be',fe:'fe',both:'bo'};
+
+const DAYS=[
+  {n:1,t:'Setup — todos juntos',crit:true,
+   note:'client.js y los contratos de API acordados hoy son la base de todo. Sin ellos, cada uno trabaja con supuestos distintos y el día 5 hay conflictos.',
+   tasks:[
+    {w:'all',type:'both',txt:'Crear repo en GitHub. Branches: <code>feat/r1-r4-graph</code>, <code>feat/r2-r5-planner</code>, <code>feat/r3-advanced</code>. Crear carpetas backend/ y frontend/.'},
+    {w:'all',type:'both',txt:'Instalar Flask: <code>pip install flask flask-cors</code>. Verificar en los tres PCs.'},
+    {w:'all',type:'both',txt:'Definir y escribir contratos de API: URL, método, body y respuesta de cada endpoint. Pegar en el README del repo.'},
+    {w:'all',type:'both',txt:'Crear <code>backend/utils/constants.py</code> con tarifas de aeronaves y valores default (35% presupuesto, 20h hospedaje, 8h alimentación).'},
+    {w:'all',type:'fe', txt:'Crear <code>frontend/js/api/client.js</code> con <code>apiPost(url,data)</code> y <code>apiGet(url)</code>. Este archivo lo usan los tres.'},
+    {w:'me', type:'be', txt:'Crear <code>data/airports.json</code> con 30 aeropuertos latinoamericanos (pedirle a Claude que lo genere).'},
+  ]},
+  {n:2,t:'Modelos, grafo y algoritmo base',tasks:[
+    {w:'i1',type:'be',txt:'Implementar <code>models/airport.py</code> y <code>models/route.py</code> con todos los campos del JSON.'},
+    {w:'i1',type:'be',txt:'Crear <code>core/graph.py</code>: clase Graph con lista de adyacencia. Métodos: <code>add_node</code>, <code>add_edge</code>, <code>get_neighbors</code>, <code>remove_edge</code> (necesario para R4), <code>to_dict</code>.'},
+    {w:'me', type:'be',txt:'Crear <code>models/itinerary.py</code>: dataclass con tramos, costo total, tiempo total y destinos. Incluir <code>to_dict()</code>.'},
+    {w:'me', type:'be',txt:'Crear <code>services/base_optimizer.py</code>: clase abstracta con método <code>optimize(graph, origin, dest, **params) -> Itinerary</code>.'},
+    {w:'me', type:'be',txt:'Implementar Dijkstra por costo en <code>route_optimizer.py</code> con grafo mock de 5 nodos para probarlo sin esperar a Int.1.'},
+    {w:'i3', type:'be',txt:'Estudiar R3 a fondo. Diseñar la máquina de estados de <code>advanced_planner.py</code>: qué datos tiene cada estado y qué decide el viajero en cada paso.'},
+  ]},
+  {n:3,t:'Grafo real + Flask + Dijkstra completo',tasks:[
+    {w:'i1',type:'be',txt:'Terminar <code>core/graph.py</code> y crear <code>services/graph_loader.py</code>. Asegurarse que <code>remove_edge</code> funciona (lo necesita R4 más adelante).',dep:'entrega a Int.2'},
+    {w:'i1',type:'be',txt:'Crear <code>backend/app.py</code> con Flask, registrar blueprint de <code>api/r1_routes.py</code>. GET /api/graph devuelve el grafo completo en JSON.'},
+    {w:'me', type:'be',txt:'Reemplazar grafo mock por el real de Int.1. Verificar Dijkstra con los 30 aeropuertos.',dep:'recibe de Int.1'},
+    {w:'me', type:'be',txt:'Agregar variantes de Dijkstra por tiempo y por distancia (mismo algoritmo, diferente campo de peso).'},
+    {w:'me', type:'be',txt:'Iniciar <code>itinerary_planner.py</code>: BFS para itinerario a (máx destinos sin exceder presupuesto).'},
+    {w:'i3', type:'be',txt:'Crear esqueleto de <code>advanced_planner.py</code> con método <code>start(origin, budget)</code> que devuelve el primer estado de sesión.'},
+  ]},
+  {n:4,t:'D3.js base + API R2 + planificador + R4 backend',tasks:[
+    {w:'i1',type:'fe',txt:'Crear <code>js/components/graph-view.js</code>: fetch GET /api/graph y dibujar nodos y aristas con D3.js.'},
+    {w:'i1',type:'be',txt:'Iniciar <code>services/network_manager.py</code>: método <code>block_route(origin,dest,reason)</code> que llama a <code>graph.remove_edge()</code> y registra el bloqueo.'},
+    {w:'me', type:'be',txt:'Terminar <code>itinerary_planner.py</code>: itinerario b (máx destinos en menor tiempo), filtro por tipo de transporte y exclusión de aeropuertos secundarios.'},
+    {w:'me', type:'be',txt:'Crear <code>api/r2_routes.py</code>: POST /api/plan/basic. Probarlo con curl antes de avanzar al frontend.'},
+    {w:'me', type:'be',txt:'Acordar con Int.3 la estructura JSON que devuelve R3 en cada paso (actividades, trabajos, decisiones) para poder incluirlos en el reporte.',dep:'coordinar con Int.3'},
+    {w:'i3', type:'be',txt:'Implementar lógica de actividades en <code>advanced_planner.py</code>: alojamiento cada 20h, alimentación cada 8h, opcionales con costo y tiempo.'},
+  ]},
+  {n:5,t:'D3 completo + R4 backend + frontend R2 + trabajos R3',tasks:[
+    {w:'i1',type:'fe',txt:'graph-view.js: hubs (nodo grande) vs secundarios (nodo pequeño), distancia sobre cada arista, click en nodo muestra info del aeropuerto.'},
+    {w:'i1',type:'fe',txt:'Exponer <code>graphView.highlightRoute(edgeList)</code> y <code>graphView.blockRoute(origin,dest)</code> como métodos públicos.',dep:'entrega a Int.2'},
+    {w:'i1',type:'be',txt:'Terminar <code>network_manager.py</code>: detectar si el viajero está en tránsito al bloquear una ruta. Si está en tránsito, devolver alerta con aeropuerto de origen del tramo.',dep:'usa route_optimizer de Int.2'},
+    {w:'me', type:'fe',txt:'Crear <code>js/components/planner-panel.js</code>: formulario con origen, presupuesto, tiempo, checkboxes de criterio, tipos de aeronave y toggle de secundarios.'},
+    {w:'me', type:'fe',txt:'Crear <code>js/handlers/planner.js</code>: captura submit, llama <code>apiPost</code>, renderiza los dos itinerarios alternativos en tabla.'},
+    {w:'i3', type:'be',txt:'Implementar sistema de trabajos: mostrar lista cuando presupuesto < 35%, calcular ingreso (tarifa × horas), actualizar presupuesto y tiempo restante.'},
+  ]},
+  {n:6,t:'Integración R2 + R4 API + R5 inicio + R3 API',tasks:[
+    {w:'i1',type:'be',txt:'Crear <code>api/r4_routes.py</code>: POST /api/network/block y POST /api/network/recalculate. Probarlo con curl.',},
+    {w:'i1',type:'fe',txt:'Crear <code>js/handlers/interruption.js</code>: botón para bloquear ruta, llama al endpoint, actualiza el grafo con <code>blockRoute()</code> y muestra alerta si hay tránsito activo.'},
+    {w:'me', type:'fe',txt:'Conectar resultado de POST /api/plan/basic con <code>graphView.highlightRoute()</code>: la ruta calculada se pinta en el mapa.',dep:'recibe de Int.1'},
+    {w:'me', type:'be',txt:'Crear <code>services/report_generator.py</code> y <code>api/r5_routes.py</code>: GET /api/report/{sessionId} devuelve el resumen completo.'},
+    {w:'me', type:'fe',txt:'Crear <code>js/components/report-panel.js</code>: secciones de destinos, tramos, actividades, trabajos y totales.'},
+    {w:'i3', type:'be',txt:'Terminar <code>api/r3_routes.py</code>: POST /api/plan/advanced/start y POST /api/plan/advanced/step. Probar con curl.'},
+  ]},
+  {n:7,t:'Animación R4 + reporte completo + frontend R3',tasks:[
+    {w:'i1',type:'fe',txt:'Animar el desplazamiento del vuelo en D3.js: cuando se bloquea una ruta en tránsito, mostrar el avión regresando al origen antes de recalcular.'},
+    {w:'i1',type:'be',txt:'<code>network_manager.py</code>: método <code>recalculate(currentAirport, session)</code> que llama a <code>route_optimizer</code> para encontrar la mejor alternativa.',dep:'usa route_optimizer de Int.2'},
+    {w:'me', type:'fe',txt:'Terminar <code>report-panel.js</code>: conectar con GET /api/report, mostrar todos los campos incluyendo datos de R3.',dep:'recibe estructura de Int.3'},
+    {w:'me', type:'fe',txt:'Al generar reporte, llamar a <code>graphView.highlightRoute()</code> con todos los tramos del viaje completo.'},
+    {w:'i3', type:'fe',txt:'Crear <code>js/components/advanced-panel.js</code> y <code>js/handlers/advanced.js</code>: mostrar estado actual, opciones disponibles, registrar decisión y llamar a /step.'},
+  ]},
+  {n:8,t:'Pruebas de integración + manejo de errores',tasks:[
+    {w:'all',type:'both',txt:'Prueba de flujo completo: cargar JSON → R2 planificar → resaltar ruta → R3 paso a paso → R4 bloquear ruta → recalcular → R5 reporte.'},
+    {w:'all',type:'fe', txt:'Agregar toasts de error en el frontend: cuando el backend devuelva <code>{error: true}</code>, mostrar notificación al usuario con el mensaje.'},
+    {w:'i1', type:'be',txt:'Corregir bugs en graph_loader, r1_routes y network_manager encontrados durante las pruebas.'},
+    {w:'me', type:'be',txt:'Verificar que el reporte incluye todos los campos del R5: actividades (tipo, costo, tiempo), trabajos (horas, ingreso), totales y saldo final correcto.'},
+    {w:'i3', type:'be',txt:'Corregir bugs en advanced_planner y r3_routes. Asegurar que el estado de sesión no se corrompe entre pasos.'},
+  ]},
+  {n:9,t:'Documentación + preparación sustentación',tasks:[
+    {w:'all',type:'be', txt:'Documentar en inglés con docstrings todos los archivos Python propios. En <code>route_optimizer.py</code> y <code>advanced_planner.py</code> incluir justificación del algoritmo elegido.'},
+    {w:'all',type:'both',txt:'Cada integrante estudia el código completo del proyecto. En sustentación pueden preguntar cualquier parte, no solo la propia.'},
+    {w:'all',type:'both',txt:'Redactar manual de usuario (cómo usar la app) y manual técnico (arquitectura, SOLID, decisiones de diseño) en PDF.'},
+    {w:'all',type:'both',txt:'Grabar videotutorial con todos en cámara mostrando la app de principio a fin.'},
+  ]},
+  {n:10,t:'Entrega final',crit:true,tasks:[
+    {w:'all',type:'both',txt:'Grabar video técnico en segundo idioma: arquitectura Flask+D3, SOLID y algoritmos. Todos en cámara.'},
+    {w:'all',type:'both',txt:'Verificar que el repo tiene commits en inglés con aportes visibles de los tres. Confirmar que corre con <code>python backend/app.py</code>.'},
+    {w:'all',type:'both',txt:'Enviar correo con repo, links a videos y PDFs adjuntos antes de las 8:00 PM.'},
+  ]},
+];
+
+let af='all';
+
+function buildDays(){
+  const c=document.getElementById('dc');
+  c.innerHTML='';
+  DAYS.forEach((d,di)=>{
+    const vis=d.tasks.filter(t=>af==='all'||t.w===af||t.w==='all');
+    if(!vis.length)return;
+    const card=document.createElement('div');
+    card.className='dcard';
+    card.innerHTML=`<div class="dhdr" onclick="tD(this)">
+      <span class="dnum">Día ${d.n}</span>
+      <span class="dtitle">${d.t}</span>
+      <div class="dtags"><span class="badge ${d.crit?'tag-crit':'tag-norm'}">${d.crit?'crítico':'día normal'}</span></div>
+      <span class="arr">▼</span>
+    </div>
+    <div class="dbody${di===0?' on':''}">
+      ${vis.map(t=>`<div class="task">
+        <input type="checkbox" onchange="this.nextElementSibling.nextElementSibling.classList.toggle('done',this.checked)">
+        <span class="who ${WC[t.w]}">${WL[t.w]}</span>
+        <span class="ttxt">${t.txt}</span>
+        ${t.dep?`<span class="dep">${t.dep}</span>`:''}
+        <span class="ttype ${TC[t.type]}" style="margin-left:auto">${TL[t.type]}</span>
+      </div>`).join('')}
+      ${d.note?`<div class="nb crit">${d.note}</div>`:''}
+    </div>`;
+    c.appendChild(card);
+  });
+}
+
+function tD(h){
+  const b=h.nextElementSibling;
+  const a=h.querySelector('.arr');
+  b.classList.toggle('on');
+  a.textContent=b.classList.contains('on')?'▲':'▼';
+}
+
+function filtrar(f,btn){
+  af=f;
+  document.querySelectorAll('.fbt').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  buildDays();
+}
+
+buildDays();
+</script>
