@@ -532,4 +532,62 @@ Return the full trip summary for a completed or in-progress session.
 
 ---
 
+### **ENDPOINT PARA CARGAR OTRO .JSON
+POST. /api/graph/upload 
+envia el archivo .json con el endpoint y luego guarda y reemplaza los datos 
+
+**response**
+{
+  "error": false,
+  "data": {
+    "nodes": [
+      {
+        "id": "CLO",
+        "nombre": "Aeropuerto Alfonso Bonilla Aragón",
+        "ciudad": "Cali",
+        "pais": "Colombia",
+        "zonaHoraria": "America/Bogota",
+        "esHub": false,
+        "costoAlojamiento": 40,
+        "costoAlimentacion": 12,
+        "actividades": [
+          { "nombre": "Tour Cristo Rey", "tipo": "opcional", "duracionMin": 120, "costoUSD": 20 }],
+        "trabajos": [
+          { "nombre": "Atención al pasajero", "tarifaHora": 11, "maxHoras": 6 } ]
+      },
+      {
+        "id": "BOG",
+        "nombre": "Aeropuerto El Dorado",
+        "ciudad": "Bogotá",
+        "pais": "Colombia",
+        "zonaHoraria": "America/Bogota",
+        "esHub": true,
+        "costoAlojamiento": 55,
+        "costoAlimentacion": 10,
+        "actividades": [
+          { "nombre": "Tour La Candelaria", "tipo": "opcional", "duracionMin": 180, "costoUSD": 35 }],
+        "trabajos": [
+          { "nombre": "Cargador de equipaje", "tarifaHora": 9, "maxHoras": 8 }]
+      }
+    ],
+    "links": [
+      {
+        "source": "CLO",
+        "target": "BOG",
+        "distanciaKm": 300,
+        "aeronaves": ["Jet", "Regional"],
+        "costoBase": 50,
+        "estanciaMinima": 90
+      },
+      {
+        "source": "BOG",
+        "target": "MDE",
+        "distanciaKm": 230,
+        "aeronaves": ["Regional", "Helice"],
+        "costoBase": null,
+        "estanciaMinima": 120
+      }
+    ]
+  }
+}
 
