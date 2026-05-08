@@ -1,4 +1,5 @@
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, cast
+import dataclasses
 
 class Airport:
     """Airport model.
@@ -10,8 +11,8 @@ class Airport:
     - is_hub: bool
     - accommodation_cost: float (USD per night)
     - feeding_cost: float (USD per meal)
-    - activities: list[dict]
-    - jobs: list[dict]
+    - activities: list[dict] or list of model objects
+    - jobs: list[dict] or list of model objects
     - adjacencies: list[Route] or list[dict] (in-memory outgoing routes)
 
     Useful methods:
@@ -25,11 +26,13 @@ class Airport:
         airport_id: str,
         name: str,
         city: str,
+        country: str,
+        timezone: str,
         is_hub: bool = False,
         accommodation_cost: float = 0.0,
         feeding_cost: float = 0.0,
-        activities: Optional[List[Dict[str, Any]]] = None,
-        jobs: Optional[List[Dict[str, Any]]] = None,
+        activities: Optional[List[Any]] = None,
+        jobs: Optional[List[Any]] = None,
     ) -> None:
         
         if not airport_id or not isinstance(airport_id, str):
@@ -42,11 +45,13 @@ class Airport:
         self.airport_id: str = airport_id
         self.name: str = name
         self.city: str = city
+        self.country: str = country
+        self.timezone: str = timezone
         self.is_hub: bool = bool(is_hub)
         self.accommodation_cost: float = float(accommodation_cost)
         self.feeding_cost: float = float(feeding_cost)
-        self.activities: List[Dict[str, Any]] = list(activities) if activities else []
-        self.jobs: List[Dict[str, Any]] = list(jobs) if jobs else []
+        self.activities: List[Any] = list(activities) if activities else []
+        self.jobs: List[Any] = list(jobs) if jobs else []
         self.adjacencies: List[Any] = []
 
     def add_adjacency(self, route: Any) -> None:
@@ -99,6 +104,16 @@ class Airport:
 
         Adjacencies are serialized via their `to_dict()` if available.
         """
+        def _serialize_item(item: Any) -> Any:
+            if dataclasses.is_dataclass(item):
+                return dataclasses.asdict(cast(Any, item))
+            if hasattr(item, "to_dict"):
+                try:
+                    return item.to_dict()
+                except Exception:
+                    return item
+            return item
+
         return {
             "airport_id": self.airport_id,
             "name": self.name,
@@ -106,8 +121,8 @@ class Airport:
             "is_hub": self.is_hub,
             "accommodation_cost": self.accommodation_cost,
             "feeding_cost": self.feeding_cost,
-            "activities": list(self.activities),
-            "jobs": list(self.jobs),
+            "activities": [_serialize_item(a) for a in self.activities],
+            "jobs": [_serialize_item(j) for j in self.jobs],
             "adjacencies": [r.to_dict() if hasattr(r, "to_dict") else r for r in self.adjacencies],
         }
 
@@ -123,6 +138,8 @@ class Airport:
             airport_id=data.get("airport_id") or data.get("id") or "",
             name=data.get("name") or data.get("nombre") or "",
             city=data.get("city") or data.get("ciudad") or "",
+            country=data.get("country") or data.get("pais") or "",
+            timezone=data.get("timezone") or data.get("zonaHoraria") or "",
             is_hub=data.get("is_hub") or data.get("esHub") or False,
             accommodation_cost=data.get("accommodation_cost") or data.get("costoAlojamiento") or 0.0,
             feeding_cost=data.get("feeding_cost") or data.get("costoAlimentacion") or 0.0,

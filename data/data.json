@@ -1,0 +1,1426 @@
+{
+  "aeropuertos": [
+    {
+      "id": "BOG",
+      "nombre": "El Dorado International Airport",
+      "ciudad": "Bogotá",
+      "esHub": true,
+      "costoAlojamiento": 45.0,
+      "costoAlimentacion": 12.0,
+      "actividades": [
+        {
+          "name": "Monserrate Sanctuary Visit",
+          "type": "Cultural",
+          "duration_min": 120,
+          "cost_usd": 8.0
+        },
+        {
+          "name": "Gold Museum Tour",
+          "type": "Educational",
+          "duration_min": 90,
+          "cost_usd": 18.0
+        },
+        {
+          "name": "Historic La Candelaria Walk",
+          "type": "Heritage",
+          "duration_min": 180,
+          "cost_usd": 0.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Tour Guide",
+          "hourly_rate": 15.0,
+          "max_hours": 8
+        },
+        {
+          "name": "Hotel Staff",
+          "hourly_rate": 8.5,
+          "max_hours": 10
+        }
+      ]
+    },
+    {
+      "id": "MDE",
+      "nombre": "José María Córdova International Airport",
+      "ciudad": "Medellín",
+      "esHub": false,
+      "costoAlojamiento": 38.0,
+      "costoAlimentacion": 10.0,
+      "actividades": [
+        {
+          "name": "Comuna 13 Graffiti Tour",
+          "type": "Cultural",
+          "duration_min": 150,
+          "cost_usd": 20.0
+        },
+        {
+          "name": "Arví Park Cable Car Ride",
+          "type": "Adventure",
+          "duration_min": 120,
+          "cost_usd": 12.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Restaurant Server",
+          "hourly_rate": 7.5,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "CLO",
+      "nombre": "Palmaseca International Airport",
+      "ciudad": "Cali",
+      "esHub": false,
+      "costoAlojamiento": 35.0,
+      "costoAlimentacion": 9.5,
+      "actividades": [
+        {
+          "name": "Salsa Dance Lesson",
+          "type": "Cultural",
+          "duration_min": 90,
+          "cost_usd": 25.0
+        },
+        {
+          "name": "Christ King Statue Visit",
+          "type": "Religious",
+          "duration_min": 60,
+          "cost_usd": 5.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Dance Instructor",
+          "hourly_rate": 12.0,
+          "max_hours": 6
+        }
+      ]
+    },
+    {
+      "id": "CTG",
+      "nombre": "Rafael Núñez International Airport",
+      "ciudad": "Cartagena",
+      "esHub": false,
+      "costoAlojamiento": 55.0,
+      "costoAlimentacion": 14.0,
+      "actividades": [
+        {
+          "name": "Walled City Historic Tour",
+          "type": "Heritage",
+          "duration_min": 180,
+          "cost_usd": 15.0
+        },
+        {
+          "name": "Rosario Islands Cruise",
+          "type": "Beach",
+          "duration_min": 480,
+          "cost_usd": 65.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Boat Captain",
+          "hourly_rate": 18.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "BAQ",
+      "nombre": "Ernesto Cortissoz International Airport",
+      "ciudad": "Barranquilla",
+      "esHub": false,
+      "costoAlojamiento": 40.0,
+      "costoAlimentacion": 11.0,
+      "actividades": [
+        {
+          "name": "Carnival Festival",
+          "type": "Cultural",
+          "duration_min": 240,
+          "cost_usd": 30.0
+        },
+        {
+          "name": "Gold Museum Tour",
+          "type": "Educational",
+          "duration_min": 90,
+          "cost_usd": 12.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Event Coordinator",
+          "hourly_rate": 16.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "LIM",
+      "nombre": "Jorge Chávez International Airport",
+      "ciudad": "Lima",
+      "esHub": true,
+      "costoAlojamiento": 50.0,
+      "costoAlimentacion": 13.0,
+      "actividades": [
+        {
+          "name": "Machu Picchu Trek",
+          "type": "Adventure",
+          "duration_min": 1440,
+          "cost_usd": 550.0
+        },
+        {
+          "name": "Lima Historic Center Tour",
+          "type": "Heritage",
+          "duration_min": 120,
+          "cost_usd": 20.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Mountain Guide",
+          "hourly_rate": 20.0,
+          "max_hours": 10
+        }
+      ]
+    },
+    {
+      "id": "CUZ",
+      "nombre": "Alejandro Velasco Astete International Airport",
+      "ciudad": "Cusco",
+      "esHub": false,
+      "costoAlojamiento": 42.0,
+      "costoAlimentacion": 11.0,
+      "actividades": [
+        {
+          "name": "Machu Picchu Tour",
+          "type": "Historical",
+          "duration_min": 720,
+          "cost_usd": 350.0
+        },
+        {
+          "name": "Sacred Valley Trek",
+          "type": "Adventure",
+          "duration_min": 480,
+          "cost_usd": 180.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Trek Assistant",
+          "hourly_rate": 15.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "AQP",
+      "nombre": "Rodríguez Ballón International Airport",
+      "ciudad": "Arequipa",
+      "esHub": false,
+      "costoAlojamiento": 38.0,
+      "costoAlimentacion": 10.0,
+      "actividades": [
+        {
+          "name": "Colca Canyon Trek",
+          "type": "Adventure",
+          "duration_min": 480,
+          "cost_usd": 200.0
+        },
+        {
+          "name": "Santa Catalina Monastery Visit",
+          "type": "Religious",
+          "duration_min": 120,
+          "cost_usd": 8.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Canyon Guide",
+          "hourly_rate": 18.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "SCL",
+      "nombre": "Arturo Merino Benítez International Airport",
+      "ciudad": "Santiago",
+      "esHub": true,
+      "costoAlojamiento": 60.0,
+      "costoAlimentacion": 15.0,
+      "actividades": [
+        {
+          "name": "Andes Mountain Tour",
+          "type": "Adventure",
+          "duration_min": 480,
+          "cost_usd": 120.0
+        },
+        {
+          "name": "Wine Valley Tour",
+          "type": "Gastronomic",
+          "duration_min": 360,
+          "cost_usd": 95.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Wine Sommelier",
+          "hourly_rate": 22.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "PMC",
+      "nombre": "La Araucania Airport",
+      "ciudad": "Puerto Montt",
+      "esHub": false,
+      "costoAlojamiento": 45.0,
+      "costoAlimentacion": 12.0,
+      "actividades": [
+        {
+          "name": "Chiloé Island Adventure",
+          "type": "Cultural",
+          "duration_min": 480,
+          "cost_usd": 85.0
+        },
+        {
+          "name": "Seafood Market Tour",
+          "type": "Gastronomic",
+          "duration_min": 120,
+          "cost_usd": 20.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Fisheries Worker",
+          "hourly_rate": 11.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "IQQ",
+      "nombre": "Diego Aracena International Airport",
+      "ciudad": "Iquique",
+      "esHub": false,
+      "costoAlojamiento": 50.0,
+      "costoAlimentacion": 13.0,
+      "actividades": [
+        {
+          "name": "Atacama Desert Tour",
+          "type": "Adventure",
+          "duration_min": 360,
+          "cost_usd": 150.0
+        },
+        {
+          "name": "Paragliding Experience",
+          "type": "Adventure",
+          "duration_min": 120,
+          "cost_usd": 180.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Adventure Sport Guide",
+          "hourly_rate": 25.0,
+          "max_hours": 6
+        }
+      ]
+    },
+    {
+      "id": "GRU",
+      "nombre": "São Paulo/Guarulhos International Airport",
+      "ciudad": "São Paulo",
+      "esHub": true,
+      "costoAlojamiento": 55.0,
+      "costoAlimentacion": 14.0,
+      "actividades": [
+        {
+          "name": "Art Museum Circuit",
+          "type": "Cultural",
+          "duration_min": 240,
+          "cost_usd": 25.0
+        },
+        {
+          "name": "Nightlife in Vila Olímpia",
+          "type": "Entertainment",
+          "duration_min": 360,
+          "cost_usd": 50.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Cultural Guide",
+          "hourly_rate": 19.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "GIG",
+      "nombre": "Tom Jobim International Airport",
+      "ciudad": "Rio de Janeiro",
+      "esHub": false,
+      "costoAlojamiento": 65.0,
+      "costoAlimentacion": 16.0,
+      "actividades": [
+        {
+          "name": "Christ the Redeemer Tour",
+          "type": "Religious",
+          "duration_min": 180,
+          "cost_usd": 30.0
+        },
+        {
+          "name": "Copacabana Beach Day",
+          "type": "Beach",
+          "duration_min": 480,
+          "cost_usd": 0.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Beach Vendor",
+          "hourly_rate": 10.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "SSA",
+      "nombre": "Deputado Luís Eduardo Magalhães International Airport",
+      "ciudad": "Salvador",
+      "esHub": false,
+      "costoAlojamiento": 48.0,
+      "costoAlimentacion": 12.0,
+      "actividades": [
+        {
+          "name": "Capoeira Dance Class",
+          "type": "Cultural",
+          "duration_min": 90,
+          "cost_usd": 20.0
+        },
+        {
+          "name": "Historic Pelourinho Tour",
+          "type": "Heritage",
+          "duration_min": 120,
+          "cost_usd": 15.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Dance Instructor",
+          "hourly_rate": 14.0,
+          "max_hours": 6
+        }
+      ]
+    },
+    {
+      "id": "FOR",
+      "nombre": "Pinto Martins International Airport",
+      "ciudad": "Fortaleza",
+      "esHub": false,
+      "costoAlojamiento": 45.0,
+      "costoAlimentacion": 11.0,
+      "actividades": [
+        {
+          "name": "Beach Buggy Adventure",
+          "type": "Adventure",
+          "duration_min": 240,
+          "cost_usd": 60.0
+        },
+        {
+          "name": "Jericoacoara National Park Trek",
+          "type": "Nature",
+          "duration_min": 480,
+          "cost_usd": 100.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Beach Tour Guide",
+          "hourly_rate": 13.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "EZE",
+      "nombre": "Ministro Pistarini International Airport",
+      "ciudad": "Buenos Aires",
+      "esHub": true,
+      "costoAlojamiento": 50.0,
+      "costoAlimentacion": 13.0,
+      "actividades": [
+        {
+          "name": "Tango Show & Dinner",
+          "type": "Cultural",
+          "duration_min": 240,
+          "cost_usd": 120.0
+        },
+        {
+          "name": "La Boca Historic Walk",
+          "type": "Heritage",
+          "duration_min": 120,
+          "cost_usd": 0.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Tango Dancer",
+          "hourly_rate": 25.0,
+          "max_hours": 4
+        }
+      ]
+    },
+    {
+      "id": "COR",
+      "nombre": "Córdoba International Airport",
+      "ciudad": "Córdoba",
+      "esHub": false,
+      "costoAlojamiento": 42.0,
+      "costoAlimentacion": 11.0,
+      "actividades": [
+        {
+          "name": "Jesuit Block Historic Tour",
+          "type": "Heritage",
+          "duration_min": 120,
+          "cost_usd": 15.0
+        },
+        {
+          "name": "Córdoba Cathedral Visit",
+          "type": "Religious",
+          "duration_min": 60,
+          "cost_usd": 5.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Museum Guide",
+          "hourly_rate": 12.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "MDZ",
+      "nombre": "Governor Francisco Gabrielli International Airport",
+      "ciudad": "Mendoza",
+      "esHub": false,
+      "costoAlojamiento": 48.0,
+      "costoAlimentacion": 12.0,
+      "actividades": [
+        {
+          "name": "Wine Estate Tour",
+          "type": "Gastronomic",
+          "duration_min": 240,
+          "cost_usd": 85.0
+        },
+        {
+          "name": "Andes Mountain Trek",
+          "type": "Adventure",
+          "duration_min": 480,
+          "cost_usd": 150.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Vineyard Worker",
+          "hourly_rate": 12.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "MVD",
+      "nombre": "Carrasco International Airport",
+      "ciudad": "Montevideo",
+      "esHub": false,
+      "costoAlojamiento": 52.0,
+      "costoAlimentacion": 13.0,
+      "actividades": [
+        {
+          "name": "Teatro Solís Tour",
+          "type": "Cultural",
+          "duration_min": 60,
+          "cost_usd": 8.0
+        },
+        {
+          "name": "Rambla Boardwalk Walk",
+          "type": "Leisure",
+          "duration_min": 120,
+          "cost_usd": 0.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Tour Guide",
+          "hourly_rate": 14.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "ASU",
+      "nombre": "Silvio Pettirossi International Airport",
+      "ciudad": "Asunción",
+      "esHub": false,
+      "costoAlojamiento": 38.0,
+      "costoAlimentacion": 10.0,
+      "actividades": [
+        {
+          "name": "Iguazu Falls Trip",
+          "type": "Nature",
+          "duration_min": 720,
+          "cost_usd": 200.0
+        },
+        {
+          "name": "Gran Chaco Wildlife Safari",
+          "type": "Adventure",
+          "duration_min": 480,
+          "cost_usd": 180.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Safari Guide",
+          "hourly_rate": 16.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "VVI",
+      "nombre": "Viru Viru International Airport",
+      "ciudad": "Santa Cruz",
+      "esHub": false,
+      "costoAlojamiento": 35.0,
+      "costoAlimentacion": 9.0,
+      "actividades": [
+        {
+          "name": "Amazon Rainforest Expedition",
+          "type": "Adventure",
+          "duration_min": 720,
+          "cost_usd": 400.0
+        },
+        {
+          "name": "Wildlife Spotting Tour",
+          "type": "Nature",
+          "duration_min": 480,
+          "cost_usd": 150.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Jungle Guide",
+          "hourly_rate": 14.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "LPB",
+      "nombre": "El Alto International Airport",
+      "ciudad": "La Paz",
+      "esHub": false,
+      "costoAlojamiento": 40.0,
+      "costoAlimentacion": 10.0,
+      "actividades": [
+        {
+          "name": "Death Road Mountain Biking",
+          "type": "Adventure",
+          "duration_min": 240,
+          "cost_usd": 90.0
+        },
+        {
+          "name": "Witches Market Tour",
+          "type": "Cultural",
+          "duration_min": 120,
+          "cost_usd": 15.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Mountain Bike Guide",
+          "hourly_rate": 18.0,
+          "max_hours": 6
+        }
+      ]
+    },
+    {
+      "id": "UIO",
+      "nombre": "Mariscal Sucre International Airport",
+      "ciudad": "Quito",
+      "esHub": true,
+      "costoAlojamiento": 42.0,
+      "costoAlimentacion": 11.0,
+      "actividades": [
+        {
+          "name": "Galápagos Islands Tour",
+          "type": "Nature",
+          "duration_min": 1440,
+          "cost_usd": 1500.0
+        },
+        {
+          "name": "Amazon Rainforest Trek",
+          "type": "Adventure",
+          "duration_min": 720,
+          "cost_usd": 450.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Naturalist Guide",
+          "hourly_rate": 22.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "GYE",
+      "nombre": "José Joaquín de Olmedo International Airport",
+      "ciudad": "Guayaquil",
+      "esHub": false,
+      "costoAlojamiento": 40.0,
+      "costoAlimentacion": 11.0,
+      "actividades": [
+        {
+          "name": "Coastal Beach Resort Day",
+          "type": "Beach",
+          "duration_min": 480,
+          "cost_usd": 0.0
+        },
+        {
+          "name": "Wildlife Reserve Tour",
+          "type": "Nature",
+          "duration_min": 240,
+          "cost_usd": 80.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Resort Staff",
+          "hourly_rate": 10.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "PTY",
+      "nombre": "Tocumen International Airport",
+      "ciudad": "Panama City",
+      "esHub": true,
+      "costoAlojamiento": 55.0,
+      "costoAlimentacion": 14.0,
+      "actividades": [
+        {
+          "name": "Panama Canal Transit Tour",
+          "type": "Historical",
+          "duration_min": 360,
+          "cost_usd": 150.0
+        },
+        {
+          "name": "San Blas Islands Adventure",
+          "type": "Beach",
+          "duration_min": 720,
+          "cost_usd": 200.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Canal Guide",
+          "hourly_rate": 20.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "SAL",
+      "nombre": "Monseñor Óscar Arnulfo Romero International Airport",
+      "ciudad": "San Salvador",
+      "esHub": false,
+      "costoAlojamiento": 38.0,
+      "costoAlimentacion": 9.5,
+      "actividades": [
+        {
+          "name": "Volcano Hike Adventure",
+          "type": "Adventure",
+          "duration_min": 240,
+          "cost_usd": 70.0
+        },
+        {
+          "name": "Mayan Ruins Tour",
+          "type": "Historical",
+          "duration_min": 180,
+          "cost_usd": 50.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Tour Guide",
+          "hourly_rate": 12.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "GUA",
+      "nombre": "La Aurora International Airport",
+      "ciudad": "Guatemala City",
+      "esHub": false,
+      "costoAlojamiento": 40.0,
+      "costoAlimentacion": 10.0,
+      "actividades": [
+        {
+          "name": "Chichicastenango Market Tour",
+          "type": "Cultural",
+          "duration_min": 180,
+          "cost_usd": 40.0
+        },
+        {
+          "name": "Lake Atitlán Boat Tour",
+          "type": "Adventure",
+          "duration_min": 240,
+          "cost_usd": 60.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Market Guide",
+          "hourly_rate": 11.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "MGA",
+      "nombre": "Augusto C. Sandino International Airport",
+      "ciudad": "Managua",
+      "esHub": false,
+      "costoAlojamiento": 35.0,
+      "costoAlimentacion": 9.0,
+      "actividades": [
+        {
+          "name": "Granada Colonial City Tour",
+          "type": "Heritage",
+          "duration_min": 120,
+          "cost_usd": 30.0
+        },
+        {
+          "name": "Lake Nicaragua Island Cruise",
+          "type": "Adventure",
+          "duration_min": 360,
+          "cost_usd": 80.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Boat Captain",
+          "hourly_rate": 13.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "CCS",
+      "nombre": "Simón Bolívar International Airport",
+      "ciudad": "Caracas",
+      "esHub": false,
+      "costoAlojamiento": 50.0,
+      "costoAlimentacion": 12.0,
+      "actividades": [
+        {
+          "name": "Angel Falls Trek",
+          "type": "Adventure",
+          "duration_min": 1440,
+          "cost_usd": 550.0
+        },
+        {
+          "name": "Los Llanos Wildlife Tour",
+          "type": "Nature",
+          "duration_min": 480,
+          "cost_usd": 200.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Adventure Guide",
+          "hourly_rate": 17.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "CUN",
+      "nombre": "Cancún International Airport",
+      "ciudad": "Cancún",
+      "esHub": false,
+      "costoAlojamiento": 70.0,
+      "costoAlimentacion": 16.0,
+      "actividades": [
+        {
+          "name": "Cenote Swimming",
+          "type": "Adventure",
+          "duration_min": 180,
+          "cost_usd": 40.0
+        },
+        {
+          "name": "Playa del Carmen Beach Day",
+          "type": "Beach",
+          "duration_min": 480,
+          "cost_usd": 0.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Resort Worker",
+          "hourly_rate": 12.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "MEX",
+      "nombre": "Mexico City International Airport",
+      "ciudad": "Mexico City",
+      "esHub": true,
+      "costoAlojamiento": 52.0,
+      "costoAlimentacion": 13.0,
+      "actividades": [
+        {
+          "name": "Templo Mayor Archaeological Site",
+          "type": "Historical",
+          "duration_min": 120,
+          "cost_usd": 15.0
+        },
+        {
+          "name": "Frida Kahlo Museum Tour",
+          "type": "Cultural",
+          "duration_min": 90,
+          "cost_usd": 20.0
+        }
+      ],
+      "trabajos": [
+        {
+          "name": "Museum Guide",
+          "hourly_rate": 16.0,
+          "max_hours": 8
+        }
+      ]
+    }
+  ],
+  "rutas": [
+    {
+      "origen": "BOG",
+      "destino": "MDE",
+      "distanciaKm": 430,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 95.0,
+      "estanciaMinima": 240
+    },
+    {
+      "origen": "BOG",
+      "destino": "LIM",
+      "distanciaKm": 600,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 140.0,
+      "estanciaMinima": 300
+    },
+    {
+      "origen": "BOG",
+      "destino": "UIO",
+      "distanciaKm": 580,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 130.0,
+      "estanciaMinima": 300
+    },
+    {
+      "origen": "BOG",
+      "destino": "PTY",
+      "distanciaKm": 700,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 155.0,
+      "estanciaMinima": 300
+    },
+    {
+      "origen": "MDE",
+      "destino": "BOG",
+      "distanciaKm": 430,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 95.0,
+      "estanciaMinima": 240
+    },
+    {
+      "origen": "MDE",
+      "destino": "CTG",
+      "distanciaKm": 280,
+      "aeronaves": [
+        "Regional"
+      ],
+      "costoBase": 65.0,
+      "estanciaMinima": 180
+    },
+    {
+      "origen": "CLO",
+      "destino": "BOG",
+      "distanciaKm": 520,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 110.0,
+      "estanciaMinima": 240
+    },
+    {
+      "origen": "CTG",
+      "destino": "MDE",
+      "distanciaKm": 280,
+      "aeronaves": [
+        "Regional"
+      ],
+      "costoBase": 65.0,
+      "estanciaMinima": 180
+    },
+    {
+      "origen": "CTG",
+      "destino": "BOG",
+      "distanciaKm": 550,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 115.0,
+      "estanciaMinima": 240
+    },
+    {
+      "origen": "BAQ",
+      "destino": "CTG",
+      "distanciaKm": 110,
+      "aeronaves": [
+        "Regional"
+      ],
+      "costoBase": 35.0,
+      "estanciaMinima": 120
+    },
+    {
+      "origen": "LIM",
+      "destino": "BOG",
+      "distanciaKm": 600,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 140.0,
+      "estanciaMinima": 300
+    },
+    {
+      "origen": "LIM",
+      "destino": "CUZ",
+      "distanciaKm": 560,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 130.0,
+      "estanciaMinima": 300
+    },
+    {
+      "origen": "LIM",
+      "destino": "AQP",
+      "distanciaKm": 750,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 160.0,
+      "estanciaMinima": 300
+    },
+    {
+      "origen": "LIM",
+      "destino": "SCL",
+      "distanciaKm": 1300,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 280.0,
+      "estanciaMinima": 360
+    },
+    {
+      "origen": "CUZ",
+      "destino": "LIM",
+      "distanciaKm": 560,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 130.0,
+      "estanciaMinima": 300
+    },
+    {
+      "origen": "AQP",
+      "destino": "LIM",
+      "distanciaKm": 750,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 160.0,
+      "estanciaMinima": 300
+    },
+    {
+      "origen": "SCL",
+      "destino": "LIM",
+      "distanciaKm": 1300,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 280.0,
+      "estanciaMinima": 360
+    },
+    {
+      "origen": "SCL",
+      "destino": "PMC",
+      "distanciaKm": 1000,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 220.0,
+      "estanciaMinima": 300
+    },
+    {
+      "origen": "SCL",
+      "destino": "IQQ",
+      "distanciaKm": 1900,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 400.0,
+      "estanciaMinima": 360
+    },
+    {
+      "origen": "SCL",
+      "destino": "EZE",
+      "distanciaKm": 700,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 155.0,
+      "estanciaMinima": 300
+    },
+    {
+      "origen": "PMC",
+      "destino": "SCL",
+      "distanciaKm": 1000,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 220.0,
+      "estanciaMinima": 300
+    },
+    {
+      "origen": "IQQ",
+      "destino": "SCL",
+      "distanciaKm": 1900,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 400.0,
+      "estanciaMinima": 360
+    },
+    {
+      "origen": "GRU",
+      "destino": "GIG",
+      "distanciaKm": 430,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 100.0,
+      "estanciaMinima": 240
+    },
+    {
+      "origen": "GRU",
+      "destino": "SSA",
+      "distanciaKm": 1140,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 240.0,
+      "estanciaMinima": 300
+    },
+    {
+      "origen": "GRU",
+      "destino": "FOR",
+      "distanciaKm": 1340,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 280.0,
+      "estanciaMinima": 300
+    },
+    {
+      "origen": "GIG",
+      "destino": "GRU",
+      "distanciaKm": 430,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 100.0,
+      "estanciaMinima": 240
+    },
+    {
+      "origen": "SSA",
+      "destino": "GRU",
+      "distanciaKm": 1140,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 240.0,
+      "estanciaMinima": 300
+    },
+    {
+      "origen": "FOR",
+      "destino": "GRU",
+      "distanciaKm": 1340,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 280.0,
+      "estanciaMinima": 300
+    },
+    {
+      "origen": "EZE",
+      "destino": "SCL",
+      "distanciaKm": 700,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 155.0,
+      "estanciaMinima": 300
+    },
+    {
+      "origen": "EZE",
+      "destino": "COR",
+      "distanciaKm": 700,
+      "aeronaves": [
+        "Regional"
+      ],
+      "costoBase": 155.0,
+      "estanciaMinima": 240
+    },
+    {
+      "origen": "EZE",
+      "destino": "MDZ",
+      "distanciaKm": 1000,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 220.0,
+      "estanciaMinima": 300
+    },
+    {
+      "origen": "EZE",
+      "destino": "MVD",
+      "distanciaKm": 250,
+      "aeronaves": [
+        "Regional"
+      ],
+      "costoBase": 60.0,
+      "estanciaMinima": 120
+    },
+    {
+      "origen": "COR",
+      "destino": "EZE",
+      "distanciaKm": 700,
+      "aeronaves": [
+        "Regional"
+      ],
+      "costoBase": 155.0,
+      "estanciaMinima": 240
+    },
+    {
+      "origen": "MDZ",
+      "destino": "EZE",
+      "distanciaKm": 1000,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 220.0,
+      "estanciaMinima": 300
+    },
+    {
+      "origen": "MVD",
+      "destino": "EZE",
+      "distanciaKm": 250,
+      "aeronaves": [
+        "Regional"
+      ],
+      "costoBase": 60.0,
+      "estanciaMinima": 120
+    },
+    {
+      "origen": "ASU",
+      "destino": "GRU",
+      "distanciaKm": 650,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 145.0,
+      "estanciaMinima": 240
+    },
+    {
+      "origen": "VVI",
+      "destino": "LPB",
+      "distanciaKm": 600,
+      "aeronaves": [
+        "Regional"
+      ],
+      "costoBase": 130.0,
+      "estanciaMinima": 240
+    },
+    {
+      "origen": "LPB",
+      "destino": "VVI",
+      "distanciaKm": 600,
+      "aeronaves": [
+        "Regional"
+      ],
+      "costoBase": 130.0,
+      "estanciaMinima": 240
+    },
+    {
+      "origen": "UIO",
+      "destino": "BOG",
+      "distanciaKm": 580,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 130.0,
+      "estanciaMinima": 300
+    },
+    {
+      "origen": "UIO",
+      "destino": "GYE",
+      "distanciaKm": 310,
+      "aeronaves": [
+        "Regional"
+      ],
+      "costoBase": 70.0,
+      "estanciaMinima": 180
+    },
+    {
+      "origen": "GYE",
+      "destino": "UIO",
+      "distanciaKm": 310,
+      "aeronaves": [
+        "Regional"
+      ],
+      "costoBase": 70.0,
+      "estanciaMinima": 180
+    },
+    {
+      "origen": "PTY",
+      "destino": "BOG",
+      "distanciaKm": 700,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 155.0,
+      "estanciaMinima": 300
+    },
+    {
+      "origen": "PTY",
+      "destino": "MGA",
+      "distanciaKm": 600,
+      "aeronaves": [
+        "Regional"
+      ],
+      "costoBase": 135.0,
+      "estanciaMinima": 240
+    },
+    {
+      "origen": "SAL",
+      "destino": "GUA",
+      "distanciaKm": 180,
+      "aeronaves": [
+        "Regional"
+      ],
+      "costoBase": 45.0,
+      "estanciaMinima": 120
+    },
+    {
+      "origen": "GUA",
+      "destino": "SAL",
+      "distanciaKm": 180,
+      "aeronaves": [
+        "Regional"
+      ],
+      "costoBase": 45.0,
+      "estanciaMinima": 120
+    },
+    {
+      "origen": "GUA",
+      "destino": "MGA",
+      "distanciaKm": 300,
+      "aeronaves": [
+        "Regional"
+      ],
+      "costoBase": 70.0,
+      "estanciaMinima": 180
+    },
+    {
+      "origen": "MGA",
+      "destino": "PTY",
+      "distanciaKm": 600,
+      "aeronaves": [
+        "Regional"
+      ],
+      "costoBase": 135.0,
+      "estanciaMinima": 240
+    },
+    {
+      "origen": "MGA",
+      "destino": "GUA",
+      "distanciaKm": 300,
+      "aeronaves": [
+        "Regional"
+      ],
+      "costoBase": 70.0,
+      "estanciaMinima": 180
+    },
+    {
+      "origen": "CCS",
+      "destino": "BOG",
+      "distanciaKm": 480,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 110.0,
+      "estanciaMinima": 240
+    },
+    {
+      "origen": "CUN",
+      "destino": "MEX",
+      "distanciaKm": 330,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 75.0,
+      "estanciaMinima": 180
+    },
+    {
+      "origen": "MEX",
+      "destino": "CUN",
+      "distanciaKm": 330,
+      "aeronaves": [
+        "Comercial"
+      ],
+      "costoBase": 75.0,
+      "estanciaMinima": 180
+    }
+  ]
+}
