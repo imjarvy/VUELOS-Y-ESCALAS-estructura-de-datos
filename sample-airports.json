@@ -1,69 +1,104 @@
-[
-  {
-    "id": "SCL",
-    "name": "Arturo Merino Benitez",
-    "city": "Santiago",
-    "is_hub": true,
-    "routes": [
-      { "target": "LIM", "distance": 120, "strength": 0.45 },
-      { "target": "BOG", "distance": 160, "strength": 0.35 },
-      { "target": "EZE", "distance": 140, "strength": 0.40 }
-    ]
-  },
-  {
-    "id": "LIM",
-    "name": "Jorge Chavez",
-    "city": "Lima",
-    "routes": [
-      { "target": "MEX", "distance": 170, "strength": 0.30 },
-      { "target": "BOG", "distance": 90, "strength": 0.60 },
-      { "target": "SCL", "distance": 120, "strength": 0.45 }
-    ]
-  },
-  {
-    "id": "BOG",
-    "name": "El Dorado",
-    "city": "Bogota",
-    "is_critical": true,
-    "routes": [
-      { "target": "MIA", "distance": 180, "strength": 0.30 },
-      { "target": "MEX", "distance": 150, "strength": 0.35 },
-      { "target": "LIM", "distance": 90, "strength": 0.60 }
-    ]
-  },
-  {
-    "id": "EZE",
-    "name": "Ministro Pistarini",
-    "city": "Buenos Aires",
-    "routes": [
-      { "target": "GRU", "distance": 130, "strength": 0.40 },
-      { "target": "SCL", "distance": 140, "strength": 0.40 }
-    ]
-  },
-  {
-    "id": "GRU",
-    "name": "Guarulhos",
-    "city": "Sao Paulo",
-    "routes": [
-      { "target": "MIA", "distance": 200, "strength": 0.25 },
-      { "target": "EZE", "distance": 130, "strength": 0.40 }
-    ]
-  },
-  {
-    "id": "MEX",
-    "name": "Benito Juarez",
-    "city": "Ciudad de Mexico",
-    "routes": [
-      { "target": "MIA", "distance": 120, "strength": 0.50 },
-      { "target": "SCL", "distance": 220, "strength": 0.20 }
-    ]
-  },
-  {
-    "id": "MIA",
-    "name": "Miami International",
-    "city": "Miami",
-    "routes": [
-      { "target": "BOG", "distance": 180, "strength": 0.30 }
-    ]
-  }
-]
+{
+  "airports": [
+    {
+      "airport_id": "SCL",
+      "name": "Arturo Merino Benitez",
+      "city": "Santiago",
+      "is_hub": true,
+      "accommodation_cost": 50.0,
+      "feeding_cost": 20.0,
+      "activities": ["nadar", "jugar"],
+      "jobs": ["mesero", "recepcionista"]
+    },
+    {
+      "airport_id": "LIM",
+      "name": "Jorge Chavez",
+      "city": "Lima",
+      "is_hub": false,
+      "accommodation_cost": 45.0,
+      "feeding_cost": 18.0,
+      "activities": ["caminar", "comprar"],
+      "jobs": ["guia", "cocinero"]
+    },
+    {
+      "airport_id": "BOG",
+      "name": "El Dorado",
+      "city": "Bogota",
+      "is_hub": false,
+      "accommodation_cost": 55.0,
+      "feeding_cost": 22.0,
+      "activities": ["descansar", "leer"],
+      "jobs": ["mesero", "vendedor"]
+    },
+    {
+      "airport_id": "MEX",
+      "name": "Benito Juarez",
+      "city": "Ciudad de Mexico",
+      "is_hub": false,
+      "accommodation_cost": 60.0,
+      "feeding_cost": 25.0,
+      "activities": ["tour", "comer"],
+      "jobs": ["chofer", "recepcionista"]
+    },
+    {
+      "airport_id": "MIA",
+      "name": "Miami International",
+      "city": "Miami",
+      "is_hub": false,
+      "accommodation_cost": 80.0,
+      "feeding_cost": 30.0,
+      "activities": ["playa", "shopping"],
+      "jobs": ["mesero", "guia"]
+    }
+  ],
+  "routes": [
+    {
+      "origin": "SCL",
+      "target": "LIM",
+      "distance": 120,
+      "aircrafts": ["jet", "boeing"],
+      "cost": 100.0,
+      "minimum_stay": 30
+    },
+    {
+      "origin": "SCL",
+      "target": "BOG",
+      "distance": 160,
+      "aircrafts": ["airbus"],
+      "cost": 135.0,
+      "minimum_stay": 45
+    },
+    {
+      "origin": "LIM",
+      "target": "MEX",
+      "distance": 170,
+      "aircrafts": ["jet"],
+      "cost": 180.0,
+      "minimum_stay": 50
+    },
+    {
+      "origin": "BOG",
+      "target": "MIA",
+      "distance": 180,
+      "aircrafts": ["boeing", "jet"],
+      "cost": 210.0,
+      "minimum_stay": 40
+    },
+    {
+      "origin": "MEX",
+      "target": "MIA",
+      "distance": 120,
+      "aircrafts": ["airbus"],
+      "cost": 150.0,
+      "minimum_stay": 35
+    },
+    {
+      "origin": "MIA",
+      "target": "SCL",
+      "distance": 220,
+      "aircrafts": ["jet"],
+      "cost": 250.0,
+      "minimum_stay": 60
+    }
+  ]
+}

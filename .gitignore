@@ -1,0 +1,10 @@
+# Python bytecode and caches
+__pycache__/
+*.pyc
+
+# Test cache
+.pytest_cache/
+
+# Flask runtime / local outputs
+instance/
+*.log

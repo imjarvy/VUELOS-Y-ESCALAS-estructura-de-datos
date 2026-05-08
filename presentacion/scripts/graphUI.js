@@ -4,23 +4,25 @@
 // =============================================================================
 
 /**
- * Convert an airport list into the structure D3 force expects.
+ * Convert a Graph domain object into the structure D3 force expects.
  *
- * Input flexibility:
- * - Airport id: airport.id, airport.code, airport.airport_code, airport.iata
- * - Routes list: airport.routes, airport.connections, airport.outgoing
- * - Route target: route.target, route.to, route.destination, route.destination_code,
- *   route.airport, route.id, or the route string itself.
+ * Expected payload:
+ * - Graph object: { vertices: [Airport...] }
+ * - Airport id: airport.id, airport.airport_id, airport.code, airport.airport_code, airport.iata
+ * - Route origin/target: route.origin_vertex, route.destination_vertex, route.origin_id, route.destination_id
  *
- * @param {Array<Object>} airports Raw airport payload list.
+ * @param {Object} graph Raw graph domain object.
  * @returns {{nodes: Array<Object>, links: Array<Object>}} Graph payload.
  */
-export function transformAirportsToGraphData(airports = []) {
+export function transformGraphToD3Data(graph = {}) {
   const nodeMap = new Map();
   const links = [];
 
+  const vertexList = graph?.vertices ?? [];
+
   const getAirportId = airport => (
     airport?.id
+    ?? airport?.airport_id
     ?? airport?.code
     ?? airport?.airport_code
     ?? airport?.iata
@@ -30,19 +32,17 @@ export function transformAirportsToGraphData(airports = []) {
   const getRouteTarget = route => {
     if (typeof route === "string") return route;
     return (
-      route?.target
-      ?? route?.to
-      ?? route?.destination
+      route?.destination_vertex
+      ?? route?.destination_id
+      ?? route?.target
       ?? route?.destination_code
-      ?? route?.airport
-      ?? route?.id
       ?? null
     );
   };
 
-  airports.forEach(airport => {
+  const registerNode = airport => {
     const airportId = getAirportId(airport);
-    if (!airportId) return;
+    if (!airportId) return null;
 
     if (!nodeMap.has(airportId)) {
       nodeMap.set(airportId, {
@@ -51,18 +51,33 @@ export function transformAirportsToGraphData(airports = []) {
       });
     }
 
-    const routes = airport.routes ?? airport.connections ?? airport.outgoing ?? [];
+    return airportId;
+  };
+
+  vertexList.forEach(vertex => {
+    const airportId = registerNode(vertex);
+    if (!airportId) return;
+
+    const routes = vertex.adjacencies ?? [];
     routes.forEach(route => {
       const target = getRouteTarget(route);
       if (!target) return;
 
+      const source = (
+        route?.origin_vertex
+        ?? route?.origin_id
+        ?? route?.origin
+        ?? route?.source
+        ?? route?.from
+        ?? airportId
+      );
+
       links.push({
-        source: airportId,
+        source,
         target,
         ...(typeof route === "object" ? route : {}),
       });
 
-      // Keep orphan targets visible in graph.
       if (!nodeMap.has(target)) {
         nodeMap.set(target, { id: target, inferred: true });
       }
