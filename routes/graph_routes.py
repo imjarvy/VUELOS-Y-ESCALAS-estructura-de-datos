@@ -2,7 +2,7 @@
 
 from flask import Blueprint, jsonify, request
 from acceso_datos.dataLoader import DataLoader
-from acceso_datos.graphDataService import GraphDataService
+from services.graphDataService import GraphDataService
 
 graph_bp = Blueprint("graph", __name__)
 
