@@ -18,7 +18,8 @@ import math
 from typing import Any, Callable, Dict, List, Optional, Set, Tuple
 
 from core.graph import Graph
-from models.itinerary import Itinerary, Leg
+from models.itinerary import Itinerary
+from models.leg import Leg
 from services.base_optimizer import BaseOptimizer
 from utils.constants import AIRCRAFT_RATES
 

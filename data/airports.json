@@ -1,15 +1,15 @@
 {
-  "aeropuertos": [
+  "airports": [
     {
       "id": "BOG",
-      "nombre": "El Dorado International Airport",
-      "ciudad": "Bogotá",
-      "pais": "Colombia",
-      "zonaHoraria": "UTC-5",
-      "esHub": true,
-      "costoAlojamiento": 45.0,
-      "costoAlimentacion": 12.0,
-      "actividades": [
+      "name": "El Dorado International Airport",
+      "city": "Bogotá",
+      "country": "Colombia",
+      "timezone": "UTC-5",
+      "isHub": true,
+      "lodgingCost": 45.0,
+      "foodCost": 12.0,
+      "activities": [
         {
           "name": "Monserrate Sanctuary Visit",
           "type": "Cultural",
@@ -29,7 +29,7 @@
           "cost_usd": 0.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Tour Guide",
           "hourly_rate": 15.0,
@@ -44,14 +44,14 @@
     },
     {
       "id": "MDE",
-      "nombre": "José María Córdova International Airport",
-      "ciudad": "Medellín",
-      "pais": "Colombia",
-      "zonaHoraria": "UTC-5",
-      "esHub": false,
-      "costoAlojamiento": 38.0,
-      "costoAlimentacion": 10.0,
-      "actividades": [
+      "name": "José María Córdova International Airport",
+      "city": "Medellín",
+      "country": "Colombia",
+      "timezone": "UTC-5",
+      "isHub": false,
+      "lodgingCost": 38.0,
+      "foodCost": 10.0,
+      "activities": [
         {
           "name": "Comuna 13 Graffiti Tour",
           "type": "Cultural",
@@ -65,7 +65,7 @@
           "cost_usd": 12.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Restaurant Server",
           "hourly_rate": 7.5,
@@ -75,14 +75,14 @@
     },
     {
       "id": "CLO",
-      "nombre": "Palmaseca International Airport",
-      "ciudad": "Cali",
-      "pais": "Colombia",
-      "zonaHoraria": "UTC-5",
-      "esHub": false,
-      "costoAlojamiento": 35.0,
-      "costoAlimentacion": 9.5,
-      "actividades": [
+      "name": "Palmaseca International Airport",
+      "city": "Cali",
+      "country": "Colombia",
+      "timezone": "UTC-5",
+      "isHub": false,
+      "lodgingCost": 35.0,
+      "foodCost": 9.5,
+      "activities": [
         {
           "name": "Salsa Dance Lesson",
           "type": "Cultural",
@@ -96,7 +96,7 @@
           "cost_usd": 5.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Dance Instructor",
           "hourly_rate": 12.0,
@@ -106,14 +106,14 @@
     },
     {
       "id": "CTG",
-      "nombre": "Rafael Núñez International Airport",
-      "ciudad": "Cartagena",
-      "pais": "Colombia",
-      "zonaHoraria": "UTC-5",
-      "esHub": false,
-      "costoAlojamiento": 55.0,
-      "costoAlimentacion": 14.0,
-      "actividades": [
+      "name": "Rafael Núñez International Airport",
+      "city": "Cartagena",
+      "country": "Colombia",
+      "timezone": "UTC-5",
+      "isHub": false,
+      "lodgingCost": 55.0,
+      "foodCost": 14.0,
+      "activities": [
         {
           "name": "Walled City Historic Tour",
           "type": "Heritage",
@@ -127,7 +127,7 @@
           "cost_usd": 65.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Boat Captain",
           "hourly_rate": 18.0,
@@ -137,14 +137,14 @@
     },
     {
       "id": "BAQ",
-      "nombre": "Ernesto Cortissoz International Airport",
-      "ciudad": "Barranquilla",
-      "pais": "Colombia",
-      "zonaHoraria": "UTC-5",
-      "esHub": false,
-      "costoAlojamiento": 40.0,
-      "costoAlimentacion": 11.0,
-      "actividades": [
+      "name": "Ernesto Cortissoz International Airport",
+      "city": "Barranquilla",
+      "country": "Colombia",
+      "timezone": "UTC-5",
+      "isHub": false,
+      "lodgingCost": 40.0,
+      "foodCost": 11.0,
+      "activities": [
         {
           "name": "Carnival Festival",
           "type": "Cultural",
@@ -158,7 +158,7 @@
           "cost_usd": 12.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Event Coordinator",
           "hourly_rate": 16.0,
@@ -168,14 +168,14 @@
     },
     {
       "id": "LIM",
-      "nombre": "Jorge Chávez International Airport",
-      "ciudad": "Lima",
-      "pais": "Peru",
-      "zonaHoraria": "UTC-5",
-      "esHub": true,
-      "costoAlojamiento": 50.0,
-      "costoAlimentacion": 13.0,
-      "actividades": [
+      "name": "Jorge Chávez International Airport",
+      "city": "Lima",
+      "country": "Peru",
+      "timezone": "UTC-5",
+      "isHub": true,
+      "lodgingCost": 50.0,
+      "foodCost": 13.0,
+      "activities": [
         {
           "name": "Machu Picchu Trek",
           "type": "Adventure",
@@ -189,7 +189,7 @@
           "cost_usd": 20.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Mountain Guide",
           "hourly_rate": 20.0,
@@ -199,14 +199,14 @@
     },
     {
       "id": "CUZ",
-      "nombre": "Alejandro Velasco Astete International Airport",
-      "ciudad": "Cusco",
-      "pais": "Peru",
-      "zonaHoraria": "UTC-5",
-      "esHub": false,
-      "costoAlojamiento": 42.0,
-      "costoAlimentacion": 11.0,
-      "actividades": [
+      "name": "Alejandro Velasco Astete International Airport",
+      "city": "Cusco",
+      "country": "Peru",
+      "timezone": "UTC-5",
+      "isHub": false,
+      "lodgingCost": 42.0,
+      "foodCost": 11.0,
+      "activities": [
         {
           "name": "Machu Picchu Tour",
           "type": "Historical",
@@ -220,7 +220,7 @@
           "cost_usd": 180.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Trek Assistant",
           "hourly_rate": 15.0,
@@ -230,14 +230,14 @@
     },
     {
       "id": "AQP",
-      "nombre": "Rodríguez Ballón International Airport",
-      "ciudad": "Arequipa",
-      "pais": "Peru",
-      "zonaHoraria": "UTC-5",
-      "esHub": false,
-      "costoAlojamiento": 38.0,
-      "costoAlimentacion": 10.0,
-      "actividades": [
+      "name": "Rodríguez Ballón International Airport",
+      "city": "Arequipa",
+      "country": "Peru",
+      "timezone": "UTC-5",
+      "isHub": false,
+      "lodgingCost": 38.0,
+      "foodCost": 10.0,
+      "activities": [
         {
           "name": "Colca Canyon Trek",
           "type": "Adventure",
@@ -251,7 +251,7 @@
           "cost_usd": 8.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Canyon Guide",
           "hourly_rate": 18.0,
@@ -261,14 +261,14 @@
     },
     {
       "id": "SCL",
-      "nombre": "Arturo Merino Benítez International Airport",
-      "ciudad": "Santiago",
-      "pais": "Chile",
-      "zonaHoraria": "UTC-3",
-      "esHub": true,
-      "costoAlojamiento": 60.0,
-      "costoAlimentacion": 15.0,
-      "actividades": [
+      "name": "Arturo Merino Benítez International Airport",
+      "city": "Santiago",
+      "country": "Chile",
+      "timezone": "UTC-3",
+      "isHub": true,
+      "lodgingCost": 60.0,
+      "foodCost": 15.0,
+      "activities": [
         {
           "name": "Andes Mountain Tour",
           "type": "Adventure",
@@ -282,7 +282,7 @@
           "cost_usd": 95.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Wine Sommelier",
           "hourly_rate": 22.0,
@@ -292,14 +292,14 @@
     },
     {
       "id": "PMC",
-      "nombre": "La Araucania Airport",
-      "ciudad": "Puerto Montt",
-      "pais": "Chile",
-      "zonaHoraria": "UTC-3",
-      "esHub": false,
-      "costoAlojamiento": 45.0,
-      "costoAlimentacion": 12.0,
-      "actividades": [
+      "name": "La Araucania Airport",
+      "city": "Puerto Montt",
+      "country": "Chile",
+      "timezone": "UTC-3",
+      "isHub": false,
+      "lodgingCost": 45.0,
+      "foodCost": 12.0,
+      "activities": [
         {
           "name": "Chiloé Island Adventure",
           "type": "Cultural",
@@ -313,7 +313,7 @@
           "cost_usd": 20.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Fisheries Worker",
           "hourly_rate": 11.0,
@@ -323,14 +323,14 @@
     },
     {
       "id": "IQQ",
-      "nombre": "Diego Aracena International Airport",
-      "ciudad": "Iquique",
-      "pais": "Chile",
-      "zonaHoraria": "UTC-4",
-      "esHub": false,
-      "costoAlojamiento": 50.0,
-      "costoAlimentacion": 13.0,
-      "actividades": [
+      "name": "Diego Aracena International Airport",
+      "city": "Iquique",
+      "country": "Chile",
+      "timezone": "UTC-4",
+      "isHub": false,
+      "lodgingCost": 50.0,
+      "foodCost": 13.0,
+      "activities": [
         {
           "name": "Atacama Desert Tour",
           "type": "Adventure",
@@ -344,7 +344,7 @@
           "cost_usd": 180.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Adventure Sport Guide",
           "hourly_rate": 25.0,
@@ -354,14 +354,14 @@
     },
     {
       "id": "GRU",
-      "nombre": "São Paulo/Guarulhos International Airport",
-      "ciudad": "São Paulo",
-      "pais": "Brazil",
-      "zonaHoraria": "UTC-3",
-      "esHub": true,
-      "costoAlojamiento": 55.0,
-      "costoAlimentacion": 14.0,
-      "actividades": [
+      "name": "São Paulo/Guarulhos International Airport",
+      "city": "São Paulo",
+      "country": "Brazil",
+      "timezone": "UTC-3",
+      "isHub": true,
+      "lodgingCost": 55.0,
+      "foodCost": 14.0,
+      "activities": [
         {
           "name": "Art Museum Circuit",
           "type": "Cultural",
@@ -375,7 +375,7 @@
           "cost_usd": 50.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Cultural Guide",
           "hourly_rate": 19.0,
@@ -385,14 +385,14 @@
     },
     {
       "id": "GIG",
-      "nombre": "Tom Jobim International Airport",
-      "ciudad": "Rio de Janeiro",
-      "pais": "Brazil",
-      "zonaHoraria": "UTC-3",
-      "esHub": false,
-      "costoAlojamiento": 65.0,
-      "costoAlimentacion": 16.0,
-      "actividades": [
+      "name": "Tom Jobim International Airport",
+      "city": "Rio de Janeiro",
+      "country": "Brazil",
+      "timezone": "UTC-3",
+      "isHub": false,
+      "lodgingCost": 65.0,
+      "foodCost": 16.0,
+      "activities": [
         {
           "name": "Christ the Redeemer Tour",
           "type": "Religious",
@@ -406,7 +406,7 @@
           "cost_usd": 0.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Beach Vendor",
           "hourly_rate": 10.0,
@@ -416,14 +416,14 @@
     },
     {
       "id": "SSA",
-      "nombre": "Deputado Luís Eduardo Magalhães International Airport",
-      "ciudad": "Salvador",
-      "pais": "Brazil",
-      "zonaHoraria": "UTC-3",
-      "esHub": false,
-      "costoAlojamiento": 48.0,
-      "costoAlimentacion": 12.0,
-      "actividades": [
+      "name": "Deputado Luís Eduardo Magalhães International Airport",
+      "city": "Salvador",
+      "country": "Brazil",
+      "timezone": "UTC-3",
+      "isHub": false,
+      "lodgingCost": 48.0,
+      "foodCost": 12.0,
+      "activities": [
         {
           "name": "Capoeira Dance Class",
           "type": "Cultural",
@@ -437,7 +437,7 @@
           "cost_usd": 15.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Dance Instructor",
           "hourly_rate": 14.0,
@@ -447,14 +447,14 @@
     },
     {
       "id": "FOR",
-      "nombre": "Pinto Martins International Airport",
-      "ciudad": "Fortaleza",
-      "pais": "Brazil",
-      "zonaHoraria": "UTC-3",
-      "esHub": false,
-      "costoAlojamiento": 45.0,
-      "costoAlimentacion": 11.0,
-      "actividades": [
+      "name": "Pinto Martins International Airport",
+      "city": "Fortaleza",
+      "country": "Brazil",
+      "timezone": "UTC-3",
+      "isHub": false,
+      "lodgingCost": 45.0,
+      "foodCost": 11.0,
+      "activities": [
         {
           "name": "Beach Buggy Adventure",
           "type": "Adventure",
@@ -468,7 +468,7 @@
           "cost_usd": 100.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Beach Tour Guide",
           "hourly_rate": 13.0,
@@ -478,14 +478,14 @@
     },
     {
       "id": "EZE",
-      "nombre": "Ministro Pistarini International Airport",
-      "ciudad": "Buenos Aires",
-      "pais": "Argentina",
-      "zonaHoraria": "UTC-3",
-      "esHub": true,
-      "costoAlojamiento": 50.0,
-      "costoAlimentacion": 13.0,
-      "actividades": [
+      "name": "Ministro Pistarini International Airport",
+      "city": "Buenos Aires",
+      "country": "Argentina",
+      "timezone": "UTC-3",
+      "isHub": true,
+      "lodgingCost": 50.0,
+      "foodCost": 13.0,
+      "activities": [
         {
           "name": "Tango Show & Dinner",
           "type": "Cultural",
@@ -499,7 +499,7 @@
           "cost_usd": 0.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Tango Dancer",
           "hourly_rate": 25.0,
@@ -509,14 +509,14 @@
     },
     {
       "id": "COR",
-      "nombre": "Córdoba International Airport",
-      "ciudad": "Córdoba",
-      "pais": "Argentina",
-      "zonaHoraria": "UTC-3",
-      "esHub": false,
-      "costoAlojamiento": 42.0,
-      "costoAlimentacion": 11.0,
-      "actividades": [
+      "name": "Córdoba International Airport",
+      "city": "Córdoba",
+      "country": "Argentina",
+      "timezone": "UTC-3",
+      "isHub": false,
+      "lodgingCost": 42.0,
+      "foodCost": 11.0,
+      "activities": [
         {
           "name": "Jesuit Block Historic Tour",
           "type": "Heritage",
@@ -530,7 +530,7 @@
           "cost_usd": 5.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Museum Guide",
           "hourly_rate": 12.0,
@@ -540,14 +540,14 @@
     },
     {
       "id": "MDZ",
-      "nombre": "Governor Francisco Gabrielli International Airport",
-      "ciudad": "Mendoza",
-      "pais": "Argentina",
-      "zonaHoraria": "UTC-3",
-      "esHub": false,
-      "costoAlojamiento": 48.0,
-      "costoAlimentacion": 12.0,
-      "actividades": [
+      "name": "Governor Francisco Gabrielli International Airport",
+      "city": "Mendoza",
+      "country": "Argentina",
+      "timezone": "UTC-3",
+      "isHub": false,
+      "lodgingCost": 48.0,
+      "foodCost": 12.0,
+      "activities": [
         {
           "name": "Wine Estate Tour",
           "type": "Gastronomic",
@@ -561,7 +561,7 @@
           "cost_usd": 150.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Vineyard Worker",
           "hourly_rate": 12.0,
@@ -571,14 +571,14 @@
     },
     {
       "id": "MVD",
-      "nombre": "Carrasco International Airport",
-      "ciudad": "Montevideo",
-      "pais": "Uruguay",
-      "zonaHoraria": "UTC-3",
-      "esHub": false,
-      "costoAlojamiento": 52.0,
-      "costoAlimentacion": 13.0,
-      "actividades": [
+      "name": "Carrasco International Airport",
+      "city": "Montevideo",
+      "country": "Uruguay",
+      "timezone": "UTC-3",
+      "isHub": false,
+      "lodgingCost": 52.0,
+      "foodCost": 13.0,
+      "activities": [
         {
           "name": "Teatro Solís Tour",
           "type": "Cultural",
@@ -592,7 +592,7 @@
           "cost_usd": 0.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Tour Guide",
           "hourly_rate": 14.0,
@@ -602,14 +602,14 @@
     },
     {
       "id": "ASU",
-      "nombre": "Silvio Pettirossi International Airport",
-      "ciudad": "Asunción",
-      "pais": "Paraguay",
-      "zonaHoraria": "UTC-4",
-      "esHub": false,
-      "costoAlojamiento": 38.0,
-      "costoAlimentacion": 10.0,
-      "actividades": [
+      "name": "Silvio Pettirossi International Airport",
+      "city": "Asunción",
+      "country": "Paraguay",
+      "timezone": "UTC-4",
+      "isHub": false,
+      "lodgingCost": 38.0,
+      "foodCost": 10.0,
+      "activities": [
         {
           "name": "Iguazu Falls Trip",
           "type": "Nature",
@@ -623,7 +623,7 @@
           "cost_usd": 180.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Safari Guide",
           "hourly_rate": 16.0,
@@ -633,14 +633,14 @@
     },
     {
       "id": "VVI",
-      "nombre": "Viru Viru International Airport",
-      "ciudad": "Santa Cruz",
-      "pais": "Bolivia",
-      "zonaHoraria": "UTC-4",
-      "esHub": false,
-      "costoAlojamiento": 35.0,
-      "costoAlimentacion": 9.0,
-      "actividades": [
+      "name": "Viru Viru International Airport",
+      "city": "Santa Cruz",
+      "country": "Bolivia",
+      "timezone": "UTC-4",
+      "isHub": false,
+      "lodgingCost": 35.0,
+      "foodCost": 9.0,
+      "activities": [
         {
           "name": "Amazon Rainforest Expedition",
           "type": "Adventure",
@@ -654,7 +654,7 @@
           "cost_usd": 150.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Jungle Guide",
           "hourly_rate": 14.0,
@@ -664,14 +664,14 @@
     },
     {
       "id": "LPB",
-      "nombre": "El Alto International Airport",
-      "ciudad": "La Paz",
-      "pais": "Bolivia",
-      "zonaHoraria": "UTC-4",
-      "esHub": false,
-      "costoAlojamiento": 40.0,
-      "costoAlimentacion": 10.0,
-      "actividades": [
+      "name": "El Alto International Airport",
+      "city": "La Paz",
+      "country": "Bolivia",
+      "timezone": "UTC-4",
+      "isHub": false,
+      "lodgingCost": 40.0,
+      "foodCost": 10.0,
+      "activities": [
         {
           "name": "Death Road Mountain Biking",
           "type": "Adventure",
@@ -685,7 +685,7 @@
           "cost_usd": 15.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Mountain Bike Guide",
           "hourly_rate": 18.0,
@@ -695,14 +695,14 @@
     },
     {
       "id": "UIO",
-      "nombre": "Mariscal Sucre International Airport",
-      "ciudad": "Quito",
-      "pais": "Ecuador",
-      "zonaHoraria": "UTC-5",
-      "esHub": true,
-      "costoAlojamiento": 42.0,
-      "costoAlimentacion": 11.0,
-      "actividades": [
+      "name": "Mariscal Sucre International Airport",
+      "city": "Quito",
+      "country": "Ecuador",
+      "timezone": "UTC-5",
+      "isHub": true,
+      "lodgingCost": 42.0,
+      "foodCost": 11.0,
+      "activities": [
         {
           "name": "Galápagos Islands Tour",
           "type": "Nature",
@@ -716,7 +716,7 @@
           "cost_usd": 450.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Naturalist Guide",
           "hourly_rate": 22.0,
@@ -726,14 +726,14 @@
     },
     {
       "id": "GYE",
-      "nombre": "José Joaquín de Olmedo International Airport",
-      "ciudad": "Guayaquil",
-      "pais": "Ecuador",
-      "zonaHoraria": "UTC-5",
-      "esHub": false,
-      "costoAlojamiento": 40.0,
-      "costoAlimentacion": 11.0,
-      "actividades": [
+      "name": "José Joaquín de Olmedo International Airport",
+      "city": "Guayaquil",
+      "country": "Ecuador",
+      "timezone": "UTC-5",
+      "isHub": false,
+      "lodgingCost": 40.0,
+      "foodCost": 11.0,
+      "activities": [
         {
           "name": "Coastal Beach Resort Day",
           "type": "Beach",
@@ -747,7 +747,7 @@
           "cost_usd": 80.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Resort Staff",
           "hourly_rate": 10.0,
@@ -757,14 +757,14 @@
     },
     {
       "id": "PTY",
-      "nombre": "Tocumen International Airport",
-      "ciudad": "Panama City",
-      "pais": "Panama",
-      "zonaHoraria": "UTC-5",
-      "esHub": true,
-      "costoAlojamiento": 55.0,
-      "costoAlimentacion": 14.0,
-      "actividades": [
+      "name": "Tocumen International Airport",
+      "city": "Panama City",
+      "country": "Panama",
+      "timezone": "UTC-5",
+      "isHub": true,
+      "lodgingCost": 55.0,
+      "foodCost": 14.0,
+      "activities": [
         {
           "name": "Panama Canal Transit Tour",
           "type": "Historical",
@@ -778,7 +778,7 @@
           "cost_usd": 200.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Canal Guide",
           "hourly_rate": 20.0,
@@ -788,14 +788,14 @@
     },
     {
       "id": "SAL",
-      "nombre": "Monseñor Óscar Arnulfo Romero International Airport",
-      "ciudad": "San Salvador",
-      "pais": "El Salvador",
-      "zonaHoraria": "UTC-6",
-      "esHub": false,
-      "costoAlojamiento": 38.0,
-      "costoAlimentacion": 9.5,
-      "actividades": [
+      "name": "Monseñor Óscar Arnulfo Romero International Airport",
+      "city": "San Salvador",
+      "country": "El Salvador",
+      "timezone": "UTC-6",
+      "isHub": false,
+      "lodgingCost": 38.0,
+      "foodCost": 9.5,
+      "activities": [
         {
           "name": "Volcano Hike Adventure",
           "type": "Adventure",
@@ -809,7 +809,7 @@
           "cost_usd": 50.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Tour Guide",
           "hourly_rate": 12.0,
@@ -819,14 +819,14 @@
     },
     {
       "id": "GUA",
-      "nombre": "La Aurora International Airport",
-      "ciudad": "Guatemala City",
-      "pais": "Guatemala",
-      "zonaHoraria": "UTC-6",
-      "esHub": false,
-      "costoAlojamiento": 40.0,
-      "costoAlimentacion": 10.0,
-      "actividades": [
+      "name": "La Aurora International Airport",
+      "city": "Guatemala City",
+      "country": "Guatemala",
+      "timezone": "UTC-6",
+      "isHub": false,
+      "lodgingCost": 40.0,
+      "foodCost": 10.0,
+      "activities": [
         {
           "name": "Chichicastenango Market Tour",
           "type": "Cultural",
@@ -840,7 +840,7 @@
           "cost_usd": 60.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Market Guide",
           "hourly_rate": 11.0,
@@ -850,14 +850,14 @@
     },
     {
       "id": "MGA",
-      "nombre": "Augusto C. Sandino International Airport",
-      "ciudad": "Managua",
-      "pais": "Nicaragua",
-      "zonaHoraria": "UTC-6",
-      "esHub": false,
-      "costoAlojamiento": 35.0,
-      "costoAlimentacion": 9.0,
-      "actividades": [
+      "name": "Augusto C. Sandino International Airport",
+      "city": "Managua",
+      "country": "Nicaragua",
+      "timezone": "UTC-6",
+      "isHub": false,
+      "lodgingCost": 35.0,
+      "foodCost": 9.0,
+      "activities": [
         {
           "name": "Granada Colonial City Tour",
           "type": "Heritage",
@@ -871,7 +871,7 @@
           "cost_usd": 80.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Boat Captain",
           "hourly_rate": 13.0,
@@ -881,14 +881,14 @@
     },
     {
       "id": "CCS",
-      "nombre": "Simón Bolívar International Airport",
-      "ciudad": "Caracas",
-      "pais": "Venezuela",
-      "zonaHoraria": "UTC-4",
-      "esHub": false,
-      "costoAlojamiento": 50.0,
-      "costoAlimentacion": 12.0,
-      "actividades": [
+      "name": "Simón Bolívar International Airport",
+      "city": "Caracas",
+      "country": "Venezuela",
+      "timezone": "UTC-4",
+      "isHub": false,
+      "lodgingCost": 50.0,
+      "foodCost": 12.0,
+      "activities": [
         {
           "name": "Angel Falls Trek",
           "type": "Adventure",
@@ -902,7 +902,7 @@
           "cost_usd": 200.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Adventure Guide",
           "hourly_rate": 17.0,
@@ -912,14 +912,14 @@
     },
     {
       "id": "CUN",
-      "nombre": "Cancún International Airport",
-      "ciudad": "Cancún",
-      "pais": "Mexico",
-      "zonaHoraria": "UTC-5",
-      "esHub": false,
-      "costoAlojamiento": 70.0,
-      "costoAlimentacion": 16.0,
-      "actividades": [
+      "name": "Cancún International Airport",
+      "city": "Cancún",
+      "country": "Mexico",
+      "timezone": "UTC-5",
+      "isHub": false,
+      "lodgingCost": 70.0,
+      "foodCost": 16.0,
+      "activities": [
         {
           "name": "Cenote Swimming",
           "type": "Adventure",
@@ -933,7 +933,7 @@
           "cost_usd": 0.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Resort Worker",
           "hourly_rate": 12.0,
@@ -943,14 +943,14 @@
     },
     {
       "id": "MEX",
-      "nombre": "Mexico City International Airport",
-      "ciudad": "Mexico City",
-      "pais": "Mexico",
-      "zonaHoraria": "UTC-6",
-      "esHub": true,
-      "costoAlojamiento": 52.0,
-      "costoAlimentacion": 13.0,
-      "actividades": [
+      "name": "Mexico City International Airport",
+      "city": "Mexico City",
+      "country": "Mexico",
+      "timezone": "UTC-6",
+      "isHub": true,
+      "lodgingCost": 52.0,
+      "foodCost": 13.0,
+      "activities": [
         {
           "name": "Templo Mayor Archaeological Site",
           "type": "Historical",
@@ -964,7 +964,7 @@
           "cost_usd": 20.0
         }
       ],
-      "trabajos": [
+      "jobs": [
         {
           "name": "Museum Guide",
           "hourly_rate": 16.0,
@@ -973,516 +973,516 @@
       ]
     }
   ],
-  "rutas": [
+  "routes": [
     {
-      "origen": "BOG",
-      "destino": "MDE",
-      "distanciaKm": 430,
-      "aeronaves": [
+      "origin": "BOG",
+      "destination": "MDE",
+      "distanceKm": 430,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 95.0,
-      "estanciaMinima": 240
+      "baseCost": 95.0,
+      "minimumStay": 240
     },
     {
-      "origen": "BOG",
-      "destino": "LIM",
-      "distanciaKm": 600,
-      "aeronaves": [
+      "origin": "BOG",
+      "destination": "LIM",
+      "distanceKm": 600,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 140.0,
-      "estanciaMinima": 300
+      "baseCost": 140.0,
+      "minimumStay": 300
     },
     {
-      "origen": "BOG",
-      "destino": "UIO",
-      "distanciaKm": 580,
-      "aeronaves": [
+      "origin": "BOG",
+      "destination": "UIO",
+      "distanceKm": 580,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 130.0,
-      "estanciaMinima": 300
+      "baseCost": 130.0,
+      "minimumStay": 300
     },
     {
-      "origen": "BOG",
-      "destino": "PTY",
-      "distanciaKm": 700,
-      "aeronaves": [
+      "origin": "BOG",
+      "destination": "PTY",
+      "distanceKm": 700,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 155.0,
-      "estanciaMinima": 300
+      "baseCost": 155.0,
+      "minimumStay": 300
     },
     {
-      "origen": "MDE",
-      "destino": "BOG",
-      "distanciaKm": 430,
-      "aeronaves": [
+      "origin": "MDE",
+      "destination": "BOG",
+      "distanceKm": 430,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 95.0,
-      "estanciaMinima": 240
+      "baseCost": 95.0,
+      "minimumStay": 240
     },
     {
-      "origen": "MDE",
-      "destino": "CTG",
-      "distanciaKm": 280,
-      "aeronaves": [
+      "origin": "MDE",
+      "destination": "CTG",
+      "distanceKm": 280,
+      "aircraft": [
         "Regional"
       ],
-      "costoBase": 65.0,
-      "estanciaMinima": 180
+      "baseCost": 65.0,
+      "minimumStay": 180
     },
     {
-      "origen": "CLO",
-      "destino": "BOG",
-      "distanciaKm": 520,
-      "aeronaves": [
+      "origin": "CLO",
+      "destination": "BOG",
+      "distanceKm": 520,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 110.0,
-      "estanciaMinima": 240
+      "baseCost": 110.0,
+      "minimumStay": 240
     },
     {
-      "origen": "CTG",
-      "destino": "MDE",
-      "distanciaKm": 280,
-      "aeronaves": [
+      "origin": "CTG",
+      "destination": "MDE",
+      "distanceKm": 280,
+      "aircraft": [
         "Regional"
       ],
-      "costoBase": 65.0,
-      "estanciaMinima": 180
+      "baseCost": 65.0,
+      "minimumStay": 180
     },
     {
-      "origen": "CTG",
-      "destino": "BOG",
-      "distanciaKm": 550,
-      "aeronaves": [
+      "origin": "CTG",
+      "destination": "BOG",
+      "distanceKm": 550,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 115.0,
-      "estanciaMinima": 240
+      "baseCost": 115.0,
+      "minimumStay": 240
     },
     {
-      "origen": "BAQ",
-      "destino": "CTG",
-      "distanciaKm": 110,
-      "aeronaves": [
+      "origin": "BAQ",
+      "destination": "CTG",
+      "distanceKm": 110,
+      "aircraft": [
         "Regional"
       ],
-      "costoBase": 35.0,
-      "estanciaMinima": 120
+      "baseCost": 35.0,
+      "minimumStay": 120
     },
     {
-      "origen": "LIM",
-      "destino": "BOG",
-      "distanciaKm": 600,
-      "aeronaves": [
+      "origin": "LIM",
+      "destination": "BOG",
+      "distanceKm": 600,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 140.0,
-      "estanciaMinima": 300
+      "baseCost": 140.0,
+      "minimumStay": 300
     },
     {
-      "origen": "LIM",
-      "destino": "CUZ",
-      "distanciaKm": 560,
-      "aeronaves": [
+      "origin": "LIM",
+      "destination": "CUZ",
+      "distanceKm": 560,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 130.0,
-      "estanciaMinima": 300
+      "baseCost": 130.0,
+      "minimumStay": 300
     },
     {
-      "origen": "LIM",
-      "destino": "AQP",
-      "distanciaKm": 750,
-      "aeronaves": [
+      "origin": "LIM",
+      "destination": "AQP",
+      "distanceKm": 750,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 160.0,
-      "estanciaMinima": 300
+      "baseCost": 160.0,
+      "minimumStay": 300
     },
     {
-      "origen": "LIM",
-      "destino": "SCL",
-      "distanciaKm": 1300,
-      "aeronaves": [
+      "origin": "LIM",
+      "destination": "SCL",
+      "distanceKm": 1300,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 280.0,
-      "estanciaMinima": 360
+      "baseCost": 280.0,
+      "minimumStay": 360
     },
     {
-      "origen": "CUZ",
-      "destino": "LIM",
-      "distanciaKm": 560,
-      "aeronaves": [
+      "origin": "CUZ",
+      "destination": "LIM",
+      "distanceKm": 560,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 130.0,
-      "estanciaMinima": 300
+      "baseCost": 130.0,
+      "minimumStay": 300
     },
     {
-      "origen": "AQP",
-      "destino": "LIM",
-      "distanciaKm": 750,
-      "aeronaves": [
+      "origin": "AQP",
+      "destination": "LIM",
+      "distanceKm": 750,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 160.0,
-      "estanciaMinima": 300
+      "baseCost": 160.0,
+      "minimumStay": 300
     },
     {
-      "origen": "SCL",
-      "destino": "LIM",
-      "distanciaKm": 1300,
-      "aeronaves": [
+      "origin": "SCL",
+      "destination": "LIM",
+      "distanceKm": 1300,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 280.0,
-      "estanciaMinima": 360
+      "baseCost": 280.0,
+      "minimumStay": 360
     },
     {
-      "origen": "SCL",
-      "destino": "PMC",
-      "distanciaKm": 1000,
-      "aeronaves": [
+      "origin": "SCL",
+      "destination": "PMC",
+      "distanceKm": 1000,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 220.0,
-      "estanciaMinima": 300
+      "baseCost": 220.0,
+      "minimumStay": 300
     },
     {
-      "origen": "SCL",
-      "destino": "IQQ",
-      "distanciaKm": 1900,
-      "aeronaves": [
+      "origin": "SCL",
+      "destination": "IQQ",
+      "distanceKm": 1900,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 400.0,
-      "estanciaMinima": 360
+      "baseCost": 400.0,
+      "minimumStay": 360
     },
     {
-      "origen": "SCL",
-      "destino": "EZE",
-      "distanciaKm": 700,
-      "aeronaves": [
+      "origin": "SCL",
+      "destination": "EZE",
+      "distanceKm": 700,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 155.0,
-      "estanciaMinima": 300
+      "baseCost": 155.0,
+      "minimumStay": 300
     },
     {
-      "origen": "PMC",
-      "destino": "SCL",
-      "distanciaKm": 1000,
-      "aeronaves": [
+      "origin": "PMC",
+      "destination": "SCL",
+      "distanceKm": 1000,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 220.0,
-      "estanciaMinima": 300
+      "baseCost": 220.0,
+      "minimumStay": 300
     },
     {
-      "origen": "IQQ",
-      "destino": "SCL",
-      "distanciaKm": 1900,
-      "aeronaves": [
+      "origin": "IQQ",
+      "destination": "SCL",
+      "distanceKm": 1900,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 400.0,
-      "estanciaMinima": 360
+      "baseCost": 400.0,
+      "minimumStay": 360
     },
     {
-      "origen": "GRU",
-      "destino": "GIG",
-      "distanciaKm": 430,
-      "aeronaves": [
+      "origin": "GRU",
+      "destination": "GIG",
+      "distanceKm": 430,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 100.0,
-      "estanciaMinima": 240
+      "baseCost": 100.0,
+      "minimumStay": 240
     },
     {
-      "origen": "GRU",
-      "destino": "SSA",
-      "distanciaKm": 1140,
-      "aeronaves": [
+      "origin": "GRU",
+      "destination": "SSA",
+      "distanceKm": 1140,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 240.0,
-      "estanciaMinima": 300
+      "baseCost": 240.0,
+      "minimumStay": 300
     },
     {
-      "origen": "GRU",
-      "destino": "FOR",
-      "distanciaKm": 1340,
-      "aeronaves": [
+      "origin": "GRU",
+      "destination": "FOR",
+      "distanceKm": 1340,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 280.0,
-      "estanciaMinima": 300
+      "baseCost": 280.0,
+      "minimumStay": 300
     },
     {
-      "origen": "GIG",
-      "destino": "GRU",
-      "distanciaKm": 430,
-      "aeronaves": [
+      "origin": "GIG",
+      "destination": "GRU",
+      "distanceKm": 430,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 100.0,
-      "estanciaMinima": 240
+      "baseCost": 100.0,
+      "minimumStay": 240
     },
     {
-      "origen": "SSA",
-      "destino": "GRU",
-      "distanciaKm": 1140,
-      "aeronaves": [
+      "origin": "SSA",
+      "destination": "GRU",
+      "distanceKm": 1140,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 240.0,
-      "estanciaMinima": 300
+      "baseCost": 240.0,
+      "minimumStay": 300
     },
     {
-      "origen": "FOR",
-      "destino": "GRU",
-      "distanciaKm": 1340,
-      "aeronaves": [
+      "origin": "FOR",
+      "destination": "GRU",
+      "distanceKm": 1340,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 280.0,
-      "estanciaMinima": 300
+      "baseCost": 280.0,
+      "minimumStay": 300
     },
     {
-      "origen": "EZE",
-      "destino": "SCL",
-      "distanciaKm": 700,
-      "aeronaves": [
+      "origin": "EZE",
+      "destination": "SCL",
+      "distanceKm": 700,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 155.0,
-      "estanciaMinima": 300
+      "baseCost": 155.0,
+      "minimumStay": 300
     },
     {
-      "origen": "EZE",
-      "destino": "COR",
-      "distanciaKm": 700,
-      "aeronaves": [
+      "origin": "EZE",
+      "destination": "COR",
+      "distanceKm": 700,
+      "aircraft": [
         "Regional"
       ],
-      "costoBase": 155.0,
-      "estanciaMinima": 240
+      "baseCost": 155.0,
+      "minimumStay": 240
     },
     {
-      "origen": "EZE",
-      "destino": "MDZ",
-      "distanciaKm": 1000,
-      "aeronaves": [
+      "origin": "EZE",
+      "destination": "MDZ",
+      "distanceKm": 1000,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 220.0,
-      "estanciaMinima": 300
+      "baseCost": 220.0,
+      "minimumStay": 300
     },
     {
-      "origen": "EZE",
-      "destino": "MVD",
-      "distanciaKm": 250,
-      "aeronaves": [
+      "origin": "EZE",
+      "destination": "MVD",
+      "distanceKm": 250,
+      "aircraft": [
         "Regional"
       ],
-      "costoBase": 60.0,
-      "estanciaMinima": 120
+      "baseCost": 60.0,
+      "minimumStay": 120
     },
     {
-      "origen": "COR",
-      "destino": "EZE",
-      "distanciaKm": 700,
-      "aeronaves": [
+      "origin": "COR",
+      "destination": "EZE",
+      "distanceKm": 700,
+      "aircraft": [
         "Regional"
       ],
-      "costoBase": 155.0,
-      "estanciaMinima": 240
+      "baseCost": 155.0,
+      "minimumStay": 240
     },
     {
-      "origen": "MDZ",
-      "destino": "EZE",
-      "distanciaKm": 1000,
-      "aeronaves": [
+      "origin": "MDZ",
+      "destination": "EZE",
+      "distanceKm": 1000,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 220.0,
-      "estanciaMinima": 300
+      "baseCost": 220.0,
+      "minimumStay": 300
     },
     {
-      "origen": "MVD",
-      "destino": "EZE",
-      "distanciaKm": 250,
-      "aeronaves": [
+      "origin": "MVD",
+      "destination": "EZE",
+      "distanceKm": 250,
+      "aircraft": [
         "Regional"
       ],
-      "costoBase": 60.0,
-      "estanciaMinima": 120
+      "baseCost": 60.0,
+      "minimumStay": 120
     },
     {
-      "origen": "ASU",
-      "destino": "GRU",
-      "distanciaKm": 650,
-      "aeronaves": [
+      "origin": "ASU",
+      "destination": "GRU",
+      "distanceKm": 650,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 145.0,
-      "estanciaMinima": 240
+      "baseCost": 145.0,
+      "minimumStay": 240
     },
     {
-      "origen": "VVI",
-      "destino": "LPB",
-      "distanciaKm": 600,
-      "aeronaves": [
+      "origin": "VVI",
+      "destination": "LPB",
+      "distanceKm": 600,
+      "aircraft": [
         "Regional"
       ],
-      "costoBase": 130.0,
-      "estanciaMinima": 240
+      "baseCost": 130.0,
+      "minimumStay": 240
     },
     {
-      "origen": "LPB",
-      "destino": "VVI",
-      "distanciaKm": 600,
-      "aeronaves": [
+      "origin": "LPB",
+      "destination": "VVI",
+      "distanceKm": 600,
+      "aircraft": [
         "Regional"
       ],
-      "costoBase": 130.0,
-      "estanciaMinima": 240
+      "baseCost": 130.0,
+      "minimumStay": 240
     },
     {
-      "origen": "UIO",
-      "destino": "BOG",
-      "distanciaKm": 580,
-      "aeronaves": [
+      "origin": "UIO",
+      "destination": "BOG",
+      "distanceKm": 580,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 130.0,
-      "estanciaMinima": 300
+      "baseCost": 130.0,
+      "minimumStay": 300
     },
     {
-      "origen": "UIO",
-      "destino": "GYE",
-      "distanciaKm": 310,
-      "aeronaves": [
+      "origin": "UIO",
+      "destination": "GYE",
+      "distanceKm": 310,
+      "aircraft": [
         "Regional"
       ],
-      "costoBase": 70.0,
-      "estanciaMinima": 180
+      "baseCost": 70.0,
+      "minimumStay": 180
     },
     {
-      "origen": "GYE",
-      "destino": "UIO",
-      "distanciaKm": 310,
-      "aeronaves": [
+      "origin": "GYE",
+      "destination": "UIO",
+      "distanceKm": 310,
+      "aircraft": [
         "Regional"
       ],
-      "costoBase": 70.0,
-      "estanciaMinima": 180
+      "baseCost": 70.0,
+      "minimumStay": 180
     },
     {
-      "origen": "PTY",
-      "destino": "BOG",
-      "distanciaKm": 700,
-      "aeronaves": [
+      "origin": "PTY",
+      "destination": "BOG",
+      "distanceKm": 700,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 155.0,
-      "estanciaMinima": 300
+      "baseCost": 155.0,
+      "minimumStay": 300
     },
     {
-      "origen": "PTY",
-      "destino": "MGA",
-      "distanciaKm": 600,
-      "aeronaves": [
+      "origin": "PTY",
+      "destination": "MGA",
+      "distanceKm": 600,
+      "aircraft": [
         "Regional"
       ],
-      "costoBase": 135.0,
-      "estanciaMinima": 240
+      "baseCost": 135.0,
+      "minimumStay": 240
     },
     {
-      "origen": "SAL",
-      "destino": "GUA",
-      "distanciaKm": 180,
-      "aeronaves": [
+      "origin": "SAL",
+      "destination": "GUA",
+      "distanceKm": 180,
+      "aircraft": [
         "Regional"
       ],
-      "costoBase": 45.0,
-      "estanciaMinima": 120
+      "baseCost": 45.0,
+      "minimumStay": 120
     },
     {
-      "origen": "GUA",
-      "destino": "SAL",
-      "distanciaKm": 180,
-      "aeronaves": [
+      "origin": "GUA",
+      "destination": "SAL",
+      "distanceKm": 180,
+      "aircraft": [
         "Regional"
       ],
-      "costoBase": 45.0,
-      "estanciaMinima": 120
+      "baseCost": 45.0,
+      "minimumStay": 120
     },
     {
-      "origen": "GUA",
-      "destino": "MGA",
-      "distanciaKm": 300,
-      "aeronaves": [
+      "origin": "GUA",
+      "destination": "MGA",
+      "distanceKm": 300,
+      "aircraft": [
         "Regional"
       ],
-      "costoBase": 70.0,
-      "estanciaMinima": 180
+      "baseCost": 70.0,
+      "minimumStay": 180
     },
     {
-      "origen": "MGA",
-      "destino": "PTY",
-      "distanciaKm": 600,
-      "aeronaves": [
+      "origin": "MGA",
+      "destination": "PTY",
+      "distanceKm": 600,
+      "aircraft": [
         "Regional"
       ],
-      "costoBase": 135.0,
-      "estanciaMinima": 240
+      "baseCost": 135.0,
+      "minimumStay": 240
     },
     {
-      "origen": "MGA",
-      "destino": "GUA",
-      "distanciaKm": 300,
-      "aeronaves": [
+      "origin": "MGA",
+      "destination": "GUA",
+      "distanceKm": 300,
+      "aircraft": [
         "Regional"
       ],
-      "costoBase": 70.0,
-      "estanciaMinima": 180
+      "baseCost": 70.0,
+      "minimumStay": 180
     },
     {
-      "origen": "CCS",
-      "destino": "BOG",
-      "distanciaKm": 480,
-      "aeronaves": [
+      "origin": "CCS",
+      "destination": "BOG",
+      "distanceKm": 480,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 110.0,
-      "estanciaMinima": 240
+      "baseCost": 110.0,
+      "minimumStay": 240
     },
     {
-      "origen": "CUN",
-      "destino": "MEX",
-      "distanciaKm": 330,
-      "aeronaves": [
+      "origin": "CUN",
+      "destination": "MEX",
+      "distanceKm": 330,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 75.0,
-      "estanciaMinima": 180
+      "baseCost": 75.0,
+      "minimumStay": 180
     },
     {
-      "origen": "MEX",
-      "destino": "CUN",
-      "distanciaKm": 330,
-      "aeronaves": [
+      "origin": "MEX",
+      "destination": "CUN",
+      "distanceKm": 330,
+      "aircraft": [
         "Comercial"
       ],
-      "costoBase": 75.0,
-      "estanciaMinima": 180
+      "baseCost": 75.0,
+      "minimumStay": 180
     }
   ]
 }

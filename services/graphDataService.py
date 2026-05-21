@@ -18,7 +18,7 @@ class GraphDataService:
         if not isinstance(self.raw_data, dict):
             return [], []
 
-        # Accept English and Spanish keys for flexibility
+        # Accept English and Spanish keys for flexibility (English preferred)
         airports = self.raw_data.get("airports") or self.raw_data.get("aeropuertos")
         routes = self.raw_data.get("routes") or self.raw_data.get("rutas") or self.raw_data.get("routes_list")
 
@@ -47,7 +47,7 @@ class GraphDataService:
             name = airport_data.get("name") or airport_data.get("nombre") or ""
             city = airport_data.get("city") or airport_data.get("ciudad") or ""
             country = airport_data.get("country") or airport_data.get("pais") or ""
-            timezone = airport_data.get("time_zone") or airport_data.get("zonaHoraria") or ""
+            timezone = airport_data.get("timezone") or airport_data.get("time_zone") or airport_data.get("zonaHoraria") or ""
 
             if not airport_id or not name or not city:
                 continue
@@ -59,9 +59,9 @@ class GraphDataService:
                     city=city,
                     country=country,
                     timezone=timezone,
-                    is_hub=airport_data.get("is_hub", False) or airport_data.get("esHub", False),
-                    accommodation_cost=airport_data.get("accommodation_cost", 0.0) or airport_data.get("costoAlojamiento", 0.0),
-                    feeding_cost=airport_data.get("feeding_cost", 0.0) or airport_data.get("costoAlimentacion", 0.0),
+                    is_hub=airport_data.get("isHub") or airport_data.get("is_hub", False) or airport_data.get("esHub", False),
+                    accommodation_cost=airport_data.get("lodgingCost") or airport_data.get("accommodation_cost", 0.0) or airport_data.get("costoAlojamiento", 0.0),
+                    feeding_cost=airport_data.get("foodCost") or airport_data.get("feeding_cost", 0.0) or airport_data.get("costoAlimentacion", 0.0),
                     activities=[
                         Activity(
                             id=(a.get("id") or a.get("name") or ""),
@@ -100,8 +100,8 @@ class GraphDataService:
                 continue
 
             origin = route_data.get("origin") or route_data.get("origen") or route_data.get("from")
-            target = route_data.get("target") or route_data.get("destino") or route_data.get("to")
-            distance = route_data.get("distance") or route_data.get("distanciaKm")
+            target = route_data.get("destination") or route_data.get("destino") or route_data.get("target") or route_data.get("to")
+            distance = route_data.get("distanceKm") or route_data.get("distance") or route_data.get("distanciaKm")
 
             if not origin or not target or distance is None:
                 continue
@@ -111,9 +111,9 @@ class GraphDataService:
                     origin_vertex=origin,
                     destination_vertex=target,
                     distance=distance,
-                    aircrafts=route_data.get("aircrafts", []) or route_data.get("aeronaves", []),
-                    cost=route_data.get("cost", 0.0) or route_data.get("costoBase", 0.0),
-                    minimum_stay=route_data.get("minimum_stay", 0) or route_data.get("estaciaMinima", 0),
+                    aircrafts=route_data.get("aircraft", []) or route_data.get("aircrafts", []) or route_data.get("aeronaves", []),
+                    cost=route_data.get("baseCost", 0.0) or route_data.get("cost", 0.0) or route_data.get("costoBase", 0.0),
+                    minimum_stay=route_data.get("minimumStay", 0) or route_data.get("minimum_stay", 0) or route_data.get("estanciaMinima", 0),
                 )
             )
 
@@ -137,12 +137,11 @@ class GraphDataService:
 
         return graph
 
-    def export_payload(self, spanish: bool = True) -> Dict[str, Any]:
+    def export_payload(self, spanish: bool = False) -> Dict[str, Any]:
         """Return a serializable payload reconstructed from parsed airports.
 
-        If `spanish` is True the payload uses Spanish keys similar to the
-        original `data.json` (e.g. `aeropuertos`, `actividades`, `trabajos`,
-        `costoAlojamiento`). Otherwise it uses English keys.
+        If `spanish` is True the payload uses Spanish keys (legacy support).
+        Default returns English keys.
         """
         airports = self.get_parsed_airports()
 
@@ -162,5 +161,5 @@ class GraphDataService:
         if spanish:
             return {"aeropuertos": [airport_to_spanish(a) for a in airports]}
 
-        # English-style payload
+        # English-style payload (default)
         return {"airports": [a.to_dict() for a in airports]}

@@ -85,8 +85,8 @@ class Airport:
 
             # dict con claves
             if isinstance(r, dict):
-                ori = r.get("origin_id") or r.get("origen")
-                dst = r.get("destination_id") or r.get("destino")
+                ori = r.get("origin") or r.get("origin_id") or r.get("origen")
+                dst = r.get("destination") or r.get("destination_id") or r.get("destino")
                 if ori == self.airport_id and dst:
                     neighbors.append(dst)
                 elif dst == self.airport_id and ori:
