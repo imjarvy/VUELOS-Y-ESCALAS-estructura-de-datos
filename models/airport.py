@@ -67,38 +67,6 @@ class Airport:
             raise ValueError("route no puede ser None")
         self.adjacencies.append(route)
 
-    def neighbors(self) -> List[str]:
-        """Return neighbor airport IDs based on `adjacencies`.
-
-        The method handles Route-like objects (with `origin_vertex`/`destination_vertex`
-        or `origin_id`/`destination_id`), dicts with those keys, or plain string ids.
-        """
-        neighbors: List[str] = []
-        for r in self.adjacencies:
-            # objeto con atributos
-            if hasattr(r, "origin_id") and hasattr(r, "destination_id"):
-                if getattr(r, "origin_id") == self.airport_id:
-                    neighbors.append(getattr(r, "destination_id"))
-                else:
-                    neighbors.append(getattr(r, "origin_id"))
-                continue
-
-            # dict con claves
-            if isinstance(r, dict):
-                ori = r.get("origin") or r.get("origin_id") or r.get("origen")
-                dst = r.get("destination") or r.get("destination_id") or r.get("destino")
-                if ori == self.airport_id and dst:
-                    neighbors.append(dst)
-                elif dst == self.airport_id and ori:
-                    neighbors.append(ori)
-                continue
-
-            # fallback: si es string asumimos que es un id
-            if isinstance(r, str):
-                neighbors.append(r)
-
-        return neighbors
-
     def to_dict(self) -> Dict[str, Any]:
         """Serialize the airport to a plain dict.
 

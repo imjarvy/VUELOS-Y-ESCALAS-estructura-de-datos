@@ -1,10 +1,10 @@
 // =============================================================================
 //  Graph UI Module
-//  Responsibility: transform airport data and render directed graphs with D3 force.
+//  Responsibility: transform airport data and render directed graphs with D3 using polygon/coronas layout.
 // =============================================================================
 
 /**
- * Convert a Graph domain object into the structure D3 force expects.
+ * Convert a Graph domain object into the structure D3 expects.
  *
  * Expected payload:
  * - Graph object: { vertices: [Airport...] }
@@ -98,13 +98,53 @@ export function transformGraphToD3Data(graph = {}) {
  * @param {Function} [deps.onNodeSelect] Callback for node click.
  * @returns {{renderGraph: Function, selectNode: Function, stop: Function}}
  */
+/**
+ * Calculate node positions using polygon/coronas layout algorithm.
+ * All airports are placed across concentric polygon rings.
+ *
+ * @param {Array<Object>} nodes List of node objects.
+ * @param {number} centerX Center X coordinate.
+ * @param {number} centerY Center Y coordinate.
+ * @returns {Array<Object>} Nodes with calculated x, y properties.
+ */
+function calculatePolygonLayout(nodes, centerX, centerY) {
+  const hubRadius = 90;
+  const polySpacing = 300;
+  const nodeRadius = 20;
+
+  const orderedNodes = [...nodes];
+  const positionedNodes = [];
+  let nodeIdx = 0;
+  let polygonLevel = 1;
+
+  while (nodeIdx < orderedNodes.length) {
+    const polyRadius = hubRadius + polySpacing * polygonLevel;
+    const numSides = 6 + polygonLevel * 2; // Hexágono (6), octágono (8), decágono (10), etc.
+    const nodesPerPoly = numSides * 2; // Duplicamos para tener más nodos
+    const nodesToPlace = Math.min(nodesPerPoly, orderedNodes.length - nodeIdx);
+
+    for (let i = 0; i < nodesToPlace; i++) {
+      const angle = (i / Math.max(nodesToPlace, 1)) * 2 * Math.PI;
+      positionedNodes.push({
+        ...orderedNodes[nodeIdx],
+        x: centerX + Math.cos(angle) * polyRadius,
+        y: centerY + Math.sin(angle) * polyRadius,
+      });
+      nodeIdx++;
+    }
+
+    polygonLevel++;
+  }
+
+  return positionedNodes;
+}
+
 export function createGraphUi({ state = {}, onNodeSelect = () => {} } = {}) {
   const d3Api = window.d3;
   if (!d3Api) {
     throw new Error("D3 is required in window.d3 before creating Graph UI.");
   }
 
-  let simulation = null;
   let selectedNodeId = state.selectedCode ?? null;
 
   function nodeCssClass(node) {
@@ -126,15 +166,8 @@ export function createGraphUi({ state = {}, onNodeSelect = () => {} } = {}) {
     onNodeSelect(nodeData);
   }
 
-  function stop() {
-    if (simulation) {
-      simulation.stop();
-      simulation = null;
-    }
-  }
-
   /**
-   * Render a directed graph payload into an SVG container using D3 force simulation.
+   * Render a directed graph payload into an SVG container using polygon/coronas layout.
    *
    * @param {{nodes: Array<Object>, links: Array<Object>}|null} graphData Graph payload.
    * @param {string} svgId Target SVG element id.
@@ -144,8 +177,6 @@ export function createGraphUi({ state = {}, onNodeSelect = () => {} } = {}) {
   function renderGraph(graphData, svgId, containerId) {
     const svg = d3Api.select(`#${svgId}`);
     svg.selectAll("*").remove();
-
-    stop();
 
     const nodesInput = Array.isArray(graphData?.nodes) ? graphData.nodes : [];
     const linksInput = Array.isArray(graphData?.links) ? graphData.links : [];
@@ -157,6 +188,9 @@ export function createGraphUi({ state = {}, onNodeSelect = () => {} } = {}) {
     const height = container?.clientHeight || 550;
 
     svg.attr("width", width).attr("height", height);
+
+    // Calculate polygon/coronas layout
+    const layoutNodes = calculatePolygonLayout(nodesInput, width / 2, height / 2);
 
     const viewport = svg.append("g").attr("class", "graph-viewport");
 
@@ -186,14 +220,29 @@ export function createGraphUi({ state = {}, onNodeSelect = () => {} } = {}) {
       .attr("d", "M0,-5L10,0L0,5")
       .attr("fill", "#6b7280");
 
-    const nodes = nodesInput.map(node => ({ ...node }));
+    const nodes = layoutNodes.map(node => ({ ...node }));
+    const nodeById = new Map(nodes.map(node => [String(node.id), node]));
     const links = linksInput.map(link => ({ ...link }));
+
+    // Update links to reference node objects
+    const renderedLinks = links.map(link => {
+      const sourceId = String(link.source);
+      const targetId = String(link.target);
+      const sourceNode = nodeById.get(sourceId);
+      const targetNode = nodeById.get(targetId);
+
+      return {
+        ...link,
+        source: sourceNode ?? link.source,
+        target: targetNode ?? link.target,
+      };
+    });
 
     const linkSelection = viewport
       .append("g")
       .attr("class", "graph-links")
       .selectAll("line")
-      .data(links)
+      .data(renderedLinks)
       .join("line")
       .attr("class", "link")
       .attr("marker-end", `url(#${markerId})`);
@@ -224,30 +273,17 @@ export function createGraphUi({ state = {}, onNodeSelect = () => {} } = {}) {
         return `${code}\n${name}`;
       });
 
-    simulation = d3Api
-      .forceSimulation(nodes)
-      .force("charge", d3Api.forceManyBody().strength(-260))
-      .force("center", d3Api.forceCenter(width / 2, height / 2))
-      .force(
-        "link",
-        d3Api
-          .forceLink(links)
-          .id(d => d.id)
-          .distance(link => link.distance ?? 130)
-          .strength(link => link.strength ?? 0.35)
-      )
-      .force("collide", d3Api.forceCollide(30))
-      .on("tick", ticked);
+    linkSelection
+      .attr("x1", d => d.source?.x ?? 0)
+      .attr("y1", d => d.source?.y ?? 0)
+      .attr("x2", d => d.target?.x ?? 0)
+      .attr("y2", d => d.target?.y ?? 0);
 
-    function ticked() {
-      linkSelection
-        .attr("x1", d => d.source.x)
-        .attr("y1", d => d.source.y)
-        .attr("x2", d => d.target.x)
-        .attr("y2", d => d.target.y);
+    nodeSelection.attr("transform", d => `translate(${d.x ?? 0},${d.y ?? 0})`);
+  }
 
-      nodeSelection.attr("transform", d => `translate(${d.x},${d.y})`);
-    }
+  function stop() {
+    // No force simulation to stop anymore
   }
 
   return {

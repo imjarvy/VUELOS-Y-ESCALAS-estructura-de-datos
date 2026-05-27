@@ -78,4 +78,4 @@ class Graph:
 
     def __repr__(self) -> str:
         edge_count = sum(len(v.adjacencies) for v in self.vertices)
-        return
+        return f"Graph(vertices={len(self.vertices)}, edges={edge_count})"

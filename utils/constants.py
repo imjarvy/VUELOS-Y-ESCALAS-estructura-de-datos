@@ -1,6 +1,5 @@
 from typing import Dict
 
-
 # Rates and timings by aircraft type.
 # cost_per_km: USD per kilometer
 # time_per_km_min: minutes per kilometer (flight duration factor)
