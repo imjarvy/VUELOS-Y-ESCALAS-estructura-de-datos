@@ -44,12 +44,18 @@ export function transformGraphToD3Data(graph = {}) {
     const airportId = getAirportId(airport);
     if (!airportId) return null;
 
-    if (!nodeMap.has(airportId)) {
-      nodeMap.set(airportId, {
-        id: airportId,
-        ...airport,
-      });
+    const existingNode = nodeMap.get(airportId);
+    const nextNode = {
+      ...(existingNode ?? {}),
+      ...(airport ?? {}),
+      id: airportId,
+    };
+
+    if (existingNode?.inferred) {
+      delete nextNode.inferred;
     }
+
+    nodeMap.set(airportId, nextNode);
 
     return airportId;
   };
@@ -279,11 +285,37 @@ export function createGraphUi({ state = {}, onNodeSelect = () => {} } = {}) {
       .attr("x2", d => d.target?.x ?? 0)
       .attr("y2", d => d.target?.y ?? 0);
 
-    nodeSelection.attr("transform", d => `translate(${d.x ?? 0},${d.y ?? 0})`);
-  }
+    // Add labels to show link distances (if present on the route object)
+    const labelSelection = viewport
+      .append("g")
+      .attr("class", "graph-link-labels")
+      .selectAll("text")
+      .data(renderedLinks)
+      .join("text")
+      .attr("class", "link-label")
+      .attr("text-anchor", "middle")
+      .style("pointer-events", "none")
+      .text(d => {
+        const dist = d.distance ?? d.distance_km ?? d.distanceKm ?? d.distancia ?? null;
+        return dist != null ? `${Math.round(dist)} km` : "";
+      })
+      .attr("dy", "-6")
+      .attr("transform", d => {
+        const sx = d.source?.x ?? 0;
+        const sy = d.source?.y ?? 0;
+        const tx = d.target?.x ?? 0;
+        const ty = d.target?.y ?? 0;
+        const mx = (sx + tx) / 2;
+        const my = (sy + ty) / 2;
+        const dx = tx - sx;
+        const dy = ty - sy;
+        let angle = (Math.atan2(dy, dx) * 180) / Math.PI;
+        // Keep text readable: flip if upside-down
+        if (angle > 90 || angle < -90) angle += 180;
+        return `translate(${mx},${my}) rotate(${angle})`;
+      });
 
-  function stop() {
-    // No force simulation to stop anymore
+    nodeSelection.attr("transform", d => `translate(${d.x ?? 0},${d.y ?? 0})`);
   }
 
   return {

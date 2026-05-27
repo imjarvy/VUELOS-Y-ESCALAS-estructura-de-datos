@@ -18,9 +18,9 @@ class GraphDataService:
         if not isinstance(self.raw_data, dict):
             return [], []
 
-        # Accept English and Spanish keys for flexibility (English preferred)
-        airports = self.raw_data.get("airports") or self.raw_data.get("aeropuertos")
-        routes = self.raw_data.get("routes") or self.raw_data.get("rutas") or self.raw_data.get("routes_list")
+        # Accept only English top-level keys: `airports` and `routes`.
+        airports = self.raw_data.get("airports")
+        routes = self.raw_data.get("routes")
 
         if not isinstance(airports, list) or not isinstance(routes, list):
             return [], []
@@ -44,12 +44,15 @@ class GraphDataService:
                 or airport_data.get("code")
                 or airport_data.get("iata")
             )
-            name = airport_data.get("name") or airport_data.get("nombre") or ""
-            city = airport_data.get("city") or airport_data.get("ciudad") or ""
-            country = airport_data.get("country") or airport_data.get("pais") or ""
-            timezone = airport_data.get("timezone") or airport_data.get("time_zone") or airport_data.get("zonaHoraria") or ""
 
-            if not airport_id or not name or not city:
+            # Only accept English keys for the rest of the fields.
+            name = airport_data.get("name") or airport_id or ""
+            city = airport_data.get("city") or ""
+            country = airport_data.get("country") or ""
+            timezone = airport_data.get("timezone") or airport_data.get("time_zone") or airport_data.get("tz") or ""
+
+            if not airport_id:
+                # skip entries without any id
                 continue
 
             airports.append(
@@ -59,28 +62,28 @@ class GraphDataService:
                     city=city,
                     country=country,
                     timezone=timezone,
-                    is_hub=airport_data.get("isHub") or airport_data.get("is_hub", False) or airport_data.get("esHub", False),
-                    accommodation_cost=airport_data.get("lodgingCost") or airport_data.get("accommodation_cost", 0.0) or airport_data.get("costoAlojamiento", 0.0),
-                    feeding_cost=airport_data.get("foodCost") or airport_data.get("feeding_cost", 0.0) or airport_data.get("costoAlimentacion", 0.0),
+                    is_hub=airport_data.get("isHub") or airport_data.get("is_hub", False),
+                    accommodation_cost=airport_data.get("lodgingCost") or airport_data.get("accommodation_cost", 0.0),
+                    feeding_cost=airport_data.get("foodCost") or airport_data.get("feeding_cost", 0.0),
                     activities=[
                         Activity(
                             id=(a.get("id") or a.get("name") or ""),
-                            name=(a.get("name") or a.get("nombre") or ""),
-                            type=(a.get("type") or a.get("tipo") or ""),
-                            duration_min=int(a.get("duration_min") or a.get("duracion_min") or a.get("duration") or 0),
+                            name=(a.get("name") or ""),
+                            type=(a.get("type") or ""),
+                            duration_min=int(a.get("duration_min") or a.get("duration") or 0),
                             cost_usd=float(a.get("cost_usd") or a.get("cost") or 0.0),
                         )
-                        for a in (airport_data.get("activities", []) or airport_data.get("actividades", []) or [])
+                        for a in (airport_data.get("activities", []) or [])
                         if isinstance(a, dict)
                     ],
                     jobs=[
                         JobOffer(
                             id=(j.get("id") or j.get("name") or ""),
-                            name=(j.get("name") or j.get("nombre") or ""),
-                            hourly_rate=float(j.get("hourly_rate") or j.get("tarifa_hora") or 0.0),
-                            max_hours=int(j.get("max_hours") or j.get("maximo_horas") or 0),
+                            name=(j.get("name") or ""),
+                            hourly_rate=float(j.get("hourly_rate") or 0.0),
+                            max_hours=int(j.get("max_hours") or 0),
                         )
-                        for j in (airport_data.get("jobs", []) or airport_data.get("trabajos", []) or [])
+                        for j in (airport_data.get("jobs", []) or [])
                         if isinstance(j, dict)
                     ],
                 )
@@ -99,9 +102,12 @@ class GraphDataService:
             if not isinstance(route_data, dict):
                 continue
 
-            origin = route_data.get("origin") or route_data.get("origen") or route_data.get("from")
-            target = route_data.get("destination") or route_data.get("destino") or route_data.get("target") or route_data.get("to")
-            distance = route_data.get("distanceKm") or route_data.get("distance") or route_data.get("distanciaKm")
+            # Accept multiple naming conventions, including *_vertex variants
+            # Only English keys allowed for routes
+            origin = route_data.get("origin_vertex") or route_data.get("origin") or route_data.get("from")
+            target = route_data.get("destination_vertex") or route_data.get("destination") or route_data.get("to")
+
+            distance = route_data.get("distance") or route_data.get("distanceKm") or route_data.get("distance_km")
 
             if not origin or not target or distance is None:
                 continue
@@ -111,9 +117,9 @@ class GraphDataService:
                     origin_vertex=origin,
                     destination_vertex=target,
                     distance=distance,
-                    aircrafts=route_data.get("aircraft", []) or route_data.get("aircrafts", []) or route_data.get("aeronaves", []),
-                    cost=route_data.get("baseCost", 0.0) or route_data.get("cost", 0.0) or route_data.get("costoBase", 0.0),
-                    minimum_stay=route_data.get("minimumStay", 0) or route_data.get("minimum_stay", 0) or route_data.get("estanciaMinima", 0),
+                    aircrafts=route_data.get("aircraft", []) or route_data.get("aircrafts", []),
+                    cost=route_data.get("baseCost", 0.0) or route_data.get("cost", 0.0),
+                    minimum_stay=route_data.get("minimumStay", 0) or route_data.get("minimum_stay", 0),
                 )
             )
 

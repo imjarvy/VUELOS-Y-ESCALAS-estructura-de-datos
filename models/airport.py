@@ -83,9 +83,11 @@ class Airport:
             return item
 
         return {
-            "airport_id": self.airport_id,
+            "id": self.airport_id,
             "name": self.name,
             "city": self.city,
+            "country": self.country,
+            "timezone": self.timezone,
             "is_hub": self.is_hub,
             "accommodation_cost": self.accommodation_cost,
             "feeding_cost": self.feeding_cost,

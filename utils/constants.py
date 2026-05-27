@@ -1,25 +1,33 @@
-from typing import Dict
+from typing import Dict, Any
 
-# Rates and timings by aircraft type.
-# cost_per_km: USD per kilometer
-# time_per_km_min: minutes per kilometer (flight duration factor)
-AIRCRAFT_RATES: Dict[str, Dict[str, float]] = {
-    "commercial": {"cost_per_km": 0.18, "time_per_km_min": 0.7},
-    "regional": {"cost_per_km": 0.25, "time_per_km_min": 1.1},
-    "propeller": {"cost_per_km": 0.12, "time_per_km_min": 2.5},
+# Global configuration defaults used by the planner and UI.
+# These values can be overridden through the configuration panel.
+GRAPH_CONFIG_DEFAULTS: Dict[str, Any] = {
+    "aeronaves": {
+        "commercial": {"costoKm": 0.18, "tiempoKm": 0.7},
+        "regional": {"costoKm": 0.25, "tiempoKm": 1.1},
+        "propeller": {"costoKm": 0.12, "tiempoKm": 2.5},
+    },
+    "presupuestoMinimoPorc": 35.0,
+    "intervaloAlojamiento": 20.0,
+    "intervaloAlimentacion": 8.0,
 }
 
+# Backward-compatible aliases used by the current optimizers.
+AIRCRAFT_RATES: Dict[str, Dict[str, float]] = {
+    key: {
+        "cost_per_km": value["costoKm"],
+        "time_per_km_min": value["tiempoKm"],
+    }
+    for key, value in GRAPH_CONFIG_DEFAULTS["aeronaves"].items()
+}
 
-# Global defaults (can be overridden from JSON configuration)
 DEFAULTS: Dict[str, float] = {
-    # Percent of initial budget that enables job offers
-    "budget_threshold_pct": 35.0,
-    # Mandatory intervals (hours)
-    "lodging_interval_h": 20.0,
-    "meal_interval_h": 8.0,
-    # Max fraction of total trip distance that can be subsidized (20% = 0.20)
+    "budget_threshold_pct": GRAPH_CONFIG_DEFAULTS["presupuestoMinimoPorc"],
+    "lodging_interval_h": GRAPH_CONFIG_DEFAULTS["intervaloAlojamiento"],
+    "meal_interval_h": GRAPH_CONFIG_DEFAULTS["intervaloAlimentacion"],
     "max_subsidized_distance_frac": 0.20,
 }
 
 
-__all__ = ["AIRCRAFT_RATES", "DEFAULTS"]
+__all__ = ["GRAPH_CONFIG_DEFAULTS", "AIRCRAFT_RATES", "DEFAULTS"]
