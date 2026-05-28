@@ -1,7 +1,7 @@
 """Flask routes for loading, exporting, and configuring airport graph data."""
 
 from copy import deepcopy
-
+from services import graph_state
 from flask import Blueprint, jsonify, request
 from acceso_datos.dataLoader import DataLoader
 from services.graphDataService import GraphDataService
@@ -63,6 +63,7 @@ def load_graph():
 
     service = GraphDataService(loader.get_raw_data())
     graph = service.build_graph()
+    graph_state.set_graph(graph)
 
     graph_payload = {"vertices": [airport.to_dict() for airport in graph.vertices]}
 
