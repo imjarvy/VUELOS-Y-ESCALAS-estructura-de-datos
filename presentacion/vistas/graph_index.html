@@ -49,9 +49,63 @@
           <span id="infoTimezone">-</span>
         </div>
 
+        <div class="info-row">
+          <span class="info-label">Hospedaje por noche</span>
+          <span id="infoLodgingCost">-</span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">Regla de alimentación</span>
+          <span id="infoMealRule">Cada 8 horas desde la última comida</span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">Regla de hospedaje</span>
+          <span id="infoLodgingRule">Cada 20 horas desde el último hospedaje</span>
+        </div>
+
         <div class="info-block">
           <span class="info-label">Tipo de aeronaves</span>
           <ul id="infoAirlines" class="info-list"></ul>
+        </div>
+
+        <div class="info-block">
+          <span class="info-label">Actividades disponibles</span>
+          <ul id="infoActivities" class="info-list"></ul>
+        </div>
+
+        <div class="info-block">
+          <span class="info-label">Trabajos disponibles</span>
+          <ul id="infoJobs" class="info-list"></ul>
+        </div>
+      </section>
+
+      <section id="tripSessionPanel" class="info-panel session-panel" aria-live="polite">
+        <h3>Resumen de la sesión</h3>
+
+        <div class="info-row">
+          <span class="info-label">Presupuesto inicial</span>
+          <input id="sessionBudgetInitial" type="number" step="0.01" min="0" />
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">Presupuesto restante</span>
+          <strong id="sessionBudgetRemaining">-</strong>
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">Tiempo restante</span>
+          <strong id="sessionTimeRemaining">-</strong>
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">Regla de alimentación</span>
+          <span id="sessionMealRule">Cada 8 horas desde la última comida</span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">Regla de alojamiento</span>
+          <span id="sessionLodgingRule">Cada 20 horas desde el último hospedaje</span>
         </div>
       </section>
     </aside>

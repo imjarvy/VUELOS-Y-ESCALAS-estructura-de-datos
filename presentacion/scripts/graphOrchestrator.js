@@ -1,7 +1,8 @@
-import { apiPostFormData } from "./api/client.js";
+import { apiGet, apiPostFormData } from "./api/client.js";
 import { createGraphUi, transformGraphToD3Data } from "./graphUI.js";
 import { FlightAnimator } from "./flightAnimator.js";
 import { createInfoPanel } from "./panels/infoPanel.js";
+import { createTripSessionPanel } from "./panels/tripSessionPanel.js";
 import { createGraphConfigController } from "./graphConfigController.js";
 
 const status = document.getElementById("status");
@@ -9,6 +10,7 @@ const jsonModal = document.getElementById("jsonModal");
 const jsonFileInput = document.getElementById("jsonFile");
 const fileLabel = document.getElementById("fileLabel");
 const infoPanel = createInfoPanel({ panelId: "airportInfoPanel" });
+const tripSessionPanel = createTripSessionPanel({ panelId: "tripSessionPanel" });
 
 function openModal() {
   jsonModal.classList.remove("hidden");
@@ -85,6 +87,17 @@ createGraphConfigController({
   });
 })();
 
+// Load the current backend config so the UI can show the lodging rule consistently.
+apiGet("/api/config")
+  .then(config => {
+    infoPanel.setRules(config ?? {});
+    tripSessionPanel.setRules(config ?? {});
+  })
+  .catch(() => {
+    infoPanel.setRules({ intervaloAlojamiento: 20 });
+    tripSessionPanel.setRules({ intervaloAlojamiento: 20, intervaloAlimentacion: 8 });
+  });
+
 jsonFileInput.addEventListener("change", event => {
   const selectedFile = event.target.files?.[0];
   fileLabel.textContent = selectedFile ? `📂 ${selectedFile.name}` : "Seleccionar archivo .json";
@@ -118,6 +131,13 @@ document.getElementById("loadJsonConfirmBtn").addEventListener("click", async ()
   flightAnimator.stop();
   graphUi.renderGraph(d3Graph, "graphSvg", "graphContainer");
   infoPanel.clear();
+  tripSessionPanel.setState({
+    budgetInitial: 1000,
+    budgetRemaining: 1000,
+    timeRemainingMin: 72 * 60,
+  });
+  infoPanel.setRules(await apiGet("/api/config").catch(() => ({ intervaloAlojamiento: 20 })));
+  tripSessionPanel.setRules(await apiGet("/api/config").catch(() => ({ intervaloAlojamiento: 20, intervaloAlimentacion: 8 })));
   status.textContent = `Grafo cargado: ${response.airports ?? d3Graph.nodes.length} aeropuertos.`;
   closeModal();
 });

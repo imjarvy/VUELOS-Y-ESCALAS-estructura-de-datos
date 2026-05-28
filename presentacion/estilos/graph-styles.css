@@ -184,6 +184,31 @@ button:active:not(:disabled) {
   gap: 10px;
 }
 
+.session-panel input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.5rem;
+  font: inherit;
+  color: var(--text);
+  background: var(--bg-inset);
+}
+
+.session-panel strong {
+  font-size: 0.92rem;
+}
+
+.info-banner {
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--yellow-border);
+  background: var(--yellow-bg);
+  color: var(--text);
+  box-shadow: var(--shadow-sm);
+  font-size: 0.8rem;
+}
+
 .info-panel h3 {
   font-size: 0.9rem;
   font-weight: 600;
