@@ -1,5 +1,6 @@
 import { apiPostFormData } from "./api/client.js";
 import { createGraphUi, transformGraphToD3Data } from "./graphUI.js";
+import { FlightAnimator } from "./flightAnimator.js";
 import { createInfoPanel } from "./panels/infoPanel.js";
 import { createGraphConfigController } from "./graphConfigController.js";
 
@@ -24,9 +25,65 @@ const graphUi = createGraphUi({
   },
 });
 
+const flightAnimator = new FlightAnimator({ svgId: "graphSvg" });
+
+function getFirstRenderedLinkEndpoints() {
+  const svg = document.getElementById("graphSvg");
+  if (!svg) return null;
+
+  const firstLink = svg.querySelector(".graph-links .link");
+  const data = firstLink?.__data__;
+  if (!data) return null;
+
+  const origin = String(data._originId ?? data.origin_vertex ?? data.origin ?? data.source?.id ?? "")
+    .trim()
+    .toUpperCase();
+  const destination = String(data._destinationId ?? data.destination_vertex ?? data.destination ?? data.target?.id ?? "")
+    .trim()
+    .toUpperCase();
+
+  if (!origin || !destination) return null;
+  return { origin, destination };
+}
+
 createGraphConfigController({
   statusElement: status,
 });
+
+// Small helper button to test the blocked route visual state on the first rendered link.
+(() => {
+  const controls = document.querySelector("header .controls");
+  if (!controls) return;
+
+  const testBtn = document.createElement("button");
+  testBtn.id = "btnSimulateBlock";
+  testBtn.textContent = "Probar bloqueo";
+  controls.appendChild(testBtn);
+
+  testBtn.addEventListener("click", () => {
+    const endpoints = getFirstRenderedLinkEndpoints();
+    if (!endpoints) {
+      status.textContent = "Carga un grafo primero para probar el bloqueo visual.";
+      return;
+    }
+
+    const { origin, destination } = endpoints;
+    const currentlyBlocked = Boolean(document.querySelector(".graph-links .link.link-blocked"));
+    const nextBlockedState = !currentlyBlocked;
+    const ok = graphUi.markLinkBlocked(origin, destination, nextBlockedState);
+
+    if (ok) {
+      flightAnimator.stop();
+      if (nextBlockedState) {
+        flightAnimator.animateRoute({ originId: origin, destinationId: destination, blocked: true, durationMs: 1400 });
+      }
+    }
+
+    status.textContent = ok
+      ? `Ruta ${origin} → ${destination} ${nextBlockedState ? "marcada como bloqueada" : "desbloqueada"}`
+      : `No se pudo actualizar la ruta ${origin} → ${destination}`;
+  });
+})();
 
 jsonFileInput.addEventListener("change", event => {
   const selectedFile = event.target.files?.[0];
@@ -58,6 +115,7 @@ document.getElementById("loadJsonConfirmBtn").addEventListener("click", async ()
   const response = await apiPostFormData("/api/load-graph", formData);
   const d3Graph = transformGraphToD3Data(response.graph ?? response);
 
+  flightAnimator.stop();
   graphUi.renderGraph(d3Graph, "graphSvg", "graphContainer");
   infoPanel.clear();
   status.textContent = `Grafo cargado: ${response.airports ?? d3Graph.nodes.length} aeropuertos.`;

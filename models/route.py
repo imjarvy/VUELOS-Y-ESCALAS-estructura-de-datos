@@ -11,11 +11,11 @@ class Route:
     - aircrafts: list[str]
     - cost: float (base cost)
     - minimum_stay: int (minimum stay at destination, minutes)
+    - blocked: bool (route interruption flag)
 
     Methods:
     - to_dict()/from_dict(): serialization helpers
     """
-
     def __init__(
         self,
         origin_vertex: str,
@@ -24,6 +24,7 @@ class Route:
         aircrafts: Optional[List[str]] = None,
         cost: float = 0.0,
         minimum_stay: int = 0,
+        blocked: bool = False,
     ) -> None:
         """Initialize a Route and validate basic invariants.
 
@@ -44,6 +45,7 @@ class Route:
         self.aircrafts: List[str] = list(aircrafts) if aircrafts else []
         self.cost: float = float(cost)
         self.minimum_stay: int = int(minimum_stay)
+        self.blocked: bool = bool(blocked)
 
     def to_dict(self) -> Dict[str, Any]:
         """Return a serializable dict representation of the route."""
@@ -54,6 +56,7 @@ class Route:
             "aircrafts": list(self.aircrafts),
             "cost": self.cost,
             "minimum_stay": self.minimum_stay,
+            "blocked": self.blocked,
         }
 
     @classmethod
@@ -65,8 +68,9 @@ class Route:
         aircrafts = data.get("aircraft") or data.get("aircrafts") or data.get("aeronaves") or []
         cost = data.get("baseCost") or data.get("cost") or data.get("costoBase") or 0.0
         minimum = data.get("minimumStay") or data.get("minimum_stay") or data.get("estanciaMinima") or 0
-        return cls(origin, dest, distance, aircrafts=aircrafts, cost=cost, minimum_stay=minimum)
+        blocked = data.get("blocked") or data.get("isBlocked") or data.get("bloqueada") or False
+        return cls(origin, dest, distance, aircrafts=aircrafts, cost=cost, minimum_stay=minimum, blocked=blocked)
 
     def __repr__(self) -> str:
         """Short debug representation."""
-        return f"Route({self.origin_vertex!r} -> {self.destination_vertex!r}, {self.distance}km)"
+        return f"Route({self.origin_vertex!r} -> {self.destination_vertex!r}, {self.distance}km, blocked={self.blocked})"

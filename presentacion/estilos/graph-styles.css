@@ -481,8 +481,17 @@ button:active:not(:disabled) {
 }
 
 .graph-arrowhead {
-  fill: var(--text-secondary);
+  fill: context-stroke;
   opacity: 0.95;
+}
+
+/* Blocked route visual state */
+.graph-links .link.link-blocked,
+.link.link-blocked {
+  stroke: #b91c1c !important;
+  stroke-width: 4px !important;
+  opacity: 1 !important;
+  transition: stroke 0.18s ease;
 }
 
 /* =============================================================================
