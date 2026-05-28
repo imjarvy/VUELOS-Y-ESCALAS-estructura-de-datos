@@ -13,6 +13,9 @@ class TripState:
     distance_travelled_km: float = 0.0
     subsidized_distance_km: float = 0.0
     subsidized_distance_limit_frac: float = 0.20
+    meal_accumulated_min: int = 0
+    lodging_accumulated_min: int = 0
+    lodging_pending_after_flight: bool = False
     itinerary: List[Any] = field(default_factory=list)
     activities_done: List[Any] = field(default_factory=list)
     jobs_done: List[Any] = field(default_factory=list)

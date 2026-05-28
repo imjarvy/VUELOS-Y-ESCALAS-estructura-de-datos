@@ -53,6 +53,72 @@ ESTRUCTURA OBJETIVO (dispuesta a cambios): # 📁 skyroute_planner/
     └── 📄 constants.py        # Tarifas default aeronaves, intervalos
 
 
+## Implementación actual de R3
+
+La lógica de planificación avanzada ya no está dispersa en un solo bloque: ahora está separada entre `services/advanced_planner.py`, `services/trip_session.py` y los mixins de `services/trip_session_*.py`, mientras que `models/` concentra solo los datos y resultados que la sesión intercambia con la UI.
+
+### 4. Planificación de itinerario avanzada
+
+La planificación avanzada se inicia desde `AdvancedPlanner.start_session(...)`, que construye una `TripSession` con:
+
+- `TripConfig`: presupuesto inicial, tiempo disponible, aeronaves preferidas, umbral de trabajo y sobrescrituras globales.
+- `TripState`: estado mutable de la sesión, con aeropuerto actual, presupuesto restante, tiempo transcurrido, tiempo restante, itinerario, decisiones y acumuladores de comida/alojamiento.
+
+La sesión trabaja paso a paso:
+
+- `TripSessionTransportMixin.step_proposals()` devuelve las rutas, actividades y trabajos disponibles en el aeropuerto actual.
+- `TripSessionDecisionMixin.apply_choice()` aplica la decisión elegida por el viajero y actualiza presupuesto, tiempo, itinerario y registro de decisiones.
+- `StepProposalResult` resume las alternativas del paso actual.
+- `ApplyResult` devuelve el estado actualizado, los eventos generados y las nuevas propuestas cuando corresponde.
+
+Cada decisión queda registrada en `DecisionRecord`, de modo que la sesión conserva trazabilidad de vuelos, actividades, trabajos e interrupciones.
+
+### 5. Actividades
+
+El modelo `Activity` representa tanto actividades obligatorias como opcionales con tiempo de ejecución y costo en USD.
+
+La implementación actual cubre estas reglas:
+
+- `TripSessionClockMixin.advance_time(...)` controla el paso del tiempo y dispara los cobros obligatorios.
+- Alojamiento: se cobra cada 20 horas de acuerdo con el costo del aeropuerto, y si esas horas se cumplen durante un vuelo queda pendiente hasta aterrizar.
+- Alimentación: se cobra cada 8 horas. Si el umbral se cumple durante un vuelo, el costo se toma del último aeropuerto visitado.
+- Las actividades opcionales se presentan en `step_proposals()` para que el viajero elija si las realiza o no.
+
+### 6. Trabajos
+
+Los trabajos temporales se modelan con `JobOffer`, que incluye tarifa por hora y máximo de horas permitidas.
+
+La sesión ya contempla:
+
+- habilitar trabajos cuando el presupuesto restante cae por debajo del 35% del presupuesto inicial;
+- permitir que el viajero indique cuántas horas trabajará;
+- calcular el ingreso como `tarifa_por_hora × horas_trabajadas`;
+- actualizar presupuesto y tiempo restante con ese trabajo;
+- guardar el resultado en `state.jobs_done` y en `DecisionRecord`.
+
+### 7. Medios de transporte
+
+Las rutas y opciones de vuelo se representan con `RouteProposal`, `TransportOption` y `Leg`.
+
+La lógica actual de transporte hace lo siguiente:
+
+- calcula el costo y el tiempo del tramo según distancia y tipo de aeronave;
+- usa las tarifas por defecto definidas en `utils/constants.py`;
+- permite sobrescribir esas tarifas desde la configuración global o desde el JSON;
+- respeta la restricción de que la distancia subsidiada no puede superar el 20% del total recorrido;
+- expone en `step_proposals()` todas las alternativas de vuelo calculadas para que el viajero compare antes de decidir.
+
+### Archivos clave de la implementación
+
+- `services/advanced_planner.py`: crea la sesión avanzada y arma el estado inicial.
+- `services/trip_session.py`: compone la sesión con los mixins de transporte, decisiones, reloj y reportes.
+- `services/trip_session_transport.py`: calcula rutas, costos y tiempos, y arma las propuestas del paso.
+- `services/trip_session_decisions.py`: aplica decisiones de vuelo, actividad y trabajo.
+- `services/trip_session_clock.py`: avanza el tiempo y registra comida y alojamiento obligatorios.
+- `services/trip_session_reporting.py`: maneja interrupciones de vuelo, recalculo de propuestas y reporte final.
+- `models/`: contiene los dataclasses y entidades de salida usados por la sesión.
+
+
 Contrato de endponits para que analicen:
 ## Error codes reference
 
@@ -79,11 +145,6 @@ Contrato de endponits para que analicen:
 | `POST /api/network/block` | Int.1 | Day 6 |
 | `POST /api/network/recalculate` | Int.1 | Day 7 |
 | `GET /api/report/<id>` | Int.2 | Day 6 |
-
-
-
-
-
 
 
 
