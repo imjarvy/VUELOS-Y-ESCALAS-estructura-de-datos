@@ -152,6 +152,9 @@ export function createGraphUi({ state = {}, onNodeSelect = () => {} } = {}) {
   }
 
   let selectedNodeId = state.selectedCode ?? null;
+  // Internal references to rendered links/selection for runtime updates
+  let _renderedLinks = [];
+  let _linkSelection = null;
 
   function nodeCssClass(node) {
     let cssClass = "node";
@@ -170,6 +173,40 @@ export function createGraphUi({ state = {}, onNodeSelect = () => {} } = {}) {
     }
 
     onNodeSelect(nodeData);
+  }
+
+  /**
+   * Mark or unmark a rendered link as blocked (visual only).
+   * originId/destinationId should match the node ids used in the graph payload.
+   * Returns true if any link was updated, false otherwise.
+   */
+  function markLinkBlocked(originId, destinationId, blocked = true) {
+    if (!Array.isArray(_renderedLinks) || !_linkSelection) return false;
+
+    const origin = String(originId ?? "");
+    const dest = String(destinationId ?? "");
+    let updated = false;
+
+    // update underlying data
+    _renderedLinks.forEach(l => {
+      if (String(l._originId) === origin && String(l._destinationId) === dest) {
+        l.blocked = !!blocked;
+        updated = true;
+      }
+    });
+
+    if (!updated) return false;
+
+    // reflect on selection
+    try {
+      _linkSelection
+        .classed("link-blocked", d => !!d.blocked)
+        .attr("marker-end", d => d.blocked ? "none" : `url(#${d._markerId ?? markerId})`);
+    } catch (e) {
+      // ignore errors in UI update
+    }
+
+    return updated;
   }
 
   /**
@@ -210,8 +247,9 @@ export function createGraphUi({ state = {}, onNodeSelect = () => {} } = {}) {
     );
 
     const markerId = `${svgId}-arrowhead`;
-    svg
-      .append("defs")
+    const defs = svg.append("defs");
+
+    defs
       .append("marker")
       .attr("id", markerId)
       .attr("viewBox", "0 -5 10 10")
@@ -224,7 +262,7 @@ export function createGraphUi({ state = {}, onNodeSelect = () => {} } = {}) {
       .append("path")
       .attr("class", "graph-arrowhead")
       .attr("d", "M0,-5L10,0L0,5")
-      .attr("fill", "#6b7280");
+      .attr("fill", "context-stroke");
 
     const nodes = layoutNodes.map(node => ({ ...node }));
     const nodeById = new Map(nodes.map(node => [String(node.id), node]));
@@ -232,13 +270,17 @@ export function createGraphUi({ state = {}, onNodeSelect = () => {} } = {}) {
 
     // Update links to reference node objects
     const renderedLinks = links.map(link => {
-      const sourceId = String(link.source);
-      const targetId = String(link.target);
-      const sourceNode = nodeById.get(sourceId);
-      const targetNode = nodeById.get(targetId);
+      // derive stable origin/destination ids from available fields
+      const originId = String(link.origin_vertex ?? link.origin ?? link.source ?? "") ;
+      const destinationId = String(link.destination_vertex ?? link.destination ?? link.target ?? "");
+      const sourceNode = nodeById.get(originId);
+      const targetNode = nodeById.get(destinationId);
 
       return {
         ...link,
+        _originId: originId,
+        _destinationId: destinationId,
+        _markerId: markerId,
         source: sourceNode ?? link.source,
         target: targetNode ?? link.target,
       };
@@ -251,7 +293,18 @@ export function createGraphUi({ state = {}, onNodeSelect = () => {} } = {}) {
       .data(renderedLinks)
       .join("line")
       .attr("class", "link")
-      .attr("marker-end", `url(#${markerId})`);
+      .attr("marker-end", d => d.blocked ? "none" : `url(#${markerId})`);
+
+    // Store selection and rendered links for runtime updates
+    _linkSelection = linkSelection;
+    _renderedLinks = renderedLinks;
+
+    // Apply blocked styling when route contains a `blocked` truthy flag
+    try {
+      _linkSelection.classed("link-blocked", d => !!d.blocked);
+    } catch (e) {
+      // noop
+    }
 
     const nodeSelection = viewport
       .append("g")
@@ -321,6 +374,7 @@ export function createGraphUi({ state = {}, onNodeSelect = () => {} } = {}) {
   return {
     renderGraph,
     selectNode,
-    stop,
+    stop: () => {},
+    markLinkBlocked,
   };
 }

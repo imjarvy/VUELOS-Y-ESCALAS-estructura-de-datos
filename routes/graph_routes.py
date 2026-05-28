@@ -73,3 +73,32 @@ def load_graph():
             "airports": len(graph.vertices),
         }
     )
+
+
+@graph_bp.route("/api/interrupt-route", methods=["POST"])
+def interrupt_route():
+    """Stub endpoint to mark a route interruption.
+
+    Expected JSON payload:
+    { "origin": "AAA", "destination": "BBB", "reason": "closure", "blocked": true }
+
+    This endpoint only normalizes the request and returns it. The actual graph/planner
+    mutation will be added later, once the second planner is ready.
+    """
+    payload = request.get_json(silent=True) or {}
+    origin = payload.get("origin") or payload.get("origin_vertex")
+    destination = payload.get("destination") or payload.get("destination_vertex")
+    reason = payload.get("reason")
+    blocked = bool(payload.get("blocked", True))
+
+    if not origin or not destination:
+        return jsonify({"error": "origin and destination are required"}), 400
+
+    # TODO: integrate with GraphDataService / planner: mark route blocked, notify clients, recalculate itineraries
+    return jsonify({
+        "message": "Interrupt route received (stub)",
+        "origin": origin,
+        "destination": destination,
+        "reason": reason,
+        "blocked": blocked,
+    }), 200

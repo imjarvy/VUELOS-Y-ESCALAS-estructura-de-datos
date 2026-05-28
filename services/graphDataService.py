@@ -120,6 +120,7 @@ class GraphDataService:
                     aircrafts=route_data.get("aircraft", []) or route_data.get("aircrafts", []),
                     cost=route_data.get("baseCost", 0.0) or route_data.get("cost", 0.0),
                     minimum_stay=route_data.get("minimumStay", 0) or route_data.get("minimum_stay", 0),
+                    blocked=route_data.get("blocked", False) or route_data.get("isBlocked", False) or route_data.get("bloqueada", False),
                 )
             )
 
@@ -143,29 +144,10 @@ class GraphDataService:
 
         return graph
 
-    def export_payload(self, spanish: bool = False) -> Dict[str, Any]:
+    def export_payload(self) -> Dict[str, Any]:
         """Return a serializable payload reconstructed from parsed airports.
 
-        If `spanish` is True the payload uses Spanish keys (legacy support).
-        Default returns English keys.
+        The backend contract is English-only; the UI can adapt labels locally.
         """
         airports = self.get_parsed_airports()
-
-        def airport_to_spanish(a: Airport) -> Dict[str, Any]:
-            d = a.to_dict()
-            return {
-                "id": d.get("airport_id"),
-                "nombre": d.get("name"),
-                "ciudad": d.get("city"),
-                "esHub": d.get("is_hub"),
-                "costoAlojamiento": d.get("accommodation_cost"),
-                "costoAlimentacion": d.get("feeding_cost"),
-                "actividades": d.get("activities", []),
-                "trabajos": d.get("jobs", []),
-            }
-
-        if spanish:
-            return {"aeropuertos": [airport_to_spanish(a) for a in airports]}
-
-        # English-style payload (default)
         return {"airports": [a.to_dict() for a in airports]}
