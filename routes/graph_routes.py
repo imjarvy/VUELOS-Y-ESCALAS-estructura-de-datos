@@ -1,15 +1,35 @@
 """Flask routes for loading, exporting, and configuring airport graph data."""
 
 from copy import deepcopy
+import dataclasses
 
 from flask import Blueprint, jsonify, request
 from acceso_datos.dataLoader import DataLoader
 from services.graphDataService import GraphDataService
+from services.advanced_planner import AdvancedPlanner
 from utils.constants import GRAPH_CONFIG_DEFAULTS
 
 graph_bp = Blueprint("graph", __name__)
 
 _GRAPH_CONFIG = deepcopy(GRAPH_CONFIG_DEFAULTS)
+
+# In-memory runtime holders for the last loaded graph and active sessions.
+_LAST_GRAPH = None
+_ADVANCED_PLANNER: AdvancedPlanner | None = None
+_SESSIONS = {}
+
+
+def _serialize(obj):
+    try:
+        if dataclasses.is_dataclass(obj):
+            return dataclasses.asdict(obj)
+    except Exception:
+        pass
+    if isinstance(obj, dict):
+        return {k: _serialize(v) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return [_serialize(x) for x in obj]
+    return obj
 
 
 @graph_bp.route("/api/config", methods=["GET"])
@@ -64,6 +84,11 @@ def load_graph():
     service = GraphDataService(loader.get_raw_data())
     graph = service.build_graph()
 
+    # persist the last loaded graph and prepare an AdvancedPlanner for session APIs
+    global _LAST_GRAPH, _ADVANCED_PLANNER
+    _LAST_GRAPH = graph
+    _ADVANCED_PLANNER = AdvancedPlanner(graph, defaults=_GRAPH_CONFIG)
+
     graph_payload = {"vertices": [airport.to_dict() for airport in graph.vertices]}
 
     return jsonify(
@@ -102,3 +127,58 @@ def interrupt_route():
         "reason": reason,
         "blocked": blocked,
     }), 200
+
+
+@graph_bp.route("/api/session/start", methods=["POST"])
+def start_session():
+    payload = request.get_json(silent=True) or {}
+    origin = (payload.get("origin") or payload.get("start") or "").strip().upper()
+    try:
+        budget = float(payload.get("budget", 0))
+    except (TypeError, ValueError):
+        budget = 0.0
+    try:
+        time_h = float(payload.get("time_h", payload.get("hours", 72)))
+    except (TypeError, ValueError):
+        time_h = 72.0
+
+    if _ADVANCED_PLANNER is None or _LAST_GRAPH is None:
+        return jsonify({"error": "No graph loaded. Upload a graph first."}), 400
+
+    try:
+        session = _ADVANCED_PLANNER.start_session(origin=origin, budget=budget, time_h=time_h)
+    except Exception as exc:
+        return jsonify({"error": str(exc)}), 400
+
+    _SESSIONS[session.session_id] = session
+    proposals = session.step_proposals()
+    return jsonify({
+        "message": "Session started",
+        "session_id": session.session_id,
+        "proposals": _serialize(proposals),
+        "meta": _serialize(proposals.meta),
+    })
+
+
+@graph_bp.route("/api/session/<session_id>/proposals", methods=["GET"])
+def session_proposals(session_id: str):
+    session = _SESSIONS.get(session_id)
+    if session is None:
+        return jsonify({"error": "session not found"}), 404
+    proposals = session.step_proposals()
+    return jsonify({"proposals": _serialize(proposals), "meta": _serialize(proposals.meta)})
+
+
+@graph_bp.route("/api/session/<session_id>/choice", methods=["POST"])
+def session_choice(session_id: str):
+    session = _SESSIONS.get(session_id)
+    if session is None:
+        return jsonify({"error": "session not found"}), 404
+    payload = request.get_json(silent=True) or {}
+    result = session.apply_choice(payload)
+    return jsonify({
+        "updated_state": _serialize(result.updated_state),
+        "next_proposals": _serialize(result.next_proposals) if result.next_proposals is not None else None,
+        "events": list(result.events or []),
+        "errors": list(result.errors or []),
+    })

@@ -1,4 +1,4 @@
-import { apiGet, apiPostFormData } from "./api/client.js";
+import { apiGet, apiPost, apiPostFormData } from "./api/client.js";
 import { createGraphUi, transformGraphToD3Data } from "./graphUI.js";
 import { FlightAnimator } from "./flightAnimator.js";
 import { createInfoPanel } from "./panels/infoPanel.js";
@@ -86,6 +86,60 @@ createGraphConfigController({
       : `No se pudo actualizar la ruta ${origin} → ${destination}`;
   });
 })();
+
+// Session control wired into the trip session panel
+let currentSessionId = null;
+tripSessionPanel.onStart(async () => {
+  // try DOM-selected node first, then fall back to first rendered link endpoints
+  let selected = null;
+  const selEl = document.querySelector('.graph-nodes .node.node-selected .node-code');
+  if (selEl) selected = String(selEl.textContent || '').trim().toUpperCase();
+  const endpoints = getFirstRenderedLinkEndpoints();
+  const origin = (selected || (endpoints && endpoints.origin) || "").toUpperCase();
+  if (!origin) {
+    status.textContent = "Selecciona un aeropuerto en el grafo para iniciar la sesión.";
+    return;
+  }
+
+  const budget = tripSessionPanel.getState().budgetInitial || 1000;
+  const timeHours = Math.max(1, Math.round((tripSessionPanel.getState().timeRemainingMin || (72 * 60)) / 60));
+
+  status.textContent = "Iniciando sesión...";
+  try {
+    const res = await apiPost("/api/session/start", { origin, budget, time_h: timeHours });
+    currentSessionId = res.session_id;
+    const meta = res.meta || {};
+    tripSessionPanel.setState({
+      budgetInitial: tripSessionPanel.getState().budgetInitial,
+      budgetRemaining: meta.budget_remaining ?? tripSessionPanel.getState().budgetRemaining,
+      timeRemainingMin: meta.time_remaining_min ?? tripSessionPanel.getState().timeRemainingMin,
+    });
+    status.textContent = `Sesión iniciada: ${currentSessionId}`;
+    console.log("Session proposals:", res.proposals);
+  } catch (err) {
+    status.textContent = `Error iniciando sesión: ${err.message || err}`;
+  }
+});
+
+tripSessionPanel.onGetProposals(async () => {
+  if (!currentSessionId) {
+    status.textContent = "No hay sesión activa. Inicia una sesión primero.";
+    return;
+  }
+  status.textContent = "Solicitando propuestas...";
+  try {
+    const res = await apiGet(`/api/session/${currentSessionId}/proposals`);
+    const meta = res.meta || {};
+    tripSessionPanel.setState({
+      budgetRemaining: meta.budget_remaining ?? tripSessionPanel.getState().budgetRemaining,
+      timeRemainingMin: meta.time_remaining_min ?? tripSessionPanel.getState().timeRemainingMin,
+    });
+    console.log("Proposals:", res.proposals);
+    status.textContent = `Propuestas recibidas: ${res.proposals.routes?.length ?? 0}`;
+  } catch (err) {
+    status.textContent = `Error al pedir propuestas: ${err.message || err}`;
+  }
+});
 
 // Load the current backend config so the UI can show the lodging rule consistently.
 apiGet("/api/config")

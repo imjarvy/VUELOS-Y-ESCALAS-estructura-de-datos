@@ -64,6 +64,47 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
     render();
   }
 
+  // Handlers that can be registered by the orchestrator
+  let _onStart = null;
+  let _onGetProposals = null;
+
+  function onStart(handler) {
+    _onStart = handler;
+  }
+
+  function onGetProposals(handler) {
+    _onGetProposals = handler;
+  }
+
+  // Create action buttons inside the panel
+  try {
+    const actionsRow = document.createElement('div');
+    actionsRow.className = 'info-row';
+    const startBtn = document.createElement('button');
+    startBtn.id = 'panelStartSession';
+    startBtn.textContent = 'Iniciar sesión';
+    startBtn.className = 'btn btn-sm';
+
+    const proposalsBtn = document.createElement('button');
+    proposalsBtn.id = 'panelGetProposals';
+    proposalsBtn.textContent = 'Ver propuestas';
+    proposalsBtn.className = 'btn btn-sm';
+
+    actionsRow.appendChild(startBtn);
+    actionsRow.appendChild(proposalsBtn);
+    panel.appendChild(actionsRow);
+
+    startBtn.addEventListener('click', () => {
+      if (typeof _onStart === 'function') _onStart();
+    });
+
+    proposalsBtn.addEventListener('click', () => {
+      if (typeof _onGetProposals === 'function') _onGetProposals();
+    });
+  } catch (e) {
+    // ignore DOM errors in environments without document
+  }
+
   if (budgetInitialInput) {
     budgetInitialInput.addEventListener("change", () => {
       const parsed = Number(budgetInitialInput.value);
@@ -83,5 +124,7 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
     setRules,
     setState,
     getState: () => ({ ...state }),
+    onStart,
+    onGetProposals,
   };
 }
