@@ -6,15 +6,11 @@ export function createGraphConfigController({ statusElement = null } = {}) {
   const cancelButton = document.getElementById("cancelConfigBtn");
   const saveButton = document.getElementById("saveConfigBtn");
 
-  const maxDistanceField = document.getElementById("cfgMaxSubsidizedDistanceFrac")?.closest("label");
-  if (maxDistanceField) {
-    maxDistanceField.style.display = "none";
-  }
-
   const fields = {
     budgetThreshold: document.getElementById("cfgBudgetThresholdPct"),
     lodgingInterval: document.getElementById("cfgLodgingIntervalH"),
     mealInterval: document.getElementById("cfgMealIntervalH"),
+    subsidizedDistance: document.getElementById("cfgMaxSubsidizedDistanceFrac"),
     commercialCost: document.getElementById("cfgCommercialCostPerKm"),
     commercialTime: document.getElementById("cfgCommercialTimePerKmMin"),
     regionalCost: document.getElementById("cfgRegionalCostPerKm"),
@@ -45,6 +41,7 @@ export function createGraphConfigController({ statusElement = null } = {}) {
     fields.budgetThreshold.value = config?.presupuestoMinimoPorc ?? 35;
     fields.lodgingInterval.value = config?.intervaloAlojamiento ?? 20;
     fields.mealInterval.value = config?.intervaloAlimentacion ?? 8;
+    fields.subsidizedDistance.value = config?.max_subsidized_distance_frac ?? 0.2;
 
     fields.commercialCost.value = aeronaves.commercial?.costoKm ?? 0.18;
     fields.commercialTime.value = aeronaves.commercial?.tiempoKm ?? 0.7;
@@ -73,6 +70,7 @@ export function createGraphConfigController({ statusElement = null } = {}) {
       presupuestoMinimoPorc: Number(fields.budgetThreshold.value),
       intervaloAlojamiento: Number(fields.lodgingInterval.value),
       intervaloAlimentacion: Number(fields.mealInterval.value),
+      max_subsidized_distance_frac: Number(fields.subsidizedDistance.value),
     };
   }
 

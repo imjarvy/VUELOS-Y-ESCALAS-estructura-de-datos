@@ -48,7 +48,7 @@ def save_config():
     if not isinstance(payload, dict):
         return jsonify({"error": "Formato de configuración inválido"}), 400
 
-    global _GRAPH_CONFIG
+    global _GRAPH_CONFIG, _ADVANCED_PLANNER
     next_config = deepcopy(_GRAPH_CONFIG)
 
     aeronaves = payload.get("aeronaves")
@@ -64,7 +64,7 @@ def save_config():
                 next_aircrafts[aircraft_key] = current
         next_config["aeronaves"] = next_aircrafts
 
-    for key in ("presupuestoMinimoPorc", "intervaloAlojamiento", "intervaloAlimentacion"):
+    for key in ("presupuestoMinimoPorc", "intervaloAlojamiento", "intervaloAlimentacion", "max_subsidized_distance_frac"):
         if key in payload:
             try:
                 next_config[key] = float(payload[key])
@@ -72,6 +72,9 @@ def save_config():
                 pass
 
     _GRAPH_CONFIG = next_config
+    if _ADVANCED_PLANNER is not None:
+        _ADVANCED_PLANNER.defaults = deepcopy(_GRAPH_CONFIG)
+
     return jsonify({"message": "Configuración guardada correctamente", "config": deepcopy(_GRAPH_CONFIG)})
 
 @graph_bp.route("/api/load-graph", methods=["POST"])
