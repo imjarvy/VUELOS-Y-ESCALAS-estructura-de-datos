@@ -80,38 +80,28 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
   const actionsRow = document.createElement("div");
   actionsRow.className = "info-row session-actions-row";
 
-  const startBtn = document.createElement("button");
-  startBtn.id = "panelStartSession";
-  startBtn.textContent = "Iniciar sesión";
-  startBtn.className = "btn btn-sm";
+  const primaryActionsRow = document.createElement("div");
+  primaryActionsRow.className = "session-actions-primary-row";
+
+  const sessionBtn = document.createElement("button");
+  sessionBtn.id = "panelStartSession";
+  sessionBtn.textContent = "Iniciar sesión";
+  sessionBtn.className = "btn btn-sm session-action-btn session-action-primary";
 
   const suggestBtn = document.createElement("button");
   suggestBtn.id = "panelSuggestRoute";
   suggestBtn.textContent = "Sugerir ruta";
-  suggestBtn.className = "btn btn-sm";
+  suggestBtn.className = "btn btn-sm session-action-btn session-action-primary";
 
   const activitiesBtn = document.createElement("button");
   activitiesBtn.id = "panelToggleActivities";
   activitiesBtn.textContent = "Ver actividades opcionales";
-  activitiesBtn.className = "btn btn-sm";
+  activitiesBtn.className = "btn btn-sm session-action-btn session-action-primary";
 
-  const reportBtn = document.createElement("button");
-  reportBtn.id = "panelSessionReport";
-  reportBtn.textContent = "Ver reporte";
-  reportBtn.className = "btn btn-sm";
-
-  actionsRow.appendChild(startBtn);
-  actionsRow.appendChild(suggestBtn);
+  primaryActionsRow.appendChild(sessionBtn);
+  primaryActionsRow.appendChild(suggestBtn);
+  actionsRow.appendChild(primaryActionsRow);
   actionsRow.appendChild(activitiesBtn);
-  actionsRow.appendChild(reportBtn);
-
-  const reportSection = document.createElement("div");
-  reportSection.className = "info-block session-report hidden";
-  reportSection.innerHTML = '<span class="info-label">Reporte final</span>';
-
-  const reportContent = document.createElement("div");
-  reportContent.className = "session-report-content";
-  reportSection.appendChild(reportContent);
 
   const state = {
     budgetInitial: 1000,
@@ -125,7 +115,6 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
     routePlan: [],
     sessionId: null,
     proposals: null,
-    report: null,
     graphLoaded: false,
     sessionActive: false,
   };
@@ -133,7 +122,7 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
   let _onStart = null;
   let _onSuggestRoute = null;
   let _onChoice = null;
-  let _onReport = null;
+  let _onToggleSession = null;
 
   function onStart(handler) {
     _onStart = handler;
@@ -147,8 +136,8 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
     _onChoice = handler;
   }
 
-  function onReport(handler) {
-    _onReport = handler;
+  function onToggleSession(handler) {
+    _onToggleSession = handler;
   }
 
   function getMealLabel() {
@@ -200,9 +189,8 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
   function setAvailability(nextAvailability = {}) {
     state.graphLoaded = Boolean(nextAvailability.graphLoaded ?? state.graphLoaded);
     state.sessionActive = Boolean(nextAvailability.sessionActive ?? state.sessionActive);
-    startBtn.disabled = !state.graphLoaded;
+    sessionBtn.disabled = !state.graphLoaded;
     suggestBtn.disabled = !state.sessionActive;
-    reportBtn.disabled = !state.sessionActive;
     render();
   }
 
@@ -440,48 +428,6 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
     }
   }
 
-  function renderReport() {
-    reportContent.innerHTML = "";
-    if (!state.report) {
-      reportSection.classList.add("hidden");
-      return;
-    }
-
-    reportSection.classList.remove("hidden");
-    const report = state.report;
-    const totals = report.totals ?? {};
-
-    const grid = document.createElement("div");
-    grid.className = "session-report-grid";
-    [
-      ["Balance final", formatMoney(totals.final_balance)],
-      ["Gasto total", formatMoney(totals.total_spent)],
-      ["Ganado total", formatMoney(totals.total_gained)],
-      ["Tiempo total", formatMinutes(totals.time_total_min)],
-      ["Distancia recorrida", `${Number(totals.distance_travelled_km ?? 0)} km`],
-      ["Distancia subsidiada", `${Number(totals.subsidized_distance_km ?? 0)} km`],
-    ].forEach(([label, value]) => {
-      const item = document.createElement("div");
-      item.className = "session-report-item";
-      item.innerHTML = `<span>${label}</span><strong>${value}</strong>`;
-      grid.appendChild(item);
-    });
-
-    reportContent.appendChild(grid);
-
-    const visited = Array.isArray(report.visited) ? report.visited : [];
-    if (visited.length) {
-      const visitedList = document.createElement("ul");
-      visitedList.className = "session-inline-list";
-      visited.slice(0, 8).forEach(step => {
-        const li = document.createElement("li");
-        li.textContent = `${step.airport_id ?? "-"} · ${step.name ?? step.city ?? ""}`;
-        visitedList.appendChild(li);
-      });
-      reportContent.appendChild(createProposalCard("Destinos visitados", "Resumen del recorrido").card);
-      reportContent.lastElementChild.querySelector(".session-proposal-content").appendChild(visitedList);
-    }
-  }
 
   function render() {
     const firstSessionRow = budgetInitialInput?.closest(".info-row") ?? panel.firstChild;
@@ -500,9 +446,6 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
     if (!proposalsSection.isConnected) {
       panel.appendChild(proposalsSection);
     }
-    if (!reportSection.isConnected) {
-      panel.appendChild(reportSection);
-    }
 
     if (budgetInitialInput) budgetInitialInput.value = String(state.budgetInitial);
     if (budgetRemainingEl) budgetRemainingEl.textContent = formatMoney(state.budgetRemaining);
@@ -519,10 +462,12 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
     summaryChips.stay.textContent = `Estancia: ${formatMinutes(state.currentStayRequiredMin ?? 0)}`;
     summaryChips.optionalStay.textContent = `Opcional usado: ${formatMinutes(state.currentOptionalStayMin ?? 0)}`;
 
-    startBtn.disabled = !state.graphLoaded;
+    sessionBtn.disabled = !state.graphLoaded;
     suggestBtn.disabled = !state.sessionActive;
     activitiesBtn.disabled = !state.sessionActive || !(Array.isArray(state.proposals?.activities) && state.proposals.activities.length > 0);
-    reportBtn.disabled = !state.sessionActive;
+    sessionBtn.textContent = state.sessionActive ? "Cancelar sesión" : "Iniciar sesión";
+    sessionBtn.classList.toggle("session-action-primary", !state.sessionActive);
+    sessionBtn.classList.toggle("session-action-danger", state.sessionActive);
     activitiesBtn.textContent = state.showOptionalActivities ? "Ocultar actividades opcionales" : "Ver actividades opcionales";
     suggestBtn.textContent = state.suggestedRoute ? "Sugerir otra ruta" : "Sugerir ruta";
 
@@ -532,7 +477,6 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
       renderProposals();
     }
 
-    renderReport();
   }
 
   function setRules(nextRules = {}) {
@@ -547,11 +491,6 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
 
   function setSessionId(sessionId) {
     state.sessionId = sessionId || null;
-    render();
-  }
-
-  function setReport(nextReport = null) {
-    state.report = nextReport;
     render();
   }
 
@@ -570,7 +509,11 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
     render();
   }
 
-  startBtn.addEventListener("click", () => {
+  sessionBtn.addEventListener("click", () => {
+    if (typeof _onToggleSession === "function") {
+      _onToggleSession();
+      return;
+    }
     if (typeof _onStart === "function") _onStart();
   });
 
@@ -580,10 +523,6 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
 
   activitiesBtn.addEventListener("click", () => {
     toggleOptionalActivities();
-  });
-
-  reportBtn.addEventListener("click", () => {
-    if (typeof _onReport === "function") _onReport();
   });
 
   proposalsList.addEventListener("click", event => {
@@ -634,7 +573,6 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
     setSessionId,
     setProposals,
     setSuggestedRoute,
-    setReport,
     setAvailability,
     setBanner,
     setOptionalActivitiesVisible,
@@ -642,8 +580,8 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
     clearProposals,
     getState: () => ({ ...state }),
     onStart,
+    onToggleSession,
     onSuggestRoute,
     onChoice,
-    onReport,
   };
 }

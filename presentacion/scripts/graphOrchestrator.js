@@ -12,6 +12,18 @@ const fileLabel = document.getElementById("fileLabel");
 const infoPanel = createInfoPanel({ panelId: "airportInfoPanel" });
 const tripSessionPanel = createTripSessionPanel({ panelId: "tripSessionPanel" });
 
+function setStatusMessage(message, kind = "info") {
+  const text = String(message ?? "");
+  status.textContent = text;
+
+  const alertPattern = /aliment|comid|meal|food|hosped|aloj|lodging/i;
+  if (kind === "error" || alertPattern.test(text)) {
+    status.dataset.kind = kind === "error" ? "error" : "alert";
+  } else {
+    delete status.dataset.kind;
+  }
+}
+
 function openModal() {
   jsonModal.classList.remove("hidden");
 }
@@ -68,7 +80,7 @@ tripSessionPanel.setBanner("Carga un grafo para iniciar una sesión R3.");
   testBtn.addEventListener("click", () => {
     const endpoints = getFirstRenderedLinkEndpoints();
     if (!endpoints) {
-      status.textContent = "Carga un grafo primero para probar el bloqueo visual.";
+      setStatusMessage("Carga un grafo primero para probar el bloqueo visual.");
       return;
     }
 
@@ -84,15 +96,30 @@ tripSessionPanel.setBanner("Carga un grafo para iniciar una sesión R3.");
       }
     }
 
-    status.textContent = ok
+    setStatusMessage(ok
       ? `Ruta ${origin} → ${destination} ${nextBlockedState ? "marcada como bloqueada" : "desbloqueada"}`
-      : `No se pudo actualizar la ruta ${origin} → ${destination}`;
+      : `No se pudo actualizar la ruta ${origin} → ${destination}`,
+      ok ? "info" : "error"
+    );
   });
 })();
 
 // Session control wired into the trip session panel
 let currentSessionId = null;
-tripSessionPanel.onStart(async () => {
+
+function resetSessionUi(message = "Sesión cancelada.") {
+  currentSessionId = null;
+  tripSessionPanel.setSessionId(null);
+  tripSessionPanel.setAvailability({ graphLoaded: true, sessionActive: false });
+  tripSessionPanel.setSuggestedRoute(null);
+  tripSessionPanel.setRoutePlan([]);
+  tripSessionPanel.setOptionalActivitiesVisible(false);
+  tripSessionPanel.clearProposals();
+  tripSessionPanel.setBanner(message);
+  setStatusMessage(message);
+}
+
+async function startSessionFromUi() {
   // try DOM-selected node first, then fall back to first rendered link endpoints
   let selected = null;
   const selEl = document.querySelector('.graph-nodes .node.node-selected .node-code');
@@ -100,14 +127,14 @@ tripSessionPanel.onStart(async () => {
   const endpoints = getFirstRenderedLinkEndpoints();
   const origin = (selected || (endpoints && endpoints.origin) || "").toUpperCase();
   if (!origin) {
-    status.textContent = "Selecciona un aeropuerto en el grafo para iniciar la sesión.";
+    setStatusMessage("Selecciona un aeropuerto en el grafo para iniciar la sesión.");
     return;
   }
 
   const budget = tripSessionPanel.getState().budgetInitial || 1000;
   const timeHours = Math.max(1, Math.round((tripSessionPanel.getState().timeRemainingMin || (72 * 60)) / 60));
 
-  status.textContent = "Iniciando sesión...";
+  setStatusMessage("Iniciando sesión...");
   try {
     const res = await apiPost("/api/session/start", { origin, budget, time_h: timeHours });
     currentSessionId = res.session_id;
@@ -127,19 +154,28 @@ tripSessionPanel.onStart(async () => {
     });
     tripSessionPanel.setProposals(res.proposals ?? null);
     tripSessionPanel.setBanner(`Sesión iniciada: ${currentSessionId}. Revisa rutas, actividades y trabajos disponibles.`);
-    status.textContent = `Sesión iniciada: ${currentSessionId}`;
+    setStatusMessage(`Sesión iniciada: ${currentSessionId}`);
   } catch (err) {
     tripSessionPanel.setBanner(`No se pudo iniciar la sesión: ${err.message || err}`, "error");
-    status.textContent = `Error iniciando sesión: ${err.message || err}`;
+    setStatusMessage(`Error iniciando sesión: ${err.message || err}`, "error");
   }
+}
+
+tripSessionPanel.onToggleSession(async () => {
+  if (currentSessionId) {
+    resetSessionUi("Sesión cancelada.");
+    return;
+  }
+
+  await startSessionFromUi();
 });
 
 tripSessionPanel.onSuggestRoute(async () => {
   if (!currentSessionId) {
-    status.textContent = "No hay sesión activa. Inicia una sesión primero.";
+    setStatusMessage("No hay sesión activa. Inicia una sesión primero.");
     return;
   }
-  status.textContent = "Generando ruta sugerida...";
+  setStatusMessage("Generando ruta sugerida...");
   try {
     const res = await apiPost(`/api/session/${currentSessionId}/suggest-route`, {});
     const meta = res.meta || {};
@@ -160,20 +196,20 @@ tripSessionPanel.onSuggestRoute(async () => {
     const jobsCount = res.proposals?.jobs?.length ?? 0;
     const suggestedDestination = res.suggested_route?.destination ?? "sin ruta sugerida";
     tripSessionPanel.setBanner(`Ruta sugerida guardada: ${suggestedDestination}. ${routesCount} rutas, ${activitiesCount} actividades y ${jobsCount} trabajos disponibles.`, "success");
-    status.textContent = `Ruta sugerida: ${suggestedDestination}`;
+    setStatusMessage(`Ruta sugerida: ${suggestedDestination}`);
   } catch (err) {
     tripSessionPanel.setBanner(`No se pudo sugerir la ruta: ${err.message || err}`, "error");
-    status.textContent = `Error al sugerir ruta: ${err.message || err}`;
+    setStatusMessage(`Error al sugerir ruta: ${err.message || err}`, "error");
   }
 });
 
 tripSessionPanel.onChoice(async choice => {
   if (!currentSessionId) {
-    status.textContent = "No hay sesión activa. Inicia una sesión primero.";
+    setStatusMessage("No hay sesión activa. Inicia una sesión primero.");
     return;
   }
 
-  status.textContent = "Aplicando decisión...";
+  setStatusMessage("Aplicando decisión...");
   try {
     const res = await apiPost(`/api/session/${currentSessionId}/choice`, choice);
     const updatedState = res.updated_state ?? {};
@@ -197,35 +233,17 @@ tripSessionPanel.onChoice(async choice => {
 
     if (Array.isArray(res.events) && res.events.length) {
       tripSessionPanel.setBanner(`Decisión aplicada. ${res.events[0]}`, "success");
-      status.textContent = res.events.join(" | ");
+      setStatusMessage(res.events.join(" | "));
     } else if (Array.isArray(res.errors) && res.errors.length) {
       tripSessionPanel.setBanner(`No se pudo aplicar la decisión: ${res.errors[0]}`, "error");
-      status.textContent = res.errors.join(" | ");
+      setStatusMessage(res.errors.join(" | "), "error");
     } else {
       tripSessionPanel.setBanner("Decisión aplicada correctamente.", "success");
-      status.textContent = "Decisión aplicada correctamente.";
+      setStatusMessage("Decisión aplicada correctamente.");
     }
   } catch (err) {
     tripSessionPanel.setBanner(`Error aplicando decisión: ${err.message || err}`, "error");
-    status.textContent = `Error aplicando decisión: ${err.message || err}`;
-  }
-});
-
-tripSessionPanel.onReport(async () => {
-  if (!currentSessionId) {
-    tripSessionPanel.setBanner("No hay sesión activa para generar un reporte.", "error");
-    return;
-  }
-
-  tripSessionPanel.setBanner("Generando reporte final...");
-  try {
-    const res = await apiGet(`/api/session/${currentSessionId}/report`);
-    tripSessionPanel.setReport(res.report ?? null);
-    tripSessionPanel.setBanner("Reporte final listo. Puedes revisarlo debajo del panel.", "success");
-    status.textContent = "Reporte generado correctamente.";
-  } catch (err) {
-    tripSessionPanel.setBanner(`No se pudo generar el reporte: ${err.message || err}`, "error");
-    status.textContent = `Error al generar reporte: ${err.message || err}`;
+    setStatusMessage(`Error aplicando decisión: ${err.message || err}`, "error");
   }
 });
 
@@ -258,11 +276,11 @@ document.getElementById("btnLoadSample").addEventListener("click", openModal);
 document.getElementById("loadJsonConfirmBtn").addEventListener("click", async () => {
   const file = jsonFileInput.files?.[0];
   if (!file) {
-    status.textContent = "Selecciona un archivo JSON primero.";
+    setStatusMessage("Selecciona un archivo JSON primero.");
     return;
   }
 
-  status.textContent = "Cargando JSON...";
+  setStatusMessage("Cargando JSON...");
 
   const formData = new FormData();
   formData.append("file", file);
@@ -272,6 +290,7 @@ document.getElementById("loadJsonConfirmBtn").addEventListener("click", async ()
 
   flightAnimator.stop();
   graphUi.renderGraph(d3Graph, "graphSvg", "graphContainer");
+  document.getElementById("rightPanels")?.classList.remove("hidden");
   infoPanel.clear();
   tripSessionPanel.setState({
     budgetInitial: 1000,
@@ -283,14 +302,13 @@ document.getElementById("loadJsonConfirmBtn").addEventListener("click", async ()
   });
   tripSessionPanel.setSessionId(null);
   tripSessionPanel.clearProposals();
-  tripSessionPanel.setReport(null);
   tripSessionPanel.setSuggestedRoute(null);
   tripSessionPanel.setRoutePlan([]);
   tripSessionPanel.setOptionalActivitiesVisible(false);
   tripSessionPanel.setAvailability({ graphLoaded: true, sessionActive: false });
-  tripSessionPanel.setBanner("Grafo cargado. Ahora puedes iniciar una sesión R3.", "success");
+  tripSessionPanel.setBanner("Grafo cargado con exito", "success");
   infoPanel.setRules(await apiGet("/api/config").catch(() => ({ intervaloAlojamiento: 20 })));
   tripSessionPanel.setRules(await apiGet("/api/config").catch(() => ({ intervaloAlojamiento: 20, intervaloAlimentacion: 8 })));
-  status.textContent = `Grafo cargado: ${response.airports ?? d3Graph.nodes.length} aeropuertos.`;
+  setStatusMessage(`Grafo cargado: ${response.airports ?? d3Graph.nodes.length} aeropuertos.`);
   closeModal();
 });

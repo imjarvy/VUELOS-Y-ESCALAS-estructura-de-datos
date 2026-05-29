@@ -70,11 +70,13 @@ body {
   background: var(--bg);
   color: var(--text);
   line-height: 1.5;
+  height: 100vh;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   gap: 12px;
   padding: 14px;
+  overflow: hidden;
   transition: background 0.3s, color 0.3s;
 }
 
@@ -150,8 +152,8 @@ button:active:not(:disabled) {
   background: var(--bg-panel);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  height: calc(100vh - 180px);
-  min-height: 420px;
+  height: 100%;
+  min-height: 0;
   overflow: hidden;
   position: relative;
   box-shadow: var(--shadow-sm);
@@ -164,6 +166,7 @@ button:active:not(:disabled) {
   gap: 12px;
   flex-grow: 1;
   min-height: 0;
+  overflow: hidden;
 }
 
 .side-panels {
@@ -171,6 +174,10 @@ button:active:not(:disabled) {
   flex-direction: column;
   gap: 12px;
   min-height: 0;
+  height: 100%;
+  overflow-y: auto;
+  padding-right: 4px;
+  scrollbar-gutter: stable;
 }
 
 .info-panel {
@@ -198,13 +205,76 @@ button:active:not(:disabled) {
   gap: 6px;
 }
 
+.session-actions-row {
+  display: grid;
+  gap: 8px;
+}
+
+.session-actions-primary-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 8px;
+}
+
 .session-panel .info-row button {
   align-self: flex-start;
+}
+
+.session-actions-row .session-action-btn {
+  min-height: 38px;
+  padding: 0.48rem 0.8rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  border-width: 1.5px;
+  border-radius: var(--radius-sm);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.session-actions-row > .session-action-btn {
+  width: 100%;
+}
+
+.session-actions-row > .session-action-btn:last-child {
+  grid-column: 1 / -1;
+}
+
+.session-actions-row .session-action-primary {
+  border-color: var(--blue);
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.session-actions-row .session-action-primary:hover:not(:disabled) {
+  border-color: #2563eb;
+  background: #dbeafe;
+  color: #1e40af;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+  transform: translateY(-1px);
+}
+
+.session-actions-row .session-action-danger {
+  border-color: var(--red);
+  background: #fff1f2;
+  color: #b91c1c;
+}
+
+.session-actions-row .session-action-danger:hover:not(:disabled) {
+  border-color: #b91c1c;
+  background: #ffe4e6;
+  color: #991b1b;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.1);
+  transform: translateY(-1px);
 }
 
 .session-proposals-list {
   display: grid;
   gap: 10px;
+}
+
+.session-suggested-route {
+  max-height: 8.5rem;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
 }
 
 .session-proposal-card {
@@ -238,6 +308,34 @@ button:active:not(:disabled) {
 
 .session-proposal-content {
   padding: 10px;
+}
+
+.session-route-plan .session-proposal-content {
+  max-height: 15rem;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.session-route-plan-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.session-route-plan-list li {
+  display: grid;
+  gap: 3px;
+  padding: 8px 9px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-inset);
+  font-size: 0.76rem;
+}
+
+.session-route-plan-list li strong {
+  font-size: 0.8rem;
 }
 
 .session-empty {
@@ -361,36 +459,6 @@ button:active:not(:disabled) {
   font-size: 0.72rem;
 }
 
-.session-report {
-  gap: 10px;
-}
-
-.session-report-content {
-  display: grid;
-  gap: 10px;
-}
-
-.session-report-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-}
-
-.session-report-item {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 0.6rem 0.7rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: var(--bg-panel);
-  font-size: 0.76rem;
-}
-
-.session-report-item strong {
-  color: var(--text);
-}
-
 .session-tag {
   display: inline-flex;
   align-items: center;
@@ -481,15 +549,25 @@ button:active:not(:disabled) {
    STATUS PANEL
    ============================================================================= */
 #status {
-  background: var(--bg-panel);
-  border: 1px solid var(--border);
+  background: linear-gradient(180deg, #eff6ff 0%, var(--bg-panel) 100%);
+  border: 2px solid var(--blue);
+  border-left: 8px solid var(--blue);
   border-radius: var(--radius-lg);
   padding: 8px 12px;
   font-size: 0.78rem;
-  color: var(--text-secondary);
-  box-shadow: var(--shadow-sm);
+  color: #1e3a8a;
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.08), var(--shadow-sm);
   flex-shrink: 0;
   transition: all 0.3s;
+}
+
+#status[data-kind="alert"],
+#status[data-kind="error"] {
+  background: linear-gradient(180deg, #fff1f2 0%, var(--bg-panel) 100%);
+  border-color: var(--red);
+  border-left-color: var(--red);
+  color: #7f1d1d;
+  box-shadow: 0 0 0 1px rgba(220, 38, 38, 0.12), var(--shadow-sm);
 }
 
 /* =============================================================================
@@ -632,10 +710,11 @@ button:active:not(:disabled) {
 @media (max-width: 900px) {
   .workspace-layout {
     grid-template-columns: 1fr;
+    grid-template-rows: minmax(320px, 52vh) minmax(0, 1fr);
   }
 
   #graphContainer {
-    height: 60vh;
+    height: 100%;
   }
 
   .config-grid,
