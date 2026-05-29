@@ -41,6 +41,25 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
   statusBanner.className = "session-banner";
   statusBanner.textContent = "Inicia una sesión para ver propuestas y avanzar paso a paso.";
 
+  // Collapsed view: show a single button to activate the advanced planner
+  const collapsedContainer = document.createElement("div");
+  collapsedContainer.className = "session-collapsed";
+  const useAdvancedBtn = document.createElement("button");
+  useAdvancedBtn.id = "panelUseAdvancedPlanner";
+  // Match exactly the start session button classes so the visual design is identical
+  useAdvancedBtn.className = "btn btn-sm session-action-btn session-action-primary";
+  useAdvancedBtn.textContent = "Usar planificador avanzado";
+  collapsedContainer.appendChild(useAdvancedBtn);
+
+  // Expanded content wrapper (holds the normal session UI)
+  const contentContainer = document.createElement("div");
+  contentContainer.className = "session-expanded-content";
+
+  const collapseAdvancedBtn = document.createElement("button");
+  collapseAdvancedBtn.type = "button";
+  collapseAdvancedBtn.className = "btn btn-sm session-action-btn session-action-primary";
+  collapseAdvancedBtn.textContent = "Cerrar planificador avanzado";
+
   const summaryBar = document.createElement("div");
   summaryBar.className = "session-summary-bar";
   summaryBar.innerHTML = `
@@ -117,10 +136,12 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
     proposals: null,
     graphLoaded: false,
     sessionActive: false,
+    advancedVisible: false,
   };
 
   let _onStart = null;
   let _onSuggestRoute = null;
+  let _onCancelSuggestedRoute = null;
   let _onChoice = null;
   let _onToggleSession = null;
 
@@ -130,6 +151,10 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
 
   function onSuggestRoute(handler) {
     _onSuggestRoute = handler;
+  }
+
+  function onCancelSuggestedRoute(handler) {
+    _onCancelSuggestedRoute = handler;
   }
 
   function onChoice(handler) {
@@ -178,11 +203,19 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
 
   function setSuggestedRoute(nextRoute = null) {
     state.suggestedRoute = nextRoute;
+    if (!nextRoute) {
+      state.routePlan = [];
+    }
     render();
   }
 
   function setRoutePlan(nextPlan = []) {
     state.routePlan = Array.isArray(nextPlan) ? nextPlan : [];
+    render();
+  }
+
+  function setAdvancedVisible(nextVisible = false) {
+    state.advancedVisible = Boolean(nextVisible);
     render();
   }
 
@@ -430,22 +463,24 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
 
 
   function render() {
-    const firstSessionRow = budgetInitialInput?.closest(".info-row") ?? panel.firstChild;
-    if (!sessionIdRow.isConnected) {
-      panel.insertBefore(sessionIdRow, firstSessionRow);
-    }
-    if (!actionsRow.isConnected) {
-      panel.insertBefore(actionsRow, firstSessionRow);
-    }
-    if (!statusBanner.isConnected) {
-      panel.insertBefore(statusBanner, sessionIdRow);
-    }
-    if (!summaryBar.isConnected) {
-      panel.insertBefore(summaryBar, actionsRow);
-    }
-    if (!proposalsSection.isConnected) {
-      panel.appendChild(proposalsSection);
-    }
+    // Ensure collapsed button and content wrapper are placed once
+    if (!collapsedContainer.isConnected) panel.insertBefore(collapsedContainer, panel.firstChild);
+    if (!contentContainer.isConnected) panel.appendChild(contentContainer);
+    if (!collapseAdvancedBtn.isConnected) contentContainer.insertBefore(collapseAdvancedBtn, contentContainer.firstChild);
+
+    // Move UI pieces into the content container (only once)
+    // Also move any existing static rows and headings from the original markup into the content container
+    const existingRows = Array.from(panel.querySelectorAll(':scope > h3, :scope > .info-row, :scope > .info-block'));
+    existingRows.forEach(r => {
+      if (r !== collapsedContainer && r !== contentContainer && r.parentElement !== contentContainer) {
+        contentContainer.appendChild(r);
+      }
+    });
+    if (!sessionIdRow.isConnected || sessionIdRow.parentElement !== contentContainer) contentContainer.appendChild(sessionIdRow);
+    if (!statusBanner.isConnected || statusBanner.parentElement !== contentContainer) contentContainer.appendChild(statusBanner);
+    if (!summaryBar.isConnected || summaryBar.parentElement !== contentContainer) contentContainer.appendChild(summaryBar);
+    if (!actionsRow.isConnected || actionsRow.parentElement !== contentContainer) contentContainer.appendChild(actionsRow);
+    if (!proposalsSection.isConnected || proposalsSection.parentElement !== contentContainer) contentContainer.appendChild(proposalsSection);
 
     if (budgetInitialInput) budgetInitialInput.value = String(state.budgetInitial);
     if (budgetRemainingEl) budgetRemainingEl.textContent = formatMoney(state.budgetRemaining);
@@ -469,7 +504,15 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
     sessionBtn.classList.toggle("session-action-primary", !state.sessionActive);
     sessionBtn.classList.toggle("session-action-danger", state.sessionActive);
     activitiesBtn.textContent = state.showOptionalActivities ? "Ocultar actividades opcionales" : "Ver actividades opcionales";
-    suggestBtn.textContent = state.suggestedRoute ? "Sugerir otra ruta" : "Sugerir ruta";
+    suggestBtn.textContent = state.suggestedRoute ? "Cancelar ruta sugerida" : "Sugerir ruta";
+    suggestBtn.classList.toggle("session-action-danger", Boolean(state.suggestedRoute));
+    suggestBtn.classList.toggle("session-action-primary", !state.suggestedRoute);
+
+    // Show/Hide advanced planner content
+    contentContainer.style.display = state.advancedVisible ? "" : "none";
+    collapsedContainer.style.display = state.advancedVisible ? "none" : "";
+    useAdvancedBtn.textContent = "Usar planificador avanzado";
+    collapseAdvancedBtn.style.display = state.advancedVisible ? "" : "none";
 
     if (!state.proposals) {
       proposalsList.innerHTML = '<div class="session-empty">Inicia una sesión y presiona «Sugerir ruta» para ver las opciones del paso.</div>';
@@ -518,11 +561,26 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
   });
 
   suggestBtn.addEventListener("click", () => {
+    if (state.suggestedRoute && typeof _onCancelSuggestedRoute === "function") {
+      _onCancelSuggestedRoute();
+      return;
+    }
     if (typeof _onSuggestRoute === "function") _onSuggestRoute();
   });
 
   activitiesBtn.addEventListener("click", () => {
     toggleOptionalActivities();
+  });
+
+  // Toggle advanced planner visibility
+  useAdvancedBtn.addEventListener("click", () => {
+    state.advancedVisible = !state.advancedVisible;
+    render();
+  });
+
+  collapseAdvancedBtn.addEventListener("click", () => {
+    state.advancedVisible = false;
+    render();
   });
 
   proposalsList.addEventListener("click", event => {
@@ -577,11 +635,13 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
     setBanner,
     setOptionalActivitiesVisible,
     setRoutePlan,
+    setAdvancedVisible,
     clearProposals,
     getState: () => ({ ...state }),
     onStart,
     onToggleSession,
     onSuggestRoute,
+    onCancelSuggestedRoute,
     onChoice,
   };
 }

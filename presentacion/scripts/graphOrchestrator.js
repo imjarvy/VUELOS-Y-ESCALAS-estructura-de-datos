@@ -203,6 +203,13 @@ tripSessionPanel.onSuggestRoute(async () => {
   }
 });
 
+tripSessionPanel.onCancelSuggestedRoute(() => {
+  tripSessionPanel.setSuggestedRoute(null);
+  tripSessionPanel.setRoutePlan([]);
+  tripSessionPanel.setBanner("Ruta sugerida cancelada.");
+  setStatusMessage("Ruta sugerida cancelada.");
+});
+
 tripSessionPanel.onChoice(async choice => {
   if (!currentSessionId) {
     setStatusMessage("No hay sesión activa. Inicia una sesión primero.");

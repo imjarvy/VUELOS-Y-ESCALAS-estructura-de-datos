@@ -421,6 +421,22 @@ button:active:not(:disabled) {
   margin-left: 6px;
 }
 
+/* Collapsible advanced planner button and expanded content */
+.session-collapsed {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 0;
+}
+
+.session-collapsed .btn {
+  width: 100%;
+}
+
+.session-expanded-content {
+  display: block;
+}
+
 .session-banner {
   border: 1px solid var(--blue-border);
   background: var(--blue-bg);
