@@ -56,6 +56,9 @@ class AdvancedPlanner:
             distance_travelled_km=0.0,
             subsidized_distance_km=0.0,
             subsidized_distance_limit_frac=float(DEFAULTS["max_subsidized_distance_frac"]),
+            free_time_min=0,
+            current_stay_required_min=0,
+            current_optional_stay_min=0,
             last_accommodation_at_min=0,
             last_meal_at_min=0,
         )

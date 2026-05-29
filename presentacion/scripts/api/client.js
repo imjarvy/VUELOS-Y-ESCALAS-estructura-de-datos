@@ -6,13 +6,25 @@ const BASE_URL = "http://localhost:5000";
  * Procesa la respuesta estándar de la API
  */
 async function handleResponse(response) {
-    const result = await response.json();
+    const contentType = response.headers.get("content-type") || "";
+    const isJson = contentType.includes("application/json");
+    const rawBody = isJson ? await response.json().catch(() => null) : await response.text().catch(() => "");
 
-    if (result.error) {
-        throw new Error(result.message || "Error en la petición");
+    if (!response.ok) {
+        const message = rawBody && typeof rawBody === "object"
+            ? rawBody.error || rawBody.message || JSON.stringify(rawBody)
+            : rawBody || response.statusText || `HTTP ${response.status}`;
+        throw new Error(message);
     }
 
-    return result.data || result;
+    if (rawBody && typeof rawBody === "object") {
+        if (rawBody.error) {
+            throw new Error(rawBody.message || rawBody.error || "Error en la petición");
+        }
+        return rawBody.data || rawBody;
+    }
+
+    return rawBody;
 }
 
 /**

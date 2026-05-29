@@ -22,9 +22,14 @@ _SESSIONS = {}
 def _serialize(obj):
     try:
         if dataclasses.is_dataclass(obj):
-            return dataclasses.asdict(obj)
+            return _serialize(dataclasses.asdict(obj))
     except Exception:
         pass
+    if hasattr(obj, "to_dict"):
+        try:
+            return _serialize(obj.to_dict())
+        except Exception:
+            pass
     if isinstance(obj, dict):
         return {k: _serialize(v) for k, v in obj.items()}
     if isinstance(obj, (list, tuple)):
@@ -169,6 +174,21 @@ def session_proposals(session_id: str):
     return jsonify({"proposals": _serialize(proposals), "meta": _serialize(proposals.meta)})
 
 
+@graph_bp.route("/api/session/<session_id>/suggest-route", methods=["POST"])
+def session_suggest_route(session_id: str):
+    session = _SESSIONS.get(session_id)
+    if session is None:
+        return jsonify({"error": "session not found"}), 404
+
+    result = session.suggest_route()
+    return jsonify({
+        "suggested_route": _serialize(result.get("suggested_route")),
+        "route_plan": _serialize(result.get("route_plan") or []),
+        "proposals": _serialize(result.get("proposals")),
+        "meta": _serialize(result.get("proposals").meta if result.get("proposals") is not None else {}),
+    })
+
+
 @graph_bp.route("/api/session/<session_id>/choice", methods=["POST"])
 def session_choice(session_id: str):
     session = _SESSIONS.get(session_id)
@@ -181,4 +201,17 @@ def session_choice(session_id: str):
         "next_proposals": _serialize(result.next_proposals) if result.next_proposals is not None else None,
         "events": list(result.events or []),
         "errors": list(result.errors or []),
+    })
+
+
+@graph_bp.route("/api/session/<session_id>/report", methods=["GET"])
+def session_report(session_id: str):
+    session = _SESSIONS.get(session_id)
+    if session is None:
+        return jsonify({"error": "session not found"}), 404
+
+    report = session.finalize_and_report()
+    return jsonify({
+        "session_id": session_id,
+        "report": _serialize(report),
     })

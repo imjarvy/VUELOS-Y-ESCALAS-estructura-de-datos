@@ -27,6 +27,10 @@ DEFAULTS: Dict[str, float] = {
     "lodging_interval_h": GRAPH_CONFIG_DEFAULTS["intervaloAlojamiento"],
     "meal_interval_h": GRAPH_CONFIG_DEFAULTS["intervaloAlimentacion"],
     "max_subsidized_distance_frac": 0.20,
+    "route_plan_max_steps": 12,
+    "route_lookahead_depth": 5,
+    "route_beam_width": 6,
+    "route_branch_limit": 8,
 }
 
 

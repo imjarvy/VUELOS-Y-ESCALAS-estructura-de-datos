@@ -5,6 +5,7 @@ from typing import Any, Dict, Iterable, List
 
 
 AIRCRAFT_NAME_MAP: Dict[str, str] = {
+    "Commercial": "commercial",
     "Comercial": "commercial",
     "Regional": "regional",
     "Helice": "propeller",
@@ -19,7 +20,12 @@ AIRCRAFT_NAME_MAP: Dict[str, str] = {
 
 
 def normalize_aircraft_name(name: str) -> str:
-    return AIRCRAFT_NAME_MAP.get(name, name)
+    cleaned_name = name.strip()
+    if cleaned_name in AIRCRAFT_NAME_MAP:
+        return AIRCRAFT_NAME_MAP[cleaned_name]
+
+    lowered_name = cleaned_name.lower()
+    return AIRCRAFT_NAME_MAP.get(lowered_name, cleaned_name)
 
 
 def serialize_item(item: Any) -> Any:

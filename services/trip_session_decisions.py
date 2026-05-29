@@ -6,6 +6,15 @@ from models.planner_models import ApplyResult, DecisionRecord, Leg
 
 
 class TripSessionDecisionMixin:
+    def _finalize_stay_time(self) -> int:
+        required = int(getattr(self.state, "current_stay_required_min", 0) or 0)
+        optional_spent = int(getattr(self.state, "current_optional_stay_min", 0) or 0)
+        free_time = max(required - optional_spent, 0)
+        self.state.free_time_min = int(getattr(self.state, "free_time_min", 0) or 0) + free_time
+        self.state.current_stay_required_min = 0
+        self.state.current_optional_stay_min = 0
+        return free_time
+
     def apply_choice(self, choice: Dict[str, Any]) -> ApplyResult:
         kind = (choice.get("kind") or choice.get("type") or "").lower()
         if kind not in {"transport", "activity", "job"}:
@@ -40,6 +49,7 @@ class TripSessionDecisionMixin:
                 return ApplyResult(updated_state=self.state, errors=["Not enough remaining time for selected activity"])
 
             self.state.budget_remaining = round(self.state.budget_remaining - cost_usd, 2)
+            self.state.current_optional_stay_min += duration_min
             trigger_events = self.advance_time(
                 duration_min,
                 is_flight=False,
@@ -141,6 +151,8 @@ class TripSessionDecisionMixin:
                 )
             )
 
+            self.state.current_optional_stay_min += minutes_worked
+
             return ApplyResult(
                 updated_state=self.state,
                 next_proposals=self.step_proposals(),
@@ -187,6 +199,7 @@ class TripSessionDecisionMixin:
         if time_min > self.state.time_remaining_min:
             return ApplyResult(updated_state=self.state, errors=["Not enough remaining time for selected transport option"])
 
+        free_time = self._finalize_stay_time()
         self.state.budget_remaining = round(self.state.budget_remaining - cost_usd, 2)
         trigger_events = self.advance_time(
             time_min,
@@ -196,6 +209,15 @@ class TripSessionDecisionMixin:
         self.state.distance_travelled_km += float(selected_route.distance)
         if is_subsidized:
             self.state.subsidized_distance_km += float(selected_route.distance)
+
+        planned_route = list(getattr(self.state, "planned_route", []) or [])
+        if planned_route and planned_route[0].get("destination") == destination:
+            planned_route.pop(0)
+        else:
+            planned_route = []
+        self.state.planned_route = planned_route
+        if not self.state.planned_route:
+            self.state.last_suggested_route = None
 
         leg = Leg(
             origin_id=self.state.current_airport,
@@ -207,6 +229,8 @@ class TripSessionDecisionMixin:
         )
         self.state.itinerary.append(leg)
         self.state.current_airport = destination
+        self.state.current_stay_required_min = int(getattr(selected_route, "minimum_stay", 0) or 0)
+        self.state.current_optional_stay_min = 0
         trigger_events.extend(self.settle_lodging_after_landing())
 
         self.state.decisions.append(
@@ -221,6 +245,8 @@ class TripSessionDecisionMixin:
                     "time_min": leg.flight_time_min,
                     "cost_usd": leg.leg_cost,
                     "is_subsidized": is_subsidized,
+                    "free_time_min": free_time,
+                    "minimum_stay_min": int(getattr(selected_route, "minimum_stay", 0) or 0),
                 },
             )
         )
@@ -228,6 +254,6 @@ class TripSessionDecisionMixin:
         return ApplyResult(
             updated_state=self.state,
             next_proposals=self.step_proposals(),
-            events=[f"Flight applied: {leg.origin_id} -> {leg.destination_id} ({leg.aircraft})", *trigger_events],
+            events=[f"Flight applied: {leg.origin_id} -> {leg.destination_id} ({leg.aircraft})", *([f"Free time registered: {free_time} min"] if free_time > 0 else []), *trigger_events],
             errors=[],
         )

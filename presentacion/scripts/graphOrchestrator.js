@@ -52,6 +52,9 @@ createGraphConfigController({
   statusElement: status,
 });
 
+tripSessionPanel.setAvailability({ graphLoaded: false, sessionActive: false });
+tripSessionPanel.setBanner("Carga un grafo para iniciar una sesión R3.");
+
 // Small helper button to test the blocked route visual state on the first rendered link.
 (() => {
   const controls = document.querySelector("header .controls");
@@ -108,36 +111,121 @@ tripSessionPanel.onStart(async () => {
   try {
     const res = await apiPost("/api/session/start", { origin, budget, time_h: timeHours });
     currentSessionId = res.session_id;
+    tripSessionPanel.setSessionId(currentSessionId);
+    tripSessionPanel.setAvailability({ graphLoaded: true, sessionActive: true });
+    tripSessionPanel.setSuggestedRoute(null);
+    tripSessionPanel.setRoutePlan([]);
+    tripSessionPanel.setOptionalActivitiesVisible(false);
     const meta = res.meta || {};
     tripSessionPanel.setState({
       budgetInitial: tripSessionPanel.getState().budgetInitial,
       budgetRemaining: meta.budget_remaining ?? tripSessionPanel.getState().budgetRemaining,
       timeRemainingMin: meta.time_remaining_min ?? tripSessionPanel.getState().timeRemainingMin,
+      freeTimeMin: meta.free_time_min ?? tripSessionPanel.getState().freeTimeMin,
+      currentStayRequiredMin: meta.current_stay_required_min ?? tripSessionPanel.getState().currentStayRequiredMin,
+      currentOptionalStayMin: meta.current_optional_stay_min ?? tripSessionPanel.getState().currentOptionalStayMin,
     });
+    tripSessionPanel.setProposals(res.proposals ?? null);
+    tripSessionPanel.setBanner(`Sesión iniciada: ${currentSessionId}. Revisa rutas, actividades y trabajos disponibles.`);
     status.textContent = `Sesión iniciada: ${currentSessionId}`;
-    console.log("Session proposals:", res.proposals);
   } catch (err) {
+    tripSessionPanel.setBanner(`No se pudo iniciar la sesión: ${err.message || err}`, "error");
     status.textContent = `Error iniciando sesión: ${err.message || err}`;
   }
 });
 
-tripSessionPanel.onGetProposals(async () => {
+tripSessionPanel.onSuggestRoute(async () => {
   if (!currentSessionId) {
     status.textContent = "No hay sesión activa. Inicia una sesión primero.";
     return;
   }
-  status.textContent = "Solicitando propuestas...";
+  status.textContent = "Generando ruta sugerida...";
   try {
-    const res = await apiGet(`/api/session/${currentSessionId}/proposals`);
+    const res = await apiPost(`/api/session/${currentSessionId}/suggest-route`, {});
     const meta = res.meta || {};
     tripSessionPanel.setState({
       budgetRemaining: meta.budget_remaining ?? tripSessionPanel.getState().budgetRemaining,
       timeRemainingMin: meta.time_remaining_min ?? tripSessionPanel.getState().timeRemainingMin,
+      freeTimeMin: meta.free_time_min ?? tripSessionPanel.getState().freeTimeMin,
+      currentStayRequiredMin: meta.current_stay_required_min ?? tripSessionPanel.getState().currentStayRequiredMin,
+      currentOptionalStayMin: meta.current_optional_stay_min ?? tripSessionPanel.getState().currentOptionalStayMin,
     });
-    console.log("Proposals:", res.proposals);
-    status.textContent = `Propuestas recibidas: ${res.proposals.routes?.length ?? 0}`;
+    tripSessionPanel.setProposals(res.proposals ?? null);
+    tripSessionPanel.setSuggestedRoute(res.suggested_route ?? null);
+    tripSessionPanel.setRoutePlan(res.route_plan ?? []);
+    tripSessionPanel.setOptionalActivitiesVisible(false);
+
+    const routesCount = res.proposals?.routes?.length ?? 0;
+    const activitiesCount = res.proposals?.activities?.length ?? 0;
+    const jobsCount = res.proposals?.jobs?.length ?? 0;
+    const suggestedDestination = res.suggested_route?.destination ?? "sin ruta sugerida";
+    tripSessionPanel.setBanner(`Ruta sugerida guardada: ${suggestedDestination}. ${routesCount} rutas, ${activitiesCount} actividades y ${jobsCount} trabajos disponibles.`, "success");
+    status.textContent = `Ruta sugerida: ${suggestedDestination}`;
   } catch (err) {
-    status.textContent = `Error al pedir propuestas: ${err.message || err}`;
+    tripSessionPanel.setBanner(`No se pudo sugerir la ruta: ${err.message || err}`, "error");
+    status.textContent = `Error al sugerir ruta: ${err.message || err}`;
+  }
+});
+
+tripSessionPanel.onChoice(async choice => {
+  if (!currentSessionId) {
+    status.textContent = "No hay sesión activa. Inicia una sesión primero.";
+    return;
+  }
+
+  status.textContent = "Aplicando decisión...";
+  try {
+    const res = await apiPost(`/api/session/${currentSessionId}/choice`, choice);
+    const updatedState = res.updated_state ?? {};
+    const nextProposals = res.next_proposals ?? null;
+    tripSessionPanel.setState({
+      budgetRemaining: updatedState.budget_remaining ?? tripSessionPanel.getState().budgetRemaining,
+      timeRemainingMin: updatedState.time_remaining_min ?? tripSessionPanel.getState().timeRemainingMin,
+      budgetInitial: updatedState.budget_initial ?? tripSessionPanel.getState().budgetInitial,
+      freeTimeMin: updatedState.free_time_min ?? tripSessionPanel.getState().freeTimeMin,
+      currentStayRequiredMin: updatedState.current_stay_required_min ?? tripSessionPanel.getState().currentStayRequiredMin,
+      currentOptionalStayMin: updatedState.current_optional_stay_min ?? tripSessionPanel.getState().currentOptionalStayMin,
+    });
+    tripSessionPanel.setProposals(nextProposals);
+    const remainingPlan = Array.isArray(updatedState.planned_route) ? updatedState.planned_route : [];
+    tripSessionPanel.setSuggestedRoute(remainingPlan[0] ?? null);
+    tripSessionPanel.setRoutePlan(updatedState.planned_route ?? []);
+
+    if ((choice.kind || "").toLowerCase() === "transport") {
+      tripSessionPanel.setOptionalActivitiesVisible(false);
+    }
+
+    if (Array.isArray(res.events) && res.events.length) {
+      tripSessionPanel.setBanner(`Decisión aplicada. ${res.events[0]}`, "success");
+      status.textContent = res.events.join(" | ");
+    } else if (Array.isArray(res.errors) && res.errors.length) {
+      tripSessionPanel.setBanner(`No se pudo aplicar la decisión: ${res.errors[0]}`, "error");
+      status.textContent = res.errors.join(" | ");
+    } else {
+      tripSessionPanel.setBanner("Decisión aplicada correctamente.", "success");
+      status.textContent = "Decisión aplicada correctamente.";
+    }
+  } catch (err) {
+    tripSessionPanel.setBanner(`Error aplicando decisión: ${err.message || err}`, "error");
+    status.textContent = `Error aplicando decisión: ${err.message || err}`;
+  }
+});
+
+tripSessionPanel.onReport(async () => {
+  if (!currentSessionId) {
+    tripSessionPanel.setBanner("No hay sesión activa para generar un reporte.", "error");
+    return;
+  }
+
+  tripSessionPanel.setBanner("Generando reporte final...");
+  try {
+    const res = await apiGet(`/api/session/${currentSessionId}/report`);
+    tripSessionPanel.setReport(res.report ?? null);
+    tripSessionPanel.setBanner("Reporte final listo. Puedes revisarlo debajo del panel.", "success");
+    status.textContent = "Reporte generado correctamente.";
+  } catch (err) {
+    tripSessionPanel.setBanner(`No se pudo generar el reporte: ${err.message || err}`, "error");
+    status.textContent = `Error al generar reporte: ${err.message || err}`;
   }
 });
 
@@ -189,7 +277,18 @@ document.getElementById("loadJsonConfirmBtn").addEventListener("click", async ()
     budgetInitial: 1000,
     budgetRemaining: 1000,
     timeRemainingMin: 72 * 60,
+    freeTimeMin: 0,
+    currentStayRequiredMin: 0,
+    currentOptionalStayMin: 0,
   });
+  tripSessionPanel.setSessionId(null);
+  tripSessionPanel.clearProposals();
+  tripSessionPanel.setReport(null);
+  tripSessionPanel.setSuggestedRoute(null);
+  tripSessionPanel.setRoutePlan([]);
+  tripSessionPanel.setOptionalActivitiesVisible(false);
+  tripSessionPanel.setAvailability({ graphLoaded: true, sessionActive: false });
+  tripSessionPanel.setBanner("Grafo cargado. Ahora puedes iniciar una sesión R3.", "success");
   infoPanel.setRules(await apiGet("/api/config").catch(() => ({ intervaloAlojamiento: 20 })));
   tripSessionPanel.setRules(await apiGet("/api/config").catch(() => ({ intervaloAlojamiento: 20, intervaloAlimentacion: 8 })));
   status.textContent = `Grafo cargado: ${response.airports ?? d3Graph.nodes.length} aeropuertos.`;

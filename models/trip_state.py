@@ -13,6 +13,11 @@ class TripState:
     distance_travelled_km: float = 0.0
     subsidized_distance_km: float = 0.0
     subsidized_distance_limit_frac: float = 0.20
+    free_time_min: int = 0
+    current_stay_required_min: int = 0
+    current_optional_stay_min: int = 0
+    last_suggested_route: Optional[Dict[str, Any]] = None
+    planned_route: List[Dict[str, Any]] = field(default_factory=list)
     meal_accumulated_min: int = 0
     lodging_accumulated_min: int = 0
     lodging_pending_after_flight: bool = False

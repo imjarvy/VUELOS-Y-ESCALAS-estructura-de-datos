@@ -1,0 +1,1725 @@
+{
+  "airports": [
+    {
+      "id": "MEX",
+      "name": "Mexico City International Airport",
+      "city": "Mexico City",
+      "country": "Mexico",
+      "timezone": "UTC-6",
+      "is_hub": true,
+      "accommodation_cost": 52.0,
+      "feeding_cost": 13.0,
+      "activities": [
+        {
+          "name": "Templo Mayor Archaeological Site",
+          "type": "Historical",
+          "duration_min": 120,
+          "cost_usd": 15.0
+        },
+        {
+          "name": "Frida Kahlo Museum Tour",
+          "type": "Cultural",
+          "duration_min": 90,
+          "cost_usd": 20.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Museum Guide",
+          "hourly_rate": 16.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "CUN",
+      "name": "Cancún International Airport",
+      "city": "Cancún",
+      "country": "Mexico",
+      "timezone": "UTC-5",
+      "is_hub": false,
+      "accommodation_cost": 70.0,
+      "feeding_cost": 16.0,
+      "activities": [
+        {
+          "name": "Cenote Swimming",
+          "type": "Adventure",
+          "duration_min": 180,
+          "cost_usd": 40.0
+        },
+        {
+          "name": "Playa del Carmen Beach Day",
+          "type": "Beach",
+          "duration_min": 480,
+          "cost_usd": 0.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Resort Worker",
+          "hourly_rate": 12.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "GUA",
+      "name": "La Aurora International Airport",
+      "city": "Guatemala City",
+      "country": "Guatemala",
+      "timezone": "UTC-6",
+      "is_hub": false,
+      "accommodation_cost": 40.0,
+      "feeding_cost": 10.0,
+      "activities": [
+        {
+          "name": "Chichicastenango Market Tour",
+          "type": "Cultural",
+          "duration_min": 180,
+          "cost_usd": 40.0
+        },
+        {
+          "name": "Lake Atitlán Boat Tour",
+          "type": "Adventure",
+          "duration_min": 240,
+          "cost_usd": 60.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Market Guide",
+          "hourly_rate": 11.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "SAL",
+      "name": "Monseñor Óscar Romero International Airport",
+      "city": "San Salvador",
+      "country": "El Salvador",
+      "timezone": "UTC-6",
+      "is_hub": false,
+      "accommodation_cost": 38.0,
+      "feeding_cost": 9.5,
+      "activities": [
+        {
+          "name": "Volcano Hike Adventure",
+          "type": "Adventure",
+          "duration_min": 240,
+          "cost_usd": 70.0
+        },
+        {
+          "name": "Mayan Ruins Tour",
+          "type": "Historical",
+          "duration_min": 180,
+          "cost_usd": 50.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Tour Guide",
+          "hourly_rate": 12.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "MGA",
+      "name": "Augusto C. Sandino International Airport",
+      "city": "Managua",
+      "country": "Nicaragua",
+      "timezone": "UTC-6",
+      "is_hub": false,
+      "accommodation_cost": 35.0,
+      "feeding_cost": 9.0,
+      "activities": [
+        {
+          "name": "Granada Colonial City Tour",
+          "type": "Heritage",
+          "duration_min": 120,
+          "cost_usd": 30.0
+        },
+        {
+          "name": "Lake Nicaragua Island Cruise",
+          "type": "Adventure",
+          "duration_min": 360,
+          "cost_usd": 80.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Boat Captain",
+          "hourly_rate": 13.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "PTY",
+      "name": "Tocumen International Airport",
+      "city": "Panama City",
+      "country": "Panama",
+      "timezone": "UTC-5",
+      "is_hub": true,
+      "accommodation_cost": 55.0,
+      "feeding_cost": 14.0,
+      "activities": [
+        {
+          "name": "Panama Canal Transit Tour",
+          "type": "Historical",
+          "duration_min": 360,
+          "cost_usd": 150.0
+        },
+        {
+          "name": "San Blas Islands Adventure",
+          "type": "Beach",
+          "duration_min": 720,
+          "cost_usd": 200.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Canal Guide",
+          "hourly_rate": 20.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "BOG",
+      "name": "El Dorado International Airport",
+      "city": "Bogotá",
+      "country": "Colombia",
+      "timezone": "UTC-5",
+      "is_hub": true,
+      "accommodation_cost": 45.0,
+      "feeding_cost": 12.0,
+      "activities": [
+        {
+          "name": "Monserrate Sanctuary Visit",
+          "type": "Cultural",
+          "duration_min": 120,
+          "cost_usd": 8.0
+        },
+        {
+          "name": "Gold Museum Tour",
+          "type": "Educational",
+          "duration_min": 90,
+          "cost_usd": 18.0
+        },
+        {
+          "name": "Historic La Candelaria Walk",
+          "type": "Heritage",
+          "duration_min": 180,
+          "cost_usd": 0.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Tour Guide",
+          "hourly_rate": 15.0,
+          "max_hours": 8
+        },
+        {
+          "name": "Hotel Staff",
+          "hourly_rate": 8.5,
+          "max_hours": 10
+        }
+      ]
+    },
+    {
+      "id": "CTG",
+      "name": "Rafael Núñez International Airport",
+      "city": "Cartagena",
+      "country": "Colombia",
+      "timezone": "UTC-5",
+      "is_hub": false,
+      "accommodation_cost": 55.0,
+      "feeding_cost": 14.0,
+      "activities": [
+        {
+          "name": "Walled City Historic Tour",
+          "type": "Heritage",
+          "duration_min": 180,
+          "cost_usd": 15.0
+        },
+        {
+          "name": "Rosario Islands Cruise",
+          "type": "Beach",
+          "duration_min": 480,
+          "cost_usd": 65.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Boat Captain",
+          "hourly_rate": 18.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "BAQ",
+      "name": "Ernesto Cortissoz International Airport",
+      "city": "Barranquilla",
+      "country": "Colombia",
+      "timezone": "UTC-5",
+      "is_hub": false,
+      "accommodation_cost": 40.0,
+      "feeding_cost": 11.0,
+      "activities": [
+        {
+          "name": "Carnival Festival",
+          "type": "Cultural",
+          "duration_min": 240,
+          "cost_usd": 30.0
+        },
+        {
+          "name": "Gold Museum Tour",
+          "type": "Educational",
+          "duration_min": 90,
+          "cost_usd": 12.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Event Coordinator",
+          "hourly_rate": 16.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "CCS",
+      "name": "Simón Bolívar International Airport",
+      "city": "Caracas",
+      "country": "Venezuela",
+      "timezone": "UTC-4",
+      "is_hub": false,
+      "accommodation_cost": 50.0,
+      "feeding_cost": 12.0,
+      "activities": [
+        {
+          "name": "Angel Falls Trek",
+          "type": "Adventure",
+          "duration_min": 1440,
+          "cost_usd": 550.0
+        },
+        {
+          "name": "Los Llanos Wildlife Tour",
+          "type": "Nature",
+          "duration_min": 480,
+          "cost_usd": 200.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Adventure Guide",
+          "hourly_rate": 17.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "MDE",
+      "name": "José María Córdova International Airport",
+      "city": "Medellín",
+      "country": "Colombia",
+      "timezone": "UTC-5",
+      "is_hub": false,
+      "accommodation_cost": 38.0,
+      "feeding_cost": 10.0,
+      "activities": [
+        {
+          "name": "Comuna 13 Graffiti Tour",
+          "type": "Cultural",
+          "duration_min": 150,
+          "cost_usd": 20.0
+        },
+        {
+          "name": "Arví Park Cable Car Ride",
+          "type": "Adventure",
+          "duration_min": 120,
+          "cost_usd": 12.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Restaurant Server",
+          "hourly_rate": 7.5,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "UIO",
+      "name": "Mariscal Sucre International Airport",
+      "city": "Quito",
+      "country": "Ecuador",
+      "timezone": "UTC-5",
+      "is_hub": true,
+      "accommodation_cost": 42.0,
+      "feeding_cost": 11.0,
+      "activities": [
+        {
+          "name": "Galápagos Islands Tour",
+          "type": "Nature",
+          "duration_min": 1440,
+          "cost_usd": 1500.0
+        },
+        {
+          "name": "Amazon Rainforest Trek",
+          "type": "Adventure",
+          "duration_min": 720,
+          "cost_usd": 450.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Naturalist Guide",
+          "hourly_rate": 22.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "GYE",
+      "name": "José Joaquín de Olmedo International Airport",
+      "city": "Guayaquil",
+      "country": "Ecuador",
+      "timezone": "UTC-5",
+      "is_hub": false,
+      "accommodation_cost": 40.0,
+      "feeding_cost": 11.0,
+      "activities": [
+        {
+          "name": "Coastal Beach Resort Day",
+          "type": "Beach",
+          "duration_min": 480,
+          "cost_usd": 0.0
+        },
+        {
+          "name": "Wildlife Reserve Tour",
+          "type": "Nature",
+          "duration_min": 240,
+          "cost_usd": 80.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Resort Staff",
+          "hourly_rate": 10.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "LIM",
+      "name": "Jorge Chávez International Airport",
+      "city": "Lima",
+      "country": "Peru",
+      "timezone": "UTC-5",
+      "is_hub": true,
+      "accommodation_cost": 50.0,
+      "feeding_cost": 13.0,
+      "activities": [
+        {
+          "name": "Machu Picchu Trek",
+          "type": "Adventure",
+          "duration_min": 1440,
+          "cost_usd": 550.0
+        },
+        {
+          "name": "Lima Historic Center Tour",
+          "type": "Heritage",
+          "duration_min": 120,
+          "cost_usd": 20.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Mountain Guide",
+          "hourly_rate": 20.0,
+          "max_hours": 10
+        }
+      ]
+    },
+    {
+      "id": "CUZ",
+      "name": "Alejandro Velasco Astete International Airport",
+      "city": "Cusco",
+      "country": "Peru",
+      "timezone": "UTC-5",
+      "is_hub": false,
+      "accommodation_cost": 42.0,
+      "feeding_cost": 11.0,
+      "activities": [
+        {
+          "name": "Machu Picchu Tour",
+          "type": "Historical",
+          "duration_min": 720,
+          "cost_usd": 350.0
+        },
+        {
+          "name": "Sacred Valley Trek",
+          "type": "Adventure",
+          "duration_min": 480,
+          "cost_usd": 180.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Trek Assistant",
+          "hourly_rate": 15.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "AQP",
+      "name": "Rodríguez Ballón International Airport",
+      "city": "Arequipa",
+      "country": "Peru",
+      "timezone": "UTC-5",
+      "is_hub": false,
+      "accommodation_cost": 38.0,
+      "feeding_cost": 10.0,
+      "activities": [
+        {
+          "name": "Colca Canyon Trek",
+          "type": "Adventure",
+          "duration_min": 480,
+          "cost_usd": 200.0
+        },
+        {
+          "name": "Santa Catalina Monastery Visit",
+          "type": "Religious",
+          "duration_min": 120,
+          "cost_usd": 8.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Canyon Guide",
+          "hourly_rate": 18.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "LPB",
+      "name": "El Alto International Airport",
+      "city": "La Paz",
+      "country": "Bolivia",
+      "timezone": "UTC-4",
+      "is_hub": false,
+      "accommodation_cost": 40.0,
+      "feeding_cost": 10.0,
+      "activities": [
+        {
+          "name": "Death Road Mountain Biking",
+          "type": "Adventure",
+          "duration_min": 240,
+          "cost_usd": 90.0
+        },
+        {
+          "name": "Witches Market Tour",
+          "type": "Cultural",
+          "duration_min": 120,
+          "cost_usd": 15.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Mountain Bike Guide",
+          "hourly_rate": 18.0,
+          "max_hours": 6
+        }
+      ]
+    },
+    {
+      "id": "VVI",
+      "name": "Viru Viru International Airport",
+      "city": "Santa Cruz",
+      "country": "Bolivia",
+      "timezone": "UTC-4",
+      "is_hub": false,
+      "accommodation_cost": 35.0,
+      "feeding_cost": 9.0,
+      "activities": [
+        {
+          "name": "Amazon Rainforest Expedition",
+          "type": "Adventure",
+          "duration_min": 720,
+          "cost_usd": 400.0
+        },
+        {
+          "name": "Wildlife Spotting Tour",
+          "type": "Nature",
+          "duration_min": 480,
+          "cost_usd": 150.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Jungle Guide",
+          "hourly_rate": 14.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "ASU",
+      "name": "Silvio Pettirossi International Airport",
+      "city": "Asunción",
+      "country": "Paraguay",
+      "timezone": "UTC-4",
+      "is_hub": false,
+      "accommodation_cost": 38.0,
+      "feeding_cost": 10.0,
+      "activities": [
+        {
+          "name": "Iguazu Falls Trip",
+          "type": "Nature",
+          "duration_min": 720,
+          "cost_usd": 200.0
+        },
+        {
+          "name": "Gran Chaco Wildlife Safari",
+          "type": "Adventure",
+          "duration_min": 480,
+          "cost_usd": 180.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Safari Guide",
+          "hourly_rate": 16.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "SCL",
+      "name": "Arturo Merino Benítez International Airport",
+      "city": "Santiago",
+      "country": "Chile",
+      "timezone": "UTC-3",
+      "is_hub": true,
+      "accommodation_cost": 60.0,
+      "feeding_cost": 15.0,
+      "activities": [
+        {
+          "name": "Andes Mountain Tour",
+          "type": "Adventure",
+          "duration_min": 480,
+          "cost_usd": 120.0
+        },
+        {
+          "name": "Wine Valley Tour",
+          "type": "Gastronomic",
+          "duration_min": 360,
+          "cost_usd": 95.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Wine Sommelier",
+          "hourly_rate": 22.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "IQQ",
+      "name": "Diego Aracena International Airport",
+      "city": "Iquique",
+      "country": "Chile",
+      "timezone": "UTC-3",
+      "is_hub": false,
+      "accommodation_cost": 50.0,
+      "feeding_cost": 13.0,
+      "activities": [
+        {
+          "name": "Atacama Desert Tour",
+          "type": "Adventure",
+          "duration_min": 360,
+          "cost_usd": 150.0
+        },
+        {
+          "name": "Paragliding Experience",
+          "type": "Adventure",
+          "duration_min": 120,
+          "cost_usd": 180.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Adventure Sport Guide",
+          "hourly_rate": 25.0,
+          "max_hours": 6
+        }
+      ]
+    },
+    {
+      "id": "PMC",
+      "name": "La Araucania Airport",
+      "city": "Puerto Montt",
+      "country": "Chile",
+      "timezone": "UTC-3",
+      "is_hub": false,
+      "accommodation_cost": 45.0,
+      "feeding_cost": 12.0,
+      "activities": [
+        {
+          "name": "Chiloé Island Adventure",
+          "type": "Cultural",
+          "duration_min": 480,
+          "cost_usd": 85.0
+        },
+        {
+          "name": "Seafood Market Tour",
+          "type": "Gastronomic",
+          "duration_min": 120,
+          "cost_usd": 20.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Fisheries Worker",
+          "hourly_rate": 11.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "MDZ",
+      "name": "Governor Francisco Gabrielli International Airport",
+      "city": "Mendoza",
+      "country": "Argentina",
+      "timezone": "UTC-3",
+      "is_hub": false,
+      "accommodation_cost": 48.0,
+      "feeding_cost": 12.0,
+      "activities": [
+        {
+          "name": "Wine Estate Tour",
+          "type": "Gastronomic",
+          "duration_min": 240,
+          "cost_usd": 85.0
+        },
+        {
+          "name": "Andes Mountain Trek",
+          "type": "Adventure",
+          "duration_min": 480,
+          "cost_usd": 150.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Vineyard Worker",
+          "hourly_rate": 12.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "COR",
+      "name": "Córdoba International Airport",
+      "city": "Córdoba",
+      "country": "Argentina",
+      "timezone": "UTC-3",
+      "is_hub": false,
+      "accommodation_cost": 42.0,
+      "feeding_cost": 11.0,
+      "activities": [
+        {
+          "name": "Jesuit Block Historic Tour",
+          "type": "Heritage",
+          "duration_min": 120,
+          "cost_usd": 15.0
+        },
+        {
+          "name": "Córdoba Cathedral Visit",
+          "type": "Religious",
+          "duration_min": 60,
+          "cost_usd": 5.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Museum Guide",
+          "hourly_rate": 12.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "EZE",
+      "name": "Ministro Pistarini International Airport",
+      "city": "Buenos Aires",
+      "country": "Argentina",
+      "timezone": "UTC-3",
+      "is_hub": true,
+      "accommodation_cost": 50.0,
+      "feeding_cost": 13.0,
+      "activities": [
+        {
+          "name": "Tango Show & Dinner",
+          "type": "Cultural",
+          "duration_min": 240,
+          "cost_usd": 120.0
+        },
+        {
+          "name": "La Boca Historic Walk",
+          "type": "Heritage",
+          "duration_min": 120,
+          "cost_usd": 0.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Tango Dancer",
+          "hourly_rate": 25.0,
+          "max_hours": 4
+        }
+      ]
+    },
+    {
+      "id": "MVD",
+      "name": "Carrasco International Airport",
+      "city": "Montevideo",
+      "country": "Uruguay",
+      "timezone": "UTC-3",
+      "is_hub": false,
+      "accommodation_cost": 52.0,
+      "feeding_cost": 13.0,
+      "activities": [
+        {
+          "name": "Teatro Solís Tour",
+          "type": "Cultural",
+          "duration_min": 60,
+          "cost_usd": 8.0
+        },
+        {
+          "name": "Rambla Boardwalk Walk",
+          "type": "Leisure",
+          "duration_min": 120,
+          "cost_usd": 0.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Tour Guide",
+          "hourly_rate": 14.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "GRU",
+      "name": "São Paulo/Guarulhos International Airport",
+      "city": "São Paulo",
+      "country": "Brazil",
+      "timezone": "UTC-3",
+      "is_hub": true,
+      "accommodation_cost": 55.0,
+      "feeding_cost": 14.0,
+      "activities": [
+        {
+          "name": "Art Museum Circuit",
+          "type": "Cultural",
+          "duration_min": 240,
+          "cost_usd": 25.0
+        },
+        {
+          "name": "Nightlife in Vila Olímpia",
+          "type": "Entertainment",
+          "duration_min": 360,
+          "cost_usd": 50.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Cultural Guide",
+          "hourly_rate": 19.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "GIG",
+      "name": "Tom Jobim International Airport",
+      "city": "Rio de Janeiro",
+      "country": "Brazil",
+      "timezone": "UTC-3",
+      "is_hub": false,
+      "accommodation_cost": 65.0,
+      "feeding_cost": 16.0,
+      "activities": [
+        {
+          "name": "Christ the Redeemer Tour",
+          "type": "Religious",
+          "duration_min": 180,
+          "cost_usd": 30.0
+        },
+        {
+          "name": "Copacabana Beach Day",
+          "type": "Beach",
+          "duration_min": 480,
+          "cost_usd": 0.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Beach Vendor",
+          "hourly_rate": 10.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "SSA",
+      "name": "Deputado Luís Eduardo Magalhães International Airport",
+      "city": "Salvador",
+      "country": "Brazil",
+      "timezone": "UTC-3",
+      "is_hub": false,
+      "accommodation_cost": 48.0,
+      "feeding_cost": 12.0,
+      "activities": [
+        {
+          "name": "Capoeira Dance Class",
+          "type": "Cultural",
+          "duration_min": 90,
+          "cost_usd": 20.0
+        },
+        {
+          "name": "Historic Pelourinho Tour",
+          "type": "Heritage",
+          "duration_min": 120,
+          "cost_usd": 15.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Dance Instructor",
+          "hourly_rate": 14.0,
+          "max_hours": 6
+        }
+      ]
+    },
+    {
+      "id": "FOR",
+      "name": "Pinto Martins International Airport",
+      "city": "Fortaleza",
+      "country": "Brazil",
+      "timezone": "UTC-3",
+      "is_hub": false,
+      "accommodation_cost": 45.0,
+      "feeding_cost": 11.0,
+      "activities": [
+        {
+          "name": "Beach Buggy Adventure",
+          "type": "Adventure",
+          "duration_min": 240,
+          "cost_usd": 60.0
+        },
+        {
+          "name": "Jericoacoara National Park Trek",
+          "type": "Nature",
+          "duration_min": 480,
+          "cost_usd": 100.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Beach Tour Guide",
+          "hourly_rate": 13.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "REC",
+      "name": "Recife/Guararapes International Airport",
+      "city": "Recife",
+      "country": "Brazil",
+      "timezone": "UTC-3",
+      "is_hub": false,
+      "accommodation_cost": 42.0,
+      "feeding_cost": 11.0,
+      "activities": [
+        {
+          "name": "Olinda Historic Center",
+          "type": "Heritage",
+          "duration_min": 180,
+          "cost_usd": 25.0
+        },
+        {
+          "name": "Boa Viagem Beach Walk",
+          "type": "Leisure",
+          "duration_min": 120,
+          "cost_usd": 0.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Harbor Assistant",
+          "hourly_rate": 11.5,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "NAT",
+      "name": "Natal International Airport",
+      "city": "Natal",
+      "country": "Brazil",
+      "timezone": "UTC-3",
+      "is_hub": false,
+      "accommodation_cost": 40.0,
+      "feeding_cost": 10.5,
+      "activities": [
+        {
+          "name": "Dunes Buggy Tour",
+          "type": "Adventure",
+          "duration_min": 240,
+          "cost_usd": 75.0
+        },
+        {
+          "name": "Fortes dos Reis Magos Visit",
+          "type": "Heritage",
+          "duration_min": 120,
+          "cost_usd": 12.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Coastal Guide",
+          "hourly_rate": 12.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "MAO",
+      "name": "Eduardo Gomes International Airport",
+      "city": "Manaus",
+      "country": "Brazil",
+      "timezone": "UTC-4",
+      "is_hub": true,
+      "accommodation_cost": 46.0,
+      "feeding_cost": 12.0,
+      "activities": [
+        {
+          "name": "Amazon River Cruise",
+          "type": "Nature",
+          "duration_min": 360,
+          "cost_usd": 80.0
+        },
+        {
+          "name": "Opera House Tour",
+          "type": "Cultural",
+          "duration_min": 90,
+          "cost_usd": 18.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "River Assistant",
+          "hourly_rate": 14.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "BEL",
+      "name": "Bel?m International Airport",
+      "city": "Bel?m",
+      "country": "Brazil",
+      "timezone": "UTC-3",
+      "is_hub": false,
+      "accommodation_cost": 41.0,
+      "feeding_cost": 10.0,
+      "activities": [
+        {
+          "name": "Ver-o-Peso Market Tour",
+          "type": "Cultural",
+          "duration_min": 120,
+          "cost_usd": 10.0
+        },
+        {
+          "name": "Amazon Delta Boat Ride",
+          "type": "Nature",
+          "duration_min": 240,
+          "cost_usd": 55.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Market Coordinator",
+          "hourly_rate": 12.5,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "TGU",
+      "name": "Toncont?n International Airport",
+      "city": "Tegucigalpa",
+      "country": "Honduras",
+      "timezone": "UTC-6",
+      "is_hub": false,
+      "accommodation_cost": 37.0,
+      "feeding_cost": 9.5,
+      "activities": [
+        {
+          "name": "Historical Center Walk",
+          "type": "Heritage",
+          "duration_min": 120,
+          "cost_usd": 10.0
+        },
+        {
+          "name": "Comayagua Valley Tour",
+          "type": "Adventure",
+          "duration_min": 240,
+          "cost_usd": 45.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "City Guide",
+          "hourly_rate": 11.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "SAP",
+      "name": "Ramon Villeda Morales International Airport",
+      "city": "San Pedro Sula",
+      "country": "Honduras",
+      "timezone": "UTC-6",
+      "is_hub": false,
+      "accommodation_cost": 36.0,
+      "feeding_cost": 9.0,
+      "activities": [
+        {
+          "name": "Cop?n Ruins Excursion",
+          "type": "Heritage",
+          "duration_min": 360,
+          "cost_usd": 85.0
+        },
+        {
+          "name": "Merendon Mountain Tour",
+          "type": "Adventure",
+          "duration_min": 240,
+          "cost_usd": 60.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Excursion Assistant",
+          "hourly_rate": 10.5,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "SJO",
+      "name": "Juan Santamar?a International Airport",
+      "city": "San Jos?",
+      "country": "Costa Rica",
+      "timezone": "UTC-6",
+      "is_hub": true,
+      "accommodation_cost": 44.0,
+      "feeding_cost": 11.0,
+      "activities": [
+        {
+          "name": "Arenal Volcano Tour",
+          "type": "Adventure",
+          "duration_min": 360,
+          "cost_usd": 95.0
+        },
+        {
+          "name": "San Jos? Museums Circuit",
+          "type": "Cultural",
+          "duration_min": 180,
+          "cost_usd": 20.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Eco Guide",
+          "hourly_rate": 18.0,
+          "max_hours": 8
+        }
+      ]
+    },
+    {
+      "id": "LIR",
+      "name": "Daniel Oduber Quir?s International Airport",
+      "city": "Liberia",
+      "country": "Costa Rica",
+      "timezone": "UTC-6",
+      "is_hub": false,
+      "accommodation_cost": 39.0,
+      "feeding_cost": 10.0,
+      "activities": [
+        {
+          "name": "Guanacaste Beach Day",
+          "type": "Beach",
+          "duration_min": 480,
+          "cost_usd": 0.0
+        },
+        {
+          "name": "Rinc?n de la Vieja Trek",
+          "type": "Adventure",
+          "duration_min": 240,
+          "cost_usd": 70.0
+        }
+      ],
+      "jobs": [
+        {
+          "name": "Beach Host",
+          "hourly_rate": 12.0,
+          "max_hours": 8
+        }
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "origin_vertex": "MEX",
+      "destination_vertex": "CUN",
+      "distance": 330,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 75.0,
+      "minimum_stay": 180
+    },
+    {
+      "origin_vertex": "CUN",
+      "destination_vertex": "MEX",
+      "distance": 330,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 75.0,
+      "minimum_stay": 180
+    },
+    {
+      "origin_vertex": "MEX",
+      "destination_vertex": "GUA",
+      "distance": 1080,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 150.0,
+      "minimum_stay": 240
+    },
+    {
+      "origin_vertex": "GUA",
+      "destination_vertex": "MEX",
+      "distance": 1080,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 150.0,
+      "minimum_stay": 240
+    },
+    {
+      "origin_vertex": "GUA",
+      "destination_vertex": "SAL",
+      "distance": 180,
+      "aircrafts": [
+        "Regional"
+      ],
+      "cost": 45.0,
+      "minimum_stay": 120
+    },
+    {
+      "origin_vertex": "SAL",
+      "destination_vertex": "GUA",
+      "distance": 180,
+      "aircrafts": [
+        "Regional"
+      ],
+      "cost": 45.0,
+      "minimum_stay": 120
+    },
+    {
+      "origin_vertex": "SAL",
+      "destination_vertex": "MGA",
+      "distance": 130,
+      "aircrafts": [
+        "Regional"
+      ],
+      "cost": 35.0,
+      "minimum_stay": 120
+    },
+    {
+      "origin_vertex": "MGA",
+      "destination_vertex": "PTY",
+      "distance": 600,
+      "aircrafts": [
+        "Regional"
+      ],
+      "cost": 135.0,
+      "minimum_stay": 240
+    },
+    {
+      "origin_vertex": "PTY",
+      "destination_vertex": "BOG",
+      "distance": 700,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 155.0,
+      "minimum_stay": 300
+    },
+    {
+      "origin_vertex": "BOG",
+      "destination_vertex": "PTY",
+      "distance": 700,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 155.0,
+      "minimum_stay": 300
+    },
+    {
+      "origin_vertex": "BOG",
+      "destination_vertex": "CTG",
+      "distance": 550,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 115.0,
+      "minimum_stay": 240
+    },
+    {
+      "origin_vertex": "CTG",
+      "destination_vertex": "BAQ",
+      "distance": 110,
+      "aircrafts": [
+        "Regional"
+      ],
+      "cost": 35.0,
+      "minimum_stay": 120
+    },
+    {
+      "origin_vertex": "BAQ",
+      "destination_vertex": "CCS",
+      "distance": 540,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 110.0,
+      "minimum_stay": 240
+    },
+    {
+      "origin_vertex": "BOG",
+      "destination_vertex": "MDE",
+      "distance": 430,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 95.0,
+      "minimum_stay": 240
+    },
+    {
+      "origin_vertex": "BOG",
+      "destination_vertex": "UIO",
+      "distance": 580,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 130.0,
+      "minimum_stay": 300
+    },
+    {
+      "origin_vertex": "UIO",
+      "destination_vertex": "GYE",
+      "distance": 310,
+      "aircrafts": [
+        "Regional"
+      ],
+      "cost": 70.0,
+      "minimum_stay": 180
+    },
+    {
+      "origin_vertex": "UIO",
+      "destination_vertex": "LIM",
+      "distance": 1580,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 200.0,
+      "minimum_stay": 300
+    },
+    {
+      "origin_vertex": "LIM",
+      "destination_vertex": "CUZ",
+      "distance": 560,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 130.0,
+      "minimum_stay": 300
+    },
+    {
+      "origin_vertex": "LIM",
+      "destination_vertex": "AQP",
+      "distance": 750,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 160.0,
+      "minimum_stay": 300
+    },
+    {
+      "origin_vertex": "AQP",
+      "destination_vertex": "LPB",
+      "distance": 460,
+      "aircrafts": [
+        "Regional"
+      ],
+      "cost": 100.0,
+      "minimum_stay": 240
+    },
+    {
+      "origin_vertex": "LPB",
+      "destination_vertex": "VVI",
+      "distance": 600,
+      "aircrafts": [
+        "Regional"
+      ],
+      "cost": 130.0,
+      "minimum_stay": 240
+    },
+    {
+      "origin_vertex": "VVI",
+      "destination_vertex": "ASU",
+      "distance": 1100,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 170.0,
+      "minimum_stay": 300
+    },
+    {
+      "origin_vertex": "ASU",
+      "destination_vertex": "EZE",
+      "distance": 1050,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 180.0,
+      "minimum_stay": 300
+    },
+    {
+      "origin_vertex": "SCL",
+      "destination_vertex": "IQQ",
+      "distance": 1900,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 400.0,
+      "minimum_stay": 360
+    },
+    {
+      "origin_vertex": "SCL",
+      "destination_vertex": "PMC",
+      "distance": 1000,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 220.0,
+      "minimum_stay": 300
+    },
+    {
+      "origin_vertex": "SCL",
+      "destination_vertex": "MDZ",
+      "distance": 350,
+      "aircrafts": [
+        "Regional"
+      ],
+      "cost": 80.0,
+      "minimum_stay": 180
+    },
+    {
+      "origin_vertex": "MDZ",
+      "destination_vertex": "EZE",
+      "distance": 1000,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 220.0,
+      "minimum_stay": 300
+    },
+    {
+      "origin_vertex": "EZE",
+      "destination_vertex": "COR",
+      "distance": 700,
+      "aircrafts": [
+        "Regional"
+      ],
+      "cost": 155.0,
+      "minimum_stay": 240
+    },
+    {
+      "origin_vertex": "EZE",
+      "destination_vertex": "MVD",
+      "distance": 250,
+      "aircrafts": [
+        "Regional"
+      ],
+      "cost": 60.0,
+      "minimum_stay": 120
+    },
+    {
+      "origin_vertex": "EZE",
+      "destination_vertex": "GRU",
+      "distance": 1700,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 260.0,
+      "minimum_stay": 300
+    },
+    {
+      "origin_vertex": "GRU",
+      "destination_vertex": "GIG",
+      "distance": 430,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 100.0,
+      "minimum_stay": 240
+    },
+    {
+      "origin_vertex": "GRU",
+      "destination_vertex": "SSA",
+      "distance": 1140,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 240.0,
+      "minimum_stay": 300
+    },
+    {
+      "origin_vertex": "SSA",
+      "destination_vertex": "FOR",
+      "distance": 600,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 130.0,
+      "minimum_stay": 240
+    },
+    {
+      "origin_vertex": "LIM",
+      "destination_vertex": "SCL",
+      "distance": 1300,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 280.0,
+      "minimum_stay": 360
+    },
+    {
+      "origin_vertex": "SCL",
+      "destination_vertex": "LIM",
+      "distance": 1300,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 280.0,
+      "minimum_stay": 360
+    },
+    {
+      "origin_vertex": "FOR",
+      "destination_vertex": "REC",
+      "distance": 650,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 145.0,
+      "minimum_stay": 240
+    },
+    {
+      "origin_vertex": "REC",
+      "destination_vertex": "NAT",
+      "distance": 300,
+      "aircrafts": [
+        "Regional"
+      ],
+      "cost": 75.0,
+      "minimum_stay": 180
+    },
+    {
+      "origin_vertex": "NAT",
+      "destination_vertex": "MAO",
+      "distance": 1300,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 255.0,
+      "minimum_stay": 300
+    },
+    {
+      "origin_vertex": "MAO",
+      "destination_vertex": "BEL",
+      "distance": 850,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 180.0,
+      "minimum_stay": 240
+    },
+    {
+      "origin_vertex": "BEL",
+      "destination_vertex": "TGU",
+      "distance": 1600,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 280.0,
+      "minimum_stay": 300
+    },
+    {
+      "origin_vertex": "TGU",
+      "destination_vertex": "SAP",
+      "distance": 180,
+      "aircrafts": [
+        "Regional"
+      ],
+      "cost": 45.0,
+      "minimum_stay": 120
+    },
+    {
+      "origin_vertex": "SAP",
+      "destination_vertex": "SJO",
+      "distance": 460,
+      "aircrafts": [
+        "Regional"
+      ],
+      "cost": 100.0,
+      "minimum_stay": 180
+    },
+    {
+      "origin_vertex": "SJO",
+      "destination_vertex": "LIR",
+      "distance": 220,
+      "aircrafts": [
+        "Regional"
+      ],
+      "cost": 55.0,
+      "minimum_stay": 120
+    },
+    {
+      "origin_vertex": "LIR",
+      "destination_vertex": "GUA",
+      "distance": 1120,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 210.0,
+      "minimum_stay": 240
+    },
+    {
+      "origin_vertex": "REC",
+      "destination_vertex": "FOR",
+      "distance": 650,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 145.0,
+      "minimum_stay": 240
+    },
+    {
+      "origin_vertex": "NAT",
+      "destination_vertex": "REC",
+      "distance": 300,
+      "aircrafts": [
+        "Regional"
+      ],
+      "cost": 75.0,
+      "minimum_stay": 180
+    },
+    {
+      "origin_vertex": "MAO",
+      "destination_vertex": "NAT",
+      "distance": 1300,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 255.0,
+      "minimum_stay": 300
+    },
+    {
+      "origin_vertex": "BEL",
+      "destination_vertex": "MAO",
+      "distance": 850,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 180.0,
+      "minimum_stay": 240
+    },
+    {
+      "origin_vertex": "TGU",
+      "destination_vertex": "BEL",
+      "distance": 1600,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 280.0,
+      "minimum_stay": 300
+    },
+    {
+      "origin_vertex": "SAP",
+      "destination_vertex": "TGU",
+      "distance": 180,
+      "aircrafts": [
+        "Regional"
+      ],
+      "cost": 45.0,
+      "minimum_stay": 120
+    },
+    {
+      "origin_vertex": "SJO",
+      "destination_vertex": "SAP",
+      "distance": 460,
+      "aircrafts": [
+        "Regional"
+      ],
+      "cost": 100.0,
+      "minimum_stay": 180
+    },
+    {
+      "origin_vertex": "LIR",
+      "destination_vertex": "SJO",
+      "distance": 220,
+      "aircrafts": [
+        "Regional"
+      ],
+      "cost": 55.0,
+      "minimum_stay": 120
+    },
+    {
+      "origin_vertex": "GUA",
+      "destination_vertex": "LIR",
+      "distance": 1120,
+      "aircrafts": [
+        "Commercial"
+      ],
+      "cost": 210.0,
+      "minimum_stay": 240
+    }
+  ]
+}

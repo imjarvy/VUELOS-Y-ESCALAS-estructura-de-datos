@@ -1,6 +1,6 @@
 // =============================================================================
 //  Trip Session Panel
-//  Responsibility: show trip budget/time summary in the UI.
+//  Responsibility: show trip budget/time summary and session proposals in the UI.
 // =============================================================================
 
 function formatMoney(value) {
@@ -17,6 +17,13 @@ function formatMinutes(totalMinutes) {
   return `${hours} h ${remaining} min`;
 }
 
+function createTag(text) {
+  const tag = document.createElement("span");
+  tag.textContent = text;
+  tag.className = "session-tag";
+  return tag;
+}
+
 export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {} } = {}) {
   const panel = document.getElementById(panelId);
 
@@ -30,11 +37,119 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
   const mealRuleEl = panel.querySelector("#sessionMealRule");
   const lodgingRuleEl = panel.querySelector("#sessionLodgingRule");
 
+  const statusBanner = document.createElement("div");
+  statusBanner.className = "session-banner";
+  statusBanner.textContent = "Inicia una sesión para ver propuestas y avanzar paso a paso.";
+
+  const summaryBar = document.createElement("div");
+  summaryBar.className = "session-summary-bar";
+  summaryBar.innerHTML = `
+    <span class="session-chip" data-chip="routes">Rutas: 0</span>
+    <span class="session-chip" data-chip="activities">Actividades: 0</span>
+    <span class="session-chip" data-chip="jobs">Trabajos: 0</span>
+    <span class="session-chip" data-chip="mandatory">Obligatorias: 0</span>
+    <span class="session-chip" data-chip="free">Tiempo libre: 0 min</span>
+    <span class="session-chip" data-chip="stay">Estancia: 0 min</span>
+    <span class="session-chip" data-chip="optionalStay">Opcional usado: 0 min</span>
+  `;
+
+  const summaryChips = {
+    routes: summaryBar.querySelector('[data-chip="routes"]'),
+    activities: summaryBar.querySelector('[data-chip="activities"]'),
+    jobs: summaryBar.querySelector('[data-chip="jobs"]'),
+    mandatory: summaryBar.querySelector('[data-chip="mandatory"]'),
+    free: summaryBar.querySelector('[data-chip="free"]'),
+    stay: summaryBar.querySelector('[data-chip="stay"]'),
+    optionalStay: summaryBar.querySelector('[data-chip="optionalStay"]'),
+  };
+
+  const sessionIdRow = document.createElement("div");
+  sessionIdRow.className = "info-row";
+  sessionIdRow.innerHTML = '<span class="info-label">Sesión activa</span><strong id="sessionActiveId">-</strong>';
+  const sessionActiveIdEl = sessionIdRow.querySelector("#sessionActiveId");
+
+  const proposalsSection = document.createElement("div");
+  proposalsSection.className = "info-block";
+  proposalsSection.innerHTML = '<span class="info-label">Propuestas del paso</span>';
+
+  const proposalsList = document.createElement("div");
+  proposalsList.id = "sessionProposalsList";
+  proposalsList.className = "session-proposals-list";
+  proposalsSection.appendChild(proposalsList);
+
+  const actionsRow = document.createElement("div");
+  actionsRow.className = "info-row session-actions-row";
+
+  const startBtn = document.createElement("button");
+  startBtn.id = "panelStartSession";
+  startBtn.textContent = "Iniciar sesión";
+  startBtn.className = "btn btn-sm";
+
+  const suggestBtn = document.createElement("button");
+  suggestBtn.id = "panelSuggestRoute";
+  suggestBtn.textContent = "Sugerir ruta";
+  suggestBtn.className = "btn btn-sm";
+
+  const activitiesBtn = document.createElement("button");
+  activitiesBtn.id = "panelToggleActivities";
+  activitiesBtn.textContent = "Ver actividades opcionales";
+  activitiesBtn.className = "btn btn-sm";
+
+  const reportBtn = document.createElement("button");
+  reportBtn.id = "panelSessionReport";
+  reportBtn.textContent = "Ver reporte";
+  reportBtn.className = "btn btn-sm";
+
+  actionsRow.appendChild(startBtn);
+  actionsRow.appendChild(suggestBtn);
+  actionsRow.appendChild(activitiesBtn);
+  actionsRow.appendChild(reportBtn);
+
+  const reportSection = document.createElement("div");
+  reportSection.className = "info-block session-report hidden";
+  reportSection.innerHTML = '<span class="info-label">Reporte final</span>';
+
+  const reportContent = document.createElement("div");
+  reportContent.className = "session-report-content";
+  reportSection.appendChild(reportContent);
+
   const state = {
     budgetInitial: 1000,
     budgetRemaining: 1000,
     timeRemainingMin: 72 * 60,
+    freeTimeMin: 0,
+    currentStayRequiredMin: 0,
+    currentOptionalStayMin: 0,
+    showOptionalActivities: false,
+    suggestedRoute: null,
+    routePlan: [],
+    sessionId: null,
+    proposals: null,
+    report: null,
+    graphLoaded: false,
+    sessionActive: false,
   };
+
+  let _onStart = null;
+  let _onSuggestRoute = null;
+  let _onChoice = null;
+  let _onReport = null;
+
+  function onStart(handler) {
+    _onStart = handler;
+  }
+
+  function onSuggestRoute(handler) {
+    _onSuggestRoute = handler;
+  }
+
+  function onChoice(handler) {
+    _onChoice = handler;
+  }
+
+  function onReport(handler) {
+    _onReport = handler;
+  }
 
   function getMealLabel() {
     const intervalHours = Number(rules.intervaloAlimentacion ?? 8);
@@ -46,12 +161,378 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
     return `Cada ${Number.isFinite(intervalHours) && intervalHours > 0 ? intervalHours : 20} horas desde el último hospedaje`;
   }
 
+  function createProposalCard(title, subtitle) {
+    const card = document.createElement("div");
+    card.className = "session-proposal-card";
+
+    const header = document.createElement("div");
+    header.className = "session-proposal-header";
+    header.innerHTML = `<strong>${title}</strong><span>${subtitle}</span>`;
+
+    const content = document.createElement("div");
+    content.className = "session-proposal-content";
+
+    card.appendChild(header);
+    card.appendChild(content);
+    return { card, content };
+  }
+
+  function setBanner(text, kind = "info") {
+    statusBanner.textContent = text;
+    statusBanner.dataset.kind = kind;
+  }
+
+  function toggleOptionalActivities() {
+    state.showOptionalActivities = !state.showOptionalActivities;
+    render();
+  }
+
+  function setSuggestedRoute(nextRoute = null) {
+    state.suggestedRoute = nextRoute;
+    render();
+  }
+
+  function setRoutePlan(nextPlan = []) {
+    state.routePlan = Array.isArray(nextPlan) ? nextPlan : [];
+    render();
+  }
+
+  function setAvailability(nextAvailability = {}) {
+    state.graphLoaded = Boolean(nextAvailability.graphLoaded ?? state.graphLoaded);
+    state.sessionActive = Boolean(nextAvailability.sessionActive ?? state.sessionActive);
+    startBtn.disabled = !state.graphLoaded;
+    suggestBtn.disabled = !state.sessionActive;
+    reportBtn.disabled = !state.sessionActive;
+    render();
+  }
+
+  function formatRouteOption(option) {
+    const cost = Number(option?.cost_usd ?? option?.cost ?? 0);
+    const time = Number(option?.time_min ?? option?.time ?? 0);
+    const subsidized = Boolean(option?.is_subsidized);
+    return `${option?.aircraft ?? "-"} · ${formatMoney(cost)} · ${formatMinutes(time)}${subsidized ? " · subsidiada" : ""}`;
+  }
+
+  function renderProposals() {
+    proposalsList.innerHTML = "";
+
+    const proposals = state.proposals ?? {};
+    const routes = Array.isArray(proposals.routes) ? proposals.routes : [];
+    const activities = Array.isArray(proposals.activities) ? proposals.activities : [];
+    const jobs = Array.isArray(proposals.jobs) ? proposals.jobs : [];
+    const mandatoryActions = Array.isArray(proposals.mandatory_actions) ? proposals.mandatory_actions : [];
+
+    if (state.suggestedRoute) {
+      const suggested = document.createElement("div");
+      suggested.className = "session-empty session-suggested-route";
+      suggested.innerHTML = `<strong>Ruta sugerida:</strong> ${state.suggestedRoute.destination ?? "-"} · Score ${Number(state.suggestedRoute.priority_score ?? 0).toFixed(2)} · ${state.suggestedRoute.selection_reason ?? ""}`;
+      proposalsList.appendChild(suggested);
+    }
+
+    if (Array.isArray(state.routePlan) && state.routePlan.length) {
+      const planCard = document.createElement("div");
+      planCard.className = "session-proposal-card session-route-plan";
+
+      const planHeader = document.createElement("div");
+      planHeader.className = "session-proposal-header";
+      planHeader.innerHTML = '<strong>Ruta planificada</strong><span>Se mantiene hasta que completes la secuencia o cambies de plan</span>';
+
+      const planBody = document.createElement("div");
+      planBody.className = "session-proposal-content";
+      const planList = document.createElement("ol");
+      planList.className = "session-route-plan-list";
+
+      state.routePlan.forEach(step => {
+        const item = document.createElement("li");
+        item.innerHTML = `<strong>${step.origin ?? "-"} → ${step.destination ?? "-"}</strong><span>${step.transport_option?.aircraft ?? "-"} · ${formatMoney(step.transport_option?.cost_usd ?? 0)} · ${formatMinutes(step.transport_option?.time_min ?? 0)}</span>`;
+        planList.appendChild(item);
+      });
+
+      planBody.appendChild(planList);
+      planCard.appendChild(planHeader);
+      planCard.appendChild(planBody);
+      proposalsList.appendChild(planCard);
+    }
+
+    if (!routes.length && !activities.length && !jobs.length && !mandatoryActions.length) {
+      const empty = document.createElement("div");
+      empty.className = "session-empty";
+      empty.textContent = "Inicia una sesión y presiona «Sugerir ruta» para ver las opciones del paso.";
+      proposalsList.appendChild(empty);
+      return;
+    }
+
+    if (!routes.length) {
+      const noRoutes = document.createElement("div");
+      noRoutes.className = "session-empty session-empty-warning";
+      noRoutes.textContent = "No hay rutas válidas en este paso. Revisa actividades o trabajos para seguir avanzando.";
+      proposalsList.appendChild(noRoutes);
+    }
+
+    if (mandatoryActions.length) {
+      const { card, content } = createProposalCard("Acciones obligatorias", "Se aplican antes de continuar");
+      const list = document.createElement("ul");
+      list.className = "session-inline-list";
+      mandatoryActions.forEach(action => {
+        const li = document.createElement("li");
+        li.textContent = action;
+        list.appendChild(li);
+      });
+      content.appendChild(list);
+      proposalsList.appendChild(card);
+    }
+
+    if (routes.length) {
+      const { card, content } = createProposalCard("Rutas disponibles", "Elige un vuelo para continuar");
+      const routesWrap = document.createElement("div");
+      routesWrap.className = "session-proposal-group";
+
+      routes.forEach(route => {
+        const routeRow = document.createElement("div");
+        routeRow.className = "session-choice-row";
+        if (state.suggestedRoute?.destination === route.destination) {
+          routeRow.classList.add("session-choice-suggested");
+        }
+
+        const routeMain = document.createElement("div");
+        routeMain.className = "session-choice-main";
+        const routeTitle = document.createElement("strong");
+        routeTitle.textContent = route.destination ?? "-";
+        const routeMeta = document.createElement("span");
+        routeMeta.textContent = `${Number(route.distance_km ?? 0)} km · llegada estimada ${formatMinutes(route.est_arrival_min ?? 0)} · estancia mínima ${formatMinutes(route.minimum_stay_min ?? 0)}`;
+        routeMain.appendChild(routeTitle);
+        routeMain.appendChild(routeMeta);
+
+        const tagRow = document.createElement("div");
+        tagRow.className = "session-tag-row";
+        if (state.suggestedRoute?.destination === route.destination) {
+          tagRow.appendChild(createTag("Sugerida"));
+        }
+        tagRow.appendChild(createTag(`${route.reachable_destinations ?? 0} destinos alcanzables`));
+        tagRow.appendChild(createTag(`Score ${Number(route.priority_score ?? 0).toFixed(2)}`));
+        tagRow.appendChild(createTag(`Budget ${formatMoney(route.projected_budget_after_flight ?? 0)}`));
+        tagRow.appendChild(createTag(`Tiempo ${formatMinutes(route.projected_time_remaining_after_flight ?? 0)}`));
+        if (route.estimated_job_income > 0) {
+          tagRow.appendChild(createTag(`Trabajo potencial ${formatMoney(route.estimated_job_income)}`));
+        }
+
+        routeRow.appendChild(routeMain);
+        routeRow.appendChild(tagRow);
+
+        if (route.selection_reason) {
+          const reason = document.createElement("div");
+          reason.className = "session-route-reason";
+          reason.textContent = route.selection_reason;
+          routeRow.appendChild(reason);
+        }
+
+        const optionsWrap = document.createElement("div");
+        optionsWrap.className = "session-option-list";
+        const options = Array.isArray(route.transport_options) ? route.transport_options : [];
+        options.forEach(option => {
+          const optionRow = document.createElement("div");
+          optionRow.className = "session-option-row";
+
+          const optionText = document.createElement("span");
+          optionText.textContent = formatRouteOption(option);
+
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "btn btn-sm";
+          btn.textContent = "Elegir vuelo";
+          btn.dataset.kind = "transport";
+          btn.dataset.destination = route.destination ?? "";
+          btn.dataset.aircraft = option.aircraft ?? "";
+
+          optionRow.appendChild(optionText);
+          optionRow.appendChild(btn);
+          optionsWrap.appendChild(optionRow);
+        });
+
+        routeRow.appendChild(optionsWrap);
+        routesWrap.appendChild(routeRow);
+      });
+
+      content.appendChild(routesWrap);
+      proposalsList.appendChild(card);
+    }
+
+    if (activities.length && state.showOptionalActivities) {
+      const { card, content } = createProposalCard("Actividades", "Opcionales o obligatorias según la sesión");
+      const activitiesWrap = document.createElement("div");
+      activitiesWrap.className = "session-proposal-group";
+
+      activities.forEach(activity => {
+        const row = document.createElement("div");
+        row.className = "session-choice-row";
+
+        const main = document.createElement("div");
+        main.className = "session-choice-main";
+        const title = document.createElement("strong");
+        title.textContent = activity.name ?? activity.id ?? "Actividad";
+        const meta = document.createElement("span");
+        meta.textContent = `${activity.type ?? "-"} · ${formatMinutes(activity.duration_min ?? 0)} · ${formatMoney(activity.cost_usd ?? 0)}`;
+        main.appendChild(title);
+        main.appendChild(meta);
+        const typeTag = createTag(activity.type === "mandatory" ? "Obligatoria" : "Opcional");
+        typeTag.className = `session-tag ${activity.type === "mandatory" ? "session-tag-mandatory" : "session-tag-optional"}`;
+
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "btn btn-sm";
+        btn.textContent = "Elegir actividad";
+        btn.dataset.kind = "activity";
+        btn.dataset.activityId = activity.id ?? activity.name ?? "";
+
+        row.appendChild(main);
+        row.appendChild(typeTag);
+        row.appendChild(btn);
+        activitiesWrap.appendChild(row);
+      });
+
+      content.appendChild(activitiesWrap);
+      proposalsList.appendChild(card);
+    } else if (activities.length && !state.showOptionalActivities) {
+      const hint = document.createElement("div");
+      hint.className = "session-empty";
+      hint.textContent = "Hay actividades opcionales disponibles. Usa «Ver actividades opcionales» para desplegarlas.";
+      proposalsList.appendChild(hint);
+    }
+
+    const budgetThreshold = Number(state.budgetInitial) * 0.35;
+    const canShowJobs = Number(state.budgetRemaining) < budgetThreshold;
+
+    if (jobs.length && canShowJobs) {
+      const { card, content } = createProposalCard("Trabajos", "Disponibles si el presupuesto cae por debajo del 35%");
+      const jobsWrap = document.createElement("div");
+      jobsWrap.className = "session-proposal-group";
+
+      jobs.forEach(job => {
+        const row = document.createElement("div");
+        row.className = "session-choice-row";
+
+        const main = document.createElement("div");
+        main.className = "session-choice-main";
+        const title = document.createElement("strong");
+        title.textContent = job.name ?? job.id ?? "Trabajo";
+        const meta = document.createElement("span");
+        meta.textContent = `${formatMoney(job.hourly_rate ?? 0)} por hora · máx. ${job.max_hours ?? 0} h`;
+        main.appendChild(title);
+        main.appendChild(meta);
+        const jobTag = createTag("Trabajo disponible");
+        jobTag.className = "session-tag session-tag-job";
+
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "btn btn-sm";
+        btn.textContent = "Elegir trabajo";
+        btn.dataset.kind = "job";
+        btn.dataset.jobId = job.id ?? job.name ?? "";
+
+        row.appendChild(main);
+        row.appendChild(jobTag);
+        row.appendChild(btn);
+        jobsWrap.appendChild(row);
+      });
+
+      content.appendChild(jobsWrap);
+      proposalsList.appendChild(card);
+    }
+  }
+
+  function renderReport() {
+    reportContent.innerHTML = "";
+    if (!state.report) {
+      reportSection.classList.add("hidden");
+      return;
+    }
+
+    reportSection.classList.remove("hidden");
+    const report = state.report;
+    const totals = report.totals ?? {};
+
+    const grid = document.createElement("div");
+    grid.className = "session-report-grid";
+    [
+      ["Balance final", formatMoney(totals.final_balance)],
+      ["Gasto total", formatMoney(totals.total_spent)],
+      ["Ganado total", formatMoney(totals.total_gained)],
+      ["Tiempo total", formatMinutes(totals.time_total_min)],
+      ["Distancia recorrida", `${Number(totals.distance_travelled_km ?? 0)} km`],
+      ["Distancia subsidiada", `${Number(totals.subsidized_distance_km ?? 0)} km`],
+    ].forEach(([label, value]) => {
+      const item = document.createElement("div");
+      item.className = "session-report-item";
+      item.innerHTML = `<span>${label}</span><strong>${value}</strong>`;
+      grid.appendChild(item);
+    });
+
+    reportContent.appendChild(grid);
+
+    const visited = Array.isArray(report.visited) ? report.visited : [];
+    if (visited.length) {
+      const visitedList = document.createElement("ul");
+      visitedList.className = "session-inline-list";
+      visited.slice(0, 8).forEach(step => {
+        const li = document.createElement("li");
+        li.textContent = `${step.airport_id ?? "-"} · ${step.name ?? step.city ?? ""}`;
+        visitedList.appendChild(li);
+      });
+      reportContent.appendChild(createProposalCard("Destinos visitados", "Resumen del recorrido").card);
+      reportContent.lastElementChild.querySelector(".session-proposal-content").appendChild(visitedList);
+    }
+  }
+
   function render() {
+    const firstSessionRow = budgetInitialInput?.closest(".info-row") ?? panel.firstChild;
+    if (!sessionIdRow.isConnected) {
+      panel.insertBefore(sessionIdRow, firstSessionRow);
+    }
+    if (!actionsRow.isConnected) {
+      panel.insertBefore(actionsRow, firstSessionRow);
+    }
+    if (!statusBanner.isConnected) {
+      panel.insertBefore(statusBanner, sessionIdRow);
+    }
+    if (!summaryBar.isConnected) {
+      panel.insertBefore(summaryBar, actionsRow);
+    }
+    if (!proposalsSection.isConnected) {
+      panel.appendChild(proposalsSection);
+    }
+    if (!reportSection.isConnected) {
+      panel.appendChild(reportSection);
+    }
+
     if (budgetInitialInput) budgetInitialInput.value = String(state.budgetInitial);
     if (budgetRemainingEl) budgetRemainingEl.textContent = formatMoney(state.budgetRemaining);
     if (timeRemainingEl) timeRemainingEl.textContent = formatMinutes(state.timeRemainingMin);
     if (mealRuleEl) mealRuleEl.textContent = getMealLabel();
     if (lodgingRuleEl) lodgingRuleEl.textContent = getLodgingLabel();
+    if (sessionActiveIdEl) sessionActiveIdEl.textContent = state.sessionId ?? "-";
+
+    summaryChips.routes.textContent = `Rutas: ${Array.isArray(state.proposals?.routes) ? state.proposals.routes.length : 0}`;
+    summaryChips.activities.textContent = `Actividades: ${Array.isArray(state.proposals?.activities) ? state.proposals.activities.length : 0}`;
+    summaryChips.jobs.textContent = `Trabajos: ${Array.isArray(state.proposals?.jobs) ? state.proposals.jobs.length : 0}`;
+    summaryChips.mandatory.textContent = `Obligatorias: ${Array.isArray(state.proposals?.mandatory_actions) ? state.proposals.mandatory_actions.length : 0}`;
+    summaryChips.free.textContent = `Tiempo libre: ${formatMinutes(state.freeTimeMin ?? 0)}`;
+    summaryChips.stay.textContent = `Estancia: ${formatMinutes(state.currentStayRequiredMin ?? 0)}`;
+    summaryChips.optionalStay.textContent = `Opcional usado: ${formatMinutes(state.currentOptionalStayMin ?? 0)}`;
+
+    startBtn.disabled = !state.graphLoaded;
+    suggestBtn.disabled = !state.sessionActive;
+    activitiesBtn.disabled = !state.sessionActive || !(Array.isArray(state.proposals?.activities) && state.proposals.activities.length > 0);
+    reportBtn.disabled = !state.sessionActive;
+    activitiesBtn.textContent = state.showOptionalActivities ? "Ocultar actividades opcionales" : "Ver actividades opcionales";
+    suggestBtn.textContent = state.suggestedRoute ? "Sugerir otra ruta" : "Sugerir ruta";
+
+    if (!state.proposals) {
+      proposalsList.innerHTML = '<div class="session-empty">Inicia una sesión y presiona «Sugerir ruta» para ver las opciones del paso.</div>';
+    } else {
+      renderProposals();
+    }
+
+    renderReport();
   }
 
   function setRules(nextRules = {}) {
@@ -64,46 +545,73 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
     render();
   }
 
-  // Handlers that can be registered by the orchestrator
-  let _onStart = null;
-  let _onGetProposals = null;
-
-  function onStart(handler) {
-    _onStart = handler;
+  function setSessionId(sessionId) {
+    state.sessionId = sessionId || null;
+    render();
   }
 
-  function onGetProposals(handler) {
-    _onGetProposals = handler;
+  function setReport(nextReport = null) {
+    state.report = nextReport;
+    render();
   }
 
-  // Create action buttons inside the panel
-  try {
-    const actionsRow = document.createElement('div');
-    actionsRow.className = 'info-row';
-    const startBtn = document.createElement('button');
-    startBtn.id = 'panelStartSession';
-    startBtn.textContent = 'Iniciar sesión';
-    startBtn.className = 'btn btn-sm';
-
-    const proposalsBtn = document.createElement('button');
-    proposalsBtn.id = 'panelGetProposals';
-    proposalsBtn.textContent = 'Ver propuestas';
-    proposalsBtn.className = 'btn btn-sm';
-
-    actionsRow.appendChild(startBtn);
-    actionsRow.appendChild(proposalsBtn);
-    panel.appendChild(actionsRow);
-
-    startBtn.addEventListener('click', () => {
-      if (typeof _onStart === 'function') _onStart();
-    });
-
-    proposalsBtn.addEventListener('click', () => {
-      if (typeof _onGetProposals === 'function') _onGetProposals();
-    });
-  } catch (e) {
-    // ignore DOM errors in environments without document
+  function setOptionalActivitiesVisible(nextVisible = false) {
+    state.showOptionalActivities = Boolean(nextVisible);
+    render();
   }
+
+  function clearProposals() {
+    state.proposals = null;
+    render();
+  }
+
+  function setProposals(nextProposals = null) {
+    state.proposals = nextProposals;
+    render();
+  }
+
+  startBtn.addEventListener("click", () => {
+    if (typeof _onStart === "function") _onStart();
+  });
+
+  suggestBtn.addEventListener("click", () => {
+    if (typeof _onSuggestRoute === "function") _onSuggestRoute();
+  });
+
+  activitiesBtn.addEventListener("click", () => {
+    toggleOptionalActivities();
+  });
+
+  reportBtn.addEventListener("click", () => {
+    if (typeof _onReport === "function") _onReport();
+  });
+
+  proposalsList.addEventListener("click", event => {
+    const button = event.target.closest("button[data-kind]");
+    if (!button || typeof _onChoice !== "function") return;
+
+    const kind = button.dataset.kind;
+    const choice = { kind };
+
+    if (kind === "transport") {
+      choice.destination = button.dataset.destination || "";
+      choice.aircraft = button.dataset.aircraft || "";
+    } else if (kind === "activity") {
+      choice.activity_id = button.dataset.activityId || "";
+    } else if (kind === "job") {
+      choice.job_id = button.dataset.jobId || "";
+      const hours = prompt("Horas a trabajar:", "1");
+      if (hours == null) return;
+      const parsedHours = Number(hours);
+      if (!Number.isFinite(parsedHours) || parsedHours <= 0) {
+        alert("Ingresa un número de horas válido mayor que cero.");
+        return;
+      }
+      choice.hours = parsedHours;
+    }
+
+    _onChoice(choice);
+  });
 
   if (budgetInitialInput) {
     budgetInitialInput.addEventListener("change", () => {
@@ -123,8 +631,19 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
   return {
     setRules,
     setState,
+    setSessionId,
+    setProposals,
+    setSuggestedRoute,
+    setReport,
+    setAvailability,
+    setBanner,
+    setOptionalActivitiesVisible,
+    setRoutePlan,
+    clearProposals,
     getState: () => ({ ...state }),
     onStart,
-    onGetProposals,
+    onSuggestRoute,
+    onChoice,
+    onReport,
   };
 }
