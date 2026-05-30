@@ -144,6 +144,7 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
   let _onCancelSuggestedRoute = null;
   let _onChoice = null;
   let _onToggleSession = null;
+  let _onBudgetChange = null;
 
   function onStart(handler) {
     _onStart = handler;
@@ -163,6 +164,10 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
 
   function onToggleSession(handler) {
     _onToggleSession = handler;
+  }
+
+  function onBudgetChange(handler) {
+    _onBudgetChange = handler;
   }
 
   function getMealLabel() {
@@ -613,11 +618,21 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
   if (budgetInitialInput) {
     budgetInitialInput.addEventListener("change", () => {
       const parsed = Number(budgetInitialInput.value);
-      if (Number.isFinite(parsed) && parsed >= 0) {
-        state.budgetInitial = parsed;
-        if (state.budgetRemaining > parsed) {
-          state.budgetRemaining = parsed;
+      if (!Number.isFinite(parsed) || parsed < 0) return;
+      // Update locally
+      state.budgetInitial = parsed;
+      if (state.budgetRemaining > parsed) {
+        state.budgetRemaining = parsed;
+      }
+      // If a handler is registered, delegate (it may call backend to persist)
+      if (typeof _onBudgetChange === "function") {
+        try {
+          _onBudgetChange(parsed);
+        } catch (err) {
+          // fallback: re-render with local change
+          render();
         }
+      } else {
         render();
       }
     });
@@ -642,6 +657,7 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
     onToggleSession,
     onSuggestRoute,
     onCancelSuggestedRoute,
+    onBudgetChange,
     onChoice,
   };
 }

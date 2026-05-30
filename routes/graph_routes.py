@@ -192,6 +192,37 @@ def session_suggest_route(session_id: str):
     })
 
 
+@graph_bp.route("/api/session/<session_id>/update-budget", methods=["POST"])
+def session_update_budget(session_id: str):
+    session = _SESSIONS.get(session_id)
+    if session is None:
+        return jsonify({"error": "session not found"}), 404
+
+    payload = request.get_json(silent=True) or {}
+    try:
+        budget = float(payload.get("budget"))
+    except (TypeError, ValueError):
+        return jsonify({"error": "invalid budget value"}), 400
+
+    if budget < 0:
+        return jsonify({"error": "budget must be >= 0"}), 400
+
+    # Update session state: set remaining budget, optionally raise initial budget
+    session.state.budget_remaining = round(float(budget), 2)
+    try:
+        if float(budget) > float(getattr(session.state, "budget_initial", 0)):
+            session.state.budget_initial = round(float(budget), 2)
+    except Exception:
+        session.state.budget_initial = round(float(budget), 2)
+
+    proposals = session.step_proposals()
+    return jsonify({
+        "message": "Budget updated",
+        "meta": _serialize(proposals.meta),
+        "proposals": _serialize(proposals),
+    })
+
+
 @graph_bp.route("/api/session/<session_id>/choice", methods=["POST"])
 def session_choice(session_id: str):
     session = _SESSIONS.get(session_id)

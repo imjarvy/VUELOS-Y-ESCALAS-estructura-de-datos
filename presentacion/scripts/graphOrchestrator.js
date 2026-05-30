@@ -319,3 +319,29 @@ document.getElementById("loadJsonConfirmBtn").addEventListener("click", async ()
   setStatusMessage(`Grafo cargado: ${response.airports ?? d3Graph.nodes.length} aeropuertos.`);
   closeModal();
 });
+
+// Budget change handler: propagate to server when session active
+tripSessionPanel.onBudgetChange(async newBudget => {
+  const parsed = Number(newBudget);
+  if (!Number.isFinite(parsed) || parsed < 0) return;
+  if (!currentSessionId) {
+    // No session: keep local values already set by panel
+    return;
+  }
+
+  setStatusMessage("Actualizando presupuesto...");
+  try {
+    const res = await apiPost(`/api/session/${currentSessionId}/update-budget`, { budget: parsed });
+    const meta = res.meta || {};
+    tripSessionPanel.setState({
+      budgetInitial: meta.budget_initial ?? tripSessionPanel.getState().budgetInitial,
+      budgetRemaining: meta.budget_remaining ?? tripSessionPanel.getState().budgetRemaining,
+    });
+    tripSessionPanel.setProposals(res.proposals ?? null);
+    tripSessionPanel.setBanner(`Presupuesto actualizado: $${parsed.toFixed(2)}`, "success");
+    setStatusMessage("Presupuesto actualizado.");
+  } catch (err) {
+    tripSessionPanel.setBanner(`No se pudo actualizar el presupuesto: ${err.message || err}`, "error");
+    setStatusMessage(`Error actualizando presupuesto: ${err.message || err}`, "error");
+  }
+});
