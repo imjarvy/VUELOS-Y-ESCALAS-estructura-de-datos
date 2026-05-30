@@ -675,3 +675,55 @@ envia el archivo .json con el endpoint y luego guarda y reemplaza los datos
 
     Returns:
         (path, pred) on success, None if destination is unreachable.
+
+---
+
+## Reporte plan basico con optimización (generacion del reporte)
+
+### Frontend (JavaScript)
+
+#### planner-state.js
+Ubicación: `presentacion/scripts/panels/planner-state.js`
+
+Almacena el estado central del planificador de rutas sin lógica DOM. Mantiene sincronizado:
+- Si el grafo está cargado o no
+- Si se está calculando una ruta
+- El modo activo (básico o por criterios específicos)
+- Los itinerarios calculados que se mostrarán al usuario
+
+#### planner-panel.js
+Ubicación: `presentacion/scripts/panels/planner-panel.js`
+
+El coordinador principal del panel de planificación. Conecta la interfaz con la lógica:
+- Maneja los eventos del usuario (clics, formularios)
+- Realiza llamadas a la API del backend
+- Actualiza el estado y dispara renders
+
+Nota: Actualmente está vacío, pero será el punto de entrada principal para toda la interacción del usuario con el planificador.
+
+#### planner-render.js
+Ubicación: `presentacion/scripts/panels/planner-render.js`
+
+Se encarga exclusivamente de construir y actualizar el HTML del planificador. Incluye:
+- Renderización de tarjetas de itinerarios con toda la información del viaje
+- Resumen visual con aeropuertos visitados, costo total y duración
+- Lista detallada de cada tramo (origen, destino, aeronave, distancia, etc.)
+- Botón "Ver en el mapa" que resalta la ruta en el grafo interactivo
+- Funciones auxiliares para formatear dinero y tiempo de manera legible
+
+### Backend (Python)
+
+#### report_generator.py
+Ubicación: `services/report_generator.py`
+
+Genera el reporte final del viaje que se envía al frontend. Integra toda la información del viaje en un formato único:
+
+Lo que incluye:
+- Aeropuertos visitados: Con detalles del grafo (nombre, ciudad, país, zona horaria)
+- Tramos: Cada vuelo con origen, destino, duración y costo
+- Actividades: Las actividades realizadas durante el viaje (ej: hospedaje, comidas)
+- Trabajos: Los trabajos desempeñados para ganar dinero
+- Decisiones: Registro de cada decisión tomada con timestamp
+- Totales: Resumen final (presupuesto usado, dinero ganado, tiempo total, distancia)
+
+Flexibilidad: Maneja tanto viajes simples (planificación básica) como sesiones interactivas completas (R3) con actividades y trabajos.
