@@ -129,6 +129,7 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
     freeTimeMin: 0,
     currentStayRequiredMin: 0,
     currentOptionalStayMin: 0,
+    currentAirportId: null,
     showOptionalActivities: false,
     suggestedRoute: null,
     routePlan: [],
@@ -137,6 +138,7 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
     graphLoaded: false,
     sessionActive: false,
     advancedVisible: false,
+    blockedRoutes: [],
   };
 
   let _onStart = null;
@@ -214,9 +216,22 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
     render();
   }
 
+  function setBlockedRoutes(nextBlockedRoutes = []) {
+    state.blockedRoutes = Array.isArray(nextBlockedRoutes) ? nextBlockedRoutes.filter(Boolean) : [];
+    render();
+  }
+
   function setAdvancedVisible(nextVisible = false) {
     state.advancedVisible = Boolean(nextVisible);
     render();
+  }
+
+  function isRouteBlocked(origin, destination) {
+    const key = `${String(origin ?? "").trim().toUpperCase()}::${String(destination ?? "").trim().toUpperCase()}`;
+    return state.blockedRoutes.some(route => {
+      const blockedKey = `${String(route?.origin_vertex ?? route?.origin ?? "").trim().toUpperCase()}::${String(route?.destination_vertex ?? route?.destination ?? "").trim().toUpperCase()}`;
+      return blockedKey === key;
+    });
   }
 
   function setAvailability(nextAvailability = {}) {
@@ -311,6 +326,10 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
       routes.forEach(route => {
         const routeRow = document.createElement("div");
         routeRow.className = "session-choice-row";
+        const routeBlocked = Boolean(route.blocked) || isRouteBlocked(route.origin, route.destination);
+        if (routeBlocked) {
+          routeRow.classList.add("session-choice-blocked");
+        }
         if (state.suggestedRoute?.destination === route.destination) {
           routeRow.classList.add("session-choice-suggested");
         }
@@ -328,6 +347,11 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
         tagRow.className = "session-tag-row";
         if (state.suggestedRoute?.destination === route.destination) {
           tagRow.appendChild(createTag("Sugerida"));
+        }
+        if (routeBlocked) {
+          const blockedTag = createTag("Bloqueada");
+          blockedTag.className = "session-tag session-tag-blocked";
+          tagRow.appendChild(blockedTag);
         }
         tagRow.appendChild(createTag(`${route.reachable_destinations ?? 0} destinos alcanzables`));
         tagRow.appendChild(createTag(`Score ${Number(route.priority_score ?? 0).toFixed(2)}`));
@@ -362,8 +386,14 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
           btn.className = "btn btn-sm";
           btn.textContent = "Elegir vuelo";
           btn.dataset.kind = "transport";
+          btn.dataset.origin = route.origin ?? state.currentAirportId ?? "";
+          btn.dataset.blocked = routeBlocked ? "true" : "false";
           btn.dataset.destination = route.destination ?? "";
           btn.dataset.aircraft = option.aircraft ?? "";
+          btn.disabled = routeBlocked;
+          if (routeBlocked) {
+            btn.title = "Esta ruta está bloqueada";
+          }
 
           optionRow.appendChild(optionText);
           optionRow.appendChild(btn);
@@ -591,8 +621,10 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
     const choice = { kind };
 
     if (kind === "transport") {
+      choice.origin = button.dataset.origin || state.currentAirportId || "";
       choice.destination = button.dataset.destination || "";
       choice.aircraft = button.dataset.aircraft || "";
+      choice.blocked = button.dataset.blocked === "true";
     } else if (kind === "activity") {
       choice.activity_id = button.dataset.activityId || "";
     } else if (kind === "job") {
@@ -635,6 +667,7 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
     setBanner,
     setOptionalActivitiesVisible,
     setRoutePlan,
+    setBlockedRoutes,
     setAdvancedVisible,
     clearProposals,
     getState: () => ({ ...state }),

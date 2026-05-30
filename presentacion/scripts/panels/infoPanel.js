@@ -65,6 +65,10 @@ export function createInfoPanel({ panelId = "airportInfoPanel", rules = {} } = {
   const airlinesEl = panel.querySelector("#infoAirlines");
   const activitiesEl = panel.querySelector("#infoActivities");
   const jobsEl = panel.querySelector("#infoJobs");
+  const adverseSituationEl = panel.querySelector("#infoAdverseSituation");
+
+  let currentAirportCode = null;
+  let onAdverseSituationSelect = null;
 
   function formatMoney(value) {
     const amount = Number(value);
@@ -100,6 +104,7 @@ export function createInfoPanel({ panelId = "airportInfoPanel", rules = {} } = {
 
     // Use logical OR to treat empty strings as missing values
     const airportCode = node.code || node.airport_code || node.iata || node.id || "-";
+    currentAirportCode = airportCode !== "-" ? airportCode : null;
     const airportName = node.name || "-";
     const city = node.city || node.name || "-";
     const country = node.country || "-";
@@ -168,10 +173,15 @@ export function createInfoPanel({ panelId = "airportInfoPanel", rules = {} } = {
       }
     }
 
+    if (adverseSituationEl) {
+      adverseSituationEl.value = "";
+    }
+
     panel.classList.remove("hidden");
   }
 
   function clear() {
+    currentAirportCode = null;
     codeEl.textContent = "-";
     nameEl.textContent = "-";
     cityEl.textContent = "-";
@@ -180,15 +190,29 @@ export function createInfoPanel({ panelId = "airportInfoPanel", rules = {} } = {
     if (lodgingCostEl) lodgingCostEl.textContent = "-";
     if (mealRuleEl) mealRuleEl.textContent = getMealIntervalLabel();
     if (lodgingRuleEl) lodgingRuleEl.textContent = getLodgingIntervalLabel();
+    if (adverseSituationEl) adverseSituationEl.value = "";
     airlinesEl.innerHTML = "";
     if (activitiesEl) activitiesEl.innerHTML = "";
     if (jobsEl) jobsEl.innerHTML = "";
     panel.classList.add("hidden");
   }
 
+  if (adverseSituationEl) {
+    adverseSituationEl.addEventListener("change", async (e) => {
+      const situationValue = e.target.value;
+      if (situationValue && currentAirportCode && onAdverseSituationSelect) {
+        e.target.value = "";
+        await onAdverseSituationSelect(currentAirportCode, situationValue);
+      }
+    });
+  }
+
   return {
     show,
     clear,
     setRules,
+    onAdverseSituationSelect: (callback) => {
+      onAdverseSituationSelect = callback;
+    },
   };
 }

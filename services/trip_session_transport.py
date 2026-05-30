@@ -570,6 +570,7 @@ class TripSessionTransportMixin:
 
         return RouteProposal(
             id=f"{self.state.current_airport}->{route.destination_vertex}",
+            origin=self.state.current_airport,
             destination=route.destination_vertex,
             distance_km=float(route.distance),
             transport_options=sorted(options, key=lambda opt: (opt.cost_usd, opt.time_min)),
@@ -581,6 +582,7 @@ class TripSessionTransportMixin:
             estimated_job_income=round(estimated_job_income, 2),
             priority_score=round(priority_score, 2),
             selection_reason=selection_reason,
+            blocked=bool(getattr(route, "blocked", False)),
         )
 
     def _plan_from_state(self, simulated_state: Any, max_steps: int = 6) -> List[Dict[str, Any]]:
@@ -598,6 +600,8 @@ class TripSessionTransportMixin:
             "estimated_job_income": proposal.estimated_job_income,
             "priority_score": proposal.priority_score,
             "selection_reason": proposal.selection_reason,
+            "origin": proposal.origin,
+            "blocked": proposal.blocked,
             "transport_options": [
                 {
                     "aircraft": option.aircraft,
@@ -611,7 +615,7 @@ class TripSessionTransportMixin:
 
     def suggest_route(self) -> Dict[str, Any]:
         proposals = self.step_proposals()
-        suggested = proposals.routes[0] if proposals.routes else None
+        suggested = next((route for route in proposals.routes if not bool(getattr(route, "blocked", False))), None)
         settings = self._planning_settings()
         route_plan = self._plan_from_state(deepcopy(self.state), max_steps=settings["max_steps"])
 

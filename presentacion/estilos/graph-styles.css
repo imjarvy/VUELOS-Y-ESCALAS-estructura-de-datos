@@ -370,6 +370,12 @@ button:active:not(:disabled) {
   background: var(--bg-panel);
 }
 
+.session-choice-blocked {
+  border-color: var(--red-border);
+  background: var(--red-bg);
+  opacity: 0.95;
+}
+
 .session-choice-main {
   display: flex;
   flex-direction: column;
@@ -498,6 +504,11 @@ button:active:not(:disabled) {
 .session-tag-job {
   background: var(--green-bg);
   color: var(--green);
+}
+
+.session-tag-blocked {
+  background: var(--red-bg);
+  color: var(--red);
 }
 
 .session-actions-row {
@@ -844,6 +855,35 @@ button:active:not(:disabled) {
   stroke-width: 4px !important;
   opacity: 1 !important;
   transition: stroke 0.18s ease;
+}
+
+/* Adverse Situation Select */
+.adverse-situation-select {
+  width: 100%;
+  padding: 0.5rem 0.6rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-panel);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.adverse-situation-select:hover {
+  border-color: var(--border-focus);
+}
+
+.adverse-situation-select:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.adverse-situation-select option {
+  background: var(--bg-panel);
+  color: var(--text);
 }
 
 /* =============================================================================

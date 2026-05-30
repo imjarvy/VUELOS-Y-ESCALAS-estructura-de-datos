@@ -180,6 +180,12 @@ class TripSessionDecisionMixin:
                 errors=[f"No route from {self.state.current_airport} to {destination}"],
             )
 
+        if bool(getattr(selected_route, "blocked", False)):
+            return ApplyResult(
+                updated_state=self.state,
+                errors=[f"Route from {self.state.current_airport} to {destination} is blocked"],
+            )
+
         if aircraft not in getattr(selected_route, "aircrafts", []):
             return ApplyResult(
                 updated_state=self.state,

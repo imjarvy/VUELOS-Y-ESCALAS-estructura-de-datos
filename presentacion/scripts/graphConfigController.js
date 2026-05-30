@@ -20,6 +20,7 @@ export function createGraphConfigController({ statusElement = null } = {}) {
   };
 
   let currentConfig = null;
+  let currentLockState = { locked: false, active_session_count: 0, active_route_count: 0, message: "" };
 
   function setStatus(message) {
     if (statusElement) {
@@ -33,6 +34,30 @@ export function createGraphConfigController({ statusElement = null } = {}) {
 
   function closeModal() {
     configModal.classList.add("hidden");
+  }
+
+  function applyControlState() {
+    const locked = Boolean(currentLockState?.locked);
+    if (openButton) {
+      openButton.disabled = locked;
+      openButton.title = locked ? currentLockState.message : "";
+    }
+    if (saveButton) {
+      saveButton.disabled = locked;
+      saveButton.title = locked ? currentLockState.message : "";
+    }
+  }
+
+  async function loadLockState() {
+    const lockState = await apiGet("/api/config/status");
+    currentLockState = {
+      locked: Boolean(lockState?.locked),
+      active_session_count: Number(lockState?.active_session_count ?? 0),
+      active_route_count: Number(lockState?.active_route_count ?? 0),
+      message: String(lockState?.message ?? ""),
+    };
+    applyControlState();
+    return currentLockState;
   }
 
   function fillForm(config) {
@@ -82,6 +107,11 @@ export function createGraphConfigController({ statusElement = null } = {}) {
   }
 
   async function saveConfig() {
+    const lockState = await loadLockState();
+    if (lockState.locked) {
+      throw new Error(lockState.message || "No puedes cambiar la configuración mientras haya una sesión o ruta activa.");
+    }
+
     const payload = readForm();
     const response = await apiPost("/api/config", payload);
     currentConfig = response.config ?? payload;
@@ -91,10 +121,21 @@ export function createGraphConfigController({ statusElement = null } = {}) {
 
   if (openButton) {
     openButton.addEventListener("click", async () => {
-      setStatus("Cargando configuración...");
-      await loadConfig();
-      setStatus("Configuración lista.");
-      openModal();
+      try {
+        setStatus("Verificando estado de la configuración...");
+        const lockState = await loadLockState();
+        if (lockState.locked) {
+          setStatus(lockState.message || "No puedes cambiar la configuración mientras haya una sesión activa.");
+          return;
+        }
+
+        setStatus("Cargando configuración...");
+        await loadConfig();
+        setStatus("Configuración lista.");
+        openModal();
+      } catch (error) {
+        setStatus(error.message || "No se pudo cargar la configuración.");
+      }
     });
   }
 
@@ -104,10 +145,14 @@ export function createGraphConfigController({ statusElement = null } = {}) {
 
   if (saveButton) {
     saveButton.addEventListener("click", async () => {
-      setStatus("Guardando configuración...");
-      await saveConfig();
-      setStatus("Configuración guardada.");
-      closeModal();
+      try {
+        setStatus("Guardando configuración...");
+        await saveConfig();
+        setStatus("Configuración guardada.");
+        closeModal();
+      } catch (error) {
+        setStatus(error.message || "No se pudo guardar la configuración.");
+      }
     });
   }
 
@@ -117,11 +162,17 @@ export function createGraphConfigController({ statusElement = null } = {}) {
     });
   }
 
+  void loadLockState().catch(() => {
+    applyControlState();
+  });
+
   return {
     loadConfig,
+    loadLockState,
     saveConfig,
     openModal,
     closeModal,
+    refreshControls: loadLockState,
     getCurrentConfig: () => currentConfig,
   };
 }

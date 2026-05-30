@@ -1,12 +1,28 @@
 export class FlightAnimator {
-  constructor({ svgId, viewportSelector = ".graph-viewport", linkSelector = ".graph-links .link", planeRadius = 6 } = {}) {
+  constructor({
+    svgId,
+    viewportSelector = ".graph-viewport",
+    linkSelector = ".graph-links .link",
+    planeRadius = 6,
+    routeDurationMs = 7000,
+  } = {}) {
     this.svgId = svgId;
     this.viewportSelector = viewportSelector;
     this.linkSelector = linkSelector;
     this.planeRadius = planeRadius;
+    this.routeDurationMs = Math.max(1, Number(routeDurationMs) || 7000);
     this._animationFrame = null;
     this._plane = null;
     this._activeViewport = null;
+    this._currentRoute = null;
+    this._isBlocked = false;
+    this._startTime = null;
+    this._startX = null;
+    this._startY = null;
+    this._endX = null;
+    this._endY = null;
+    this._durationMs = 0;
+    this._onRouteFinished = null;
   }
 
   stop() {
@@ -19,6 +35,58 @@ export class FlightAnimator {
       this._plane.remove();
       this._plane = null;
     }
+
+    this._currentRoute = null;
+    this._isBlocked = false;
+    this._startTime = null;
+  }
+
+  isAnimatingRoute(originId, destinationId) {
+    if (!this._currentRoute || !this._plane || this._animationFrame == null) return false;
+    const origin = String(originId ?? "").trim().toUpperCase();
+    const destination = String(destinationId ?? "").trim().toUpperCase();
+    return this._currentRoute.origin === origin && this._currentRoute.destination === destination;
+  }
+
+  getCurrentRoute() {
+    if (!this._currentRoute || !this._plane || this._animationFrame == null) return null;
+    return { ...this._currentRoute };
+  }
+
+  onRouteFinished(callback) {
+    this._onRouteFinished = typeof callback === "function" ? callback : null;
+  }
+
+  blockCurrentRoute() {
+    if (!this._plane || !this._currentRoute || this._isBlocked) return false;
+
+    this._isBlocked = true;
+    this._plane.setAttribute("fill", "#dc2626");
+    this._plane.setAttribute("stroke", "#7f1d1d");
+
+    // Reverse from the current in-flight position back to the origin.
+    const currentX = Number(this._plane.getAttribute("cx") ?? this._startX ?? 0);
+    const currentY = Number(this._plane.getAttribute("cy") ?? this._startY ?? 0);
+    const originalOriginX = this._startX;
+    const originalOriginY = this._startY;
+    const originalTargetX = this._endX;
+    const originalTargetY = this._endY;
+
+    this._startX = currentX;
+    this._startY = currentY;
+    this._endX = originalOriginX;
+    this._endY = originalOriginY;
+
+    const forwardDistance = Math.hypot(originalTargetX - originalOriginX, originalTargetY - originalOriginY);
+    const reverseDistance = Math.hypot(this._startX - this._endX, this._startY - this._endY);
+    if (forwardDistance > 0 && Number.isFinite(forwardDistance) && Number.isFinite(reverseDistance)) {
+      const speedPxPerMs = forwardDistance / Math.max(this._durationMs, 1);
+      this._durationMs = Math.max(300, reverseDistance / Math.max(speedPxPerMs, 0.0001));
+    }
+
+    this._startTime = performance.now();
+
+    return true;
   }
 
   _getSvg() {
@@ -75,7 +143,7 @@ export class FlightAnimator {
     plane.setAttribute("cy", String(y));
   }
 
-  animateRoute({ originId, destinationId, blocked = false, durationMs = 1400 } = {}) {
+  animateRoute({ originId, destinationId, blocked = false } = {}) {
     const found = this._findLink(originId, destinationId);
     if (!found?.data) return false;
 
@@ -87,19 +155,26 @@ export class FlightAnimator {
 
     const source = blocked ? linkData.target : linkData.source;
     const target = blocked ? linkData.source : linkData.target;
-    const startX = Number(source?.x ?? 0);
-    const startY = Number(source?.y ?? 0);
-    const endX = Number(target?.x ?? 0);
-    const endY = Number(target?.y ?? 0);
+    this._startX = Number(source?.x ?? 0);
+    this._startY = Number(source?.y ?? 0);
+    this._endX = Number(target?.x ?? 0);
+    this._endY = Number(target?.y ?? 0);
+    this._durationMs = this.routeDurationMs;
+    this._isBlocked = blocked;
 
-    this._setPlanePosition(plane, startX, startY);
+    this._currentRoute = {
+      origin: String(originId ?? "").trim().toUpperCase(),
+      destination: String(destinationId ?? "").trim().toUpperCase(),
+    };
 
-    const startTime = performance.now();
+    this._setPlanePosition(plane, this._startX, this._startY);
+
+    this._startTime = performance.now();
     const step = now => {
-      const elapsed = now - startTime;
-      const progress = Math.min(1, elapsed / Math.max(durationMs, 1));
-      const x = startX + (endX - startX) * progress;
-      const y = startY + (endY - startY) * progress;
+      const elapsed = now - this._startTime;
+      const progress = Math.min(1, elapsed / Math.max(this._durationMs, 1));
+      const x = this._startX + (this._endX - this._startX) * progress;
+      const y = this._startY + (this._endY - this._startY) * progress;
       this._setPlanePosition(plane, x, y);
 
       if (progress < 1) {
@@ -107,7 +182,14 @@ export class FlightAnimator {
         return;
       }
 
+      const status = this._isBlocked ? "returned" : "arrived";
+      const route = this._currentRoute ? { ...this._currentRoute } : null;
       this._animationFrame = null;
+      this._isBlocked = false;
+
+      if (this._onRouteFinished) {
+        this._onRouteFinished({ status, route });
+      }
     };
 
     this._animationFrame = requestAnimationFrame(step);

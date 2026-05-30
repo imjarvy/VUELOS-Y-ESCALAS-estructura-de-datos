@@ -16,3 +16,5 @@ class RouteProposal:
     estimated_job_income: float = 0.0
     priority_score: float = 0.0
     selection_reason: str = ""
+    origin: str = ""
+    blocked: bool = False

@@ -111,6 +111,9 @@ def _dfs(
 
     # ── Explore neighbors ──────────────────────────────────────────
     for route in graph.get_neighbors(current_id):
+        if bool(getattr(route, "blocked", False)):
+            continue
+
         next_id = route.destination_vertex
 
         # No revisiting — project rule: no airport more than once as stopover

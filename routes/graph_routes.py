@@ -5,8 +5,10 @@ import dataclasses
 
 from flask import Blueprint, jsonify, request
 from acceso_datos.dataLoader import DataLoader
+from acceso_datos.graph_local_storage import GraphLocalStorage
 from services.graphDataService import GraphDataService
 from services.advanced_planner import AdvancedPlanner
+from services.route_blocking_service import RouteBlockingService
 from utils.constants import GRAPH_CONFIG_DEFAULTS
 
 graph_bp = Blueprint("graph", __name__)
@@ -17,17 +19,50 @@ _GRAPH_CONFIG = deepcopy(GRAPH_CONFIG_DEFAULTS)
 _LAST_GRAPH = None
 _ADVANCED_PLANNER: AdvancedPlanner | None = None
 _SESSIONS = {}
+_ROUTE_BLOCKING_SERVICE = RouteBlockingService()
+_GRAPH_STORAGE = GraphLocalStorage()
+
+
+def _session_has_active_route(session: object) -> bool:
+    state = getattr(session, "state", None)
+    if state is None:
+        return False
+
+    planned_route = list(getattr(state, "planned_route", []) or [])
+    itinerary = list(getattr(state, "itinerary", []) or [])
+    last_suggested_route = getattr(state, "last_suggested_route", None)
+    return bool(planned_route or itinerary or last_suggested_route)
+
+
+def _config_lock_state() -> dict:
+    active_sessions = len(_SESSIONS)
+    active_routes = sum(1 for session in _SESSIONS.values() if _session_has_active_route(session))
+
+    if active_sessions == 0:
+        message = "La configuración está disponible."
+    elif active_routes:
+        message = "No puedes cambiar la configuración mientras haya una ruta activa o una sesión en curso."
+    else:
+        message = "No puedes cambiar la configuración mientras haya una sesión activa."
+
+    return {
+        "locked": bool(active_sessions),
+        "active_session_count": active_sessions,
+        "active_route_count": active_routes,
+        "message": message,
+    }
 
 
 def _serialize(obj):
     try:
-        if dataclasses.is_dataclass(obj):
+        if dataclasses.is_dataclass(obj) and not isinstance(obj, type):
             return _serialize(dataclasses.asdict(obj))
     except Exception:
         pass
-    if hasattr(obj, "to_dict"):
+    to_dict = getattr(obj, "to_dict", None)
+    if callable(to_dict):
         try:
-            return _serialize(obj.to_dict())
+            return _serialize(to_dict())
         except Exception:
             pass
     if isinstance(obj, dict):
@@ -37,9 +72,42 @@ def _serialize(obj):
     return obj
 
 
+def _graph_payload(graph: object) -> dict:
+    vertices = getattr(graph, "vertices", None) or []
+    return {
+        "vertices": [airport.to_dict() for airport in vertices],
+        "airports": len(vertices),
+    }
+
+
+def _restore_saved_graph() -> None:
+    global _LAST_GRAPH, _ADVANCED_PLANNER
+    restored_graph = _GRAPH_STORAGE.load_graph()
+    if restored_graph is None:
+        return
+    _LAST_GRAPH = restored_graph
+    _ADVANCED_PLANNER = AdvancedPlanner(restored_graph, defaults=_GRAPH_CONFIG)
+
+
+_restore_saved_graph()
+
+
 @graph_bp.route("/api/config", methods=["GET"])
 def get_config():
     return jsonify(deepcopy(_GRAPH_CONFIG))
+
+
+@graph_bp.route("/api/config/status", methods=["GET"])
+def get_config_status():
+    return jsonify(_config_lock_state())
+
+
+@graph_bp.route("/api/current-graph", methods=["GET"])
+def current_graph():
+    if _LAST_GRAPH is None:
+        return jsonify({"graph": None, "loaded": False}), 200
+
+    return jsonify({"graph": _graph_payload(_LAST_GRAPH), "loaded": True})
 
 
 @graph_bp.route("/api/config", methods=["POST"])
@@ -47,6 +115,10 @@ def save_config():
     payload = request.get_json(silent=True) or {}
     if not isinstance(payload, dict):
         return jsonify({"error": "Formato de configuración inválido"}), 400
+
+    lock_state = _config_lock_state()
+    if lock_state["locked"]:
+        return jsonify({"error": lock_state["message"], "lock_state": lock_state}), 409
 
     global _GRAPH_CONFIG, _ADVANCED_PLANNER
     next_config = deepcopy(_GRAPH_CONFIG)
@@ -77,6 +149,19 @@ def save_config():
 
     return jsonify({"message": "Configuración guardada correctamente", "config": deepcopy(_GRAPH_CONFIG)})
 
+
+@graph_bp.route("/api/session/<session_id>/close", methods=["POST"])
+def close_session(session_id: str):
+    session = _SESSIONS.pop(session_id, None)
+    if session is None:
+        return jsonify({"error": "session not found"}), 404
+
+    return jsonify({
+        "message": "Session closed",
+        "session_id": session_id,
+        "lock_state": _config_lock_state(),
+    })
+
 @graph_bp.route("/api/load-graph", methods=["POST"])
 def load_graph():
     """Load a JSON file, build the graph domain objects, and return serializable graph data."""
@@ -96,28 +181,19 @@ def load_graph():
     global _LAST_GRAPH, _ADVANCED_PLANNER
     _LAST_GRAPH = graph
     _ADVANCED_PLANNER = AdvancedPlanner(graph, defaults=_GRAPH_CONFIG)
-
-    graph_payload = {"vertices": [airport.to_dict() for airport in graph.vertices]}
+    _GRAPH_STORAGE.save_graph(graph)
 
     return jsonify(
         {
             "message": "Grafo cargado correctamente",
-            "graph": graph_payload,
-            "airports": len(graph.vertices),
+            "graph": _graph_payload(graph),
         }
     )
 
 
 @graph_bp.route("/api/interrupt-route", methods=["POST"])
 def interrupt_route():
-    """Stub endpoint to mark a route interruption.
-
-    Expected JSON payload:
-    { "origin": "AAA", "destination": "BBB", "reason": "closure", "blocked": true }
-
-    This endpoint only normalizes the request and returns it. The actual graph/planner
-    mutation will be added later, once the second planner is ready.
-    """
+    """Mark a route as blocked or unblocked in the loaded graph."""
     payload = request.get_json(silent=True) or {}
     origin = payload.get("origin") or payload.get("origin_vertex")
     destination = payload.get("destination") or payload.get("destination_vertex")
@@ -127,13 +203,17 @@ def interrupt_route():
     if not origin or not destination:
         return jsonify({"error": "origin and destination are required"}), 400
 
-    # TODO: integrate with GraphDataService / planner: mark route blocked, notify clients, recalculate itineraries
+    global _LAST_GRAPH
+    result = _ROUTE_BLOCKING_SERVICE.block_route(_LAST_GRAPH, origin, destination, reason=reason, blocked=blocked)
+    if not result.get("found"):
+        return jsonify({"error": f"No route from {origin} to {destination}"}), 404
+
+    _GRAPH_STORAGE.save_graph(_LAST_GRAPH)
+
     return jsonify({
-        "message": "Interrupt route received (stub)",
-        "origin": origin,
-        "destination": destination,
-        "reason": reason,
-        "blocked": blocked,
+        "message": "Route interruption updated",
+        **result,
+        "blocked_routes": _ROUTE_BLOCKING_SERVICE.list_blocked_routes(_LAST_GRAPH),
     }), 200
 
 
@@ -214,7 +294,9 @@ def session_report(session_id: str):
         return jsonify({"error": "session not found"}), 404
 
     report = session.finalize_and_report()
+    _SESSIONS.pop(session_id, None)
     return jsonify({
         "session_id": session_id,
         "report": _serialize(report),
+        "lock_state": _config_lock_state(),
     })

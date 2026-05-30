@@ -1,5 +1,8 @@
 from typing import Any, Dict, List, Optional, TYPE_CHECKING
 
+from models.airport import Airport
+from models.route import Route
+
 if TYPE_CHECKING:
     from models.airport import Airport
     from models.route import Route
@@ -67,6 +70,38 @@ class Graph:
                     **route_dict,
                 })
         return {"nodes": nodes, "links": links}
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> "Graph":
+        graph = cls()
+        if not isinstance(data, dict):
+            return graph
+
+        vertices_data = data.get("vertices") or data.get("nodes") or data.get("airports") or []
+        if not isinstance(vertices_data, list):
+            vertices_data = []
+
+        airport_map: Dict[str, Airport] = {}
+        for airport_data in vertices_data:
+            if not isinstance(airport_data, dict):
+                continue
+            airport = Airport.from_dict(airport_data)
+            airport_map[airport.airport_id] = airport
+            graph.add_vertex(airport)
+
+        links_data = data.get("links") or data.get("routes") or []
+        if isinstance(links_data, list) and links_data:
+            has_existing_adjacencies = any(getattr(airport, "adjacencies", []) for airport in graph.vertices)
+            if not has_existing_adjacencies:
+                for route_data in links_data:
+                    if not isinstance(route_data, dict):
+                        continue
+                    route = Route.from_dict(route_data)
+                    origin_airport = airport_map.get(route.origin_vertex)
+                    if origin_airport is not None:
+                        origin_airport.add_adjacency(route)
+
+        return graph
 
     # ------------------- Helpers ------------------- #
 

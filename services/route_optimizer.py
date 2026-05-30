@@ -107,6 +107,9 @@ def _dijkstra(
             break
 
         for route in graph.get_neighbors(u):
+            if bool(getattr(route, "blocked", False)):
+                continue
+
             v = route.destination_vertex
             if v not in unvisited:
                 continue
