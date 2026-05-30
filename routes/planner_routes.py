@@ -89,7 +89,7 @@ def plan_basic():
 
     body = request.get_json(silent=True) or {}
 
-    # ── Validate required fields ────────────────────────────────
+    # ── Validate required fields 
     origin = body.get("origin", "").strip().upper()
     if not origin:
         return jsonify({"error": "'origin' es requerido."}), 400
@@ -108,7 +108,7 @@ def plan_basic():
     if origin not in graph:
         return jsonify({"error": f"Aeropuerto de origen '{origin}' no encontrado en el grafo."}), 404
 
-    # ── Build TripConfig ────────────────────────────────────────
+    # ── Build TripConfig 
     transport_types  = _parse_transport_types(body.get("transport_types"))
     include_secondary = bool(body.get("include_secondary", True))
 
@@ -119,7 +119,7 @@ def plan_basic():
         allow_secondary_airports = include_secondary,
     )
 
-    # ── Run planner ─────────────────────────────────────────────
+    # ── Run planner 
     try:
         itin_a, itin_b = _planner.plan_both(graph, origin, config)
     except ValueError as e:
