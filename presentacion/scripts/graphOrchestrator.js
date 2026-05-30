@@ -3,6 +3,7 @@ import { createGraphUi, transformGraphToD3Data } from "./graphUI.js";
 import { FlightAnimator } from "./flightAnimator.js";
 import { createInfoPanel } from "./panels/infoPanel.js";
 import { createTripSessionPanel } from "./panels/tripSessionPanel.js";
+import { createPlannerPanel } from "./panels/planner-panel.js";
 import { createGraphConfigController } from "./graphConfigController.js";
 
 const status = document.getElementById("status");
@@ -11,6 +12,7 @@ const jsonFileInput = document.getElementById("jsonFile");
 const fileLabel = document.getElementById("fileLabel");
 const infoPanel = createInfoPanel({ panelId: "airportInfoPanel" });
 const tripSessionPanel = createTripSessionPanel({ panelId: "tripSessionPanel" });
+const plannerPanel = createPlannerPanel({ panelId: "plannerPanel" });
 
 function setStatusMessage(message, kind = "info") {
   const text = String(message ?? "");
@@ -210,6 +212,15 @@ tripSessionPanel.onCancelSuggestedRoute(() => {
   setStatusMessage("Ruta sugerida cancelada.");
 });
 
+plannerPanel.onHighlightRoute((itinerary) => {
+  // itinerary.legs tiene [{origin_id, destination_id, ...}
+  const edgeList = itinerary.legs.map(l => ({
+    source: l.origin_id,
+    target: l.destination_id,
+  }));
+  graphUi.highlightRoute(edgeList); 
+});
+
 tripSessionPanel.onChoice(async choice => {
   if (!currentSessionId) {
     setStatusMessage("No hay sesión activa. Inicia una sesión primero.");
@@ -313,6 +324,7 @@ document.getElementById("loadJsonConfirmBtn").addEventListener("click", async ()
   tripSessionPanel.setRoutePlan([]);
   tripSessionPanel.setOptionalActivitiesVisible(false);
   tripSessionPanel.setAvailability({ graphLoaded: true, sessionActive: false });
+  plannerPanel.setAvailability({ graphLoaded: true });
   tripSessionPanel.setBanner("Grafo cargado con exito", "success");
   infoPanel.setRules(await apiGet("/api/config").catch(() => ({ intervaloAlojamiento: 20 })));
   tripSessionPanel.setRules(await apiGet("/api/config").catch(() => ({ intervaloAlojamiento: 20, intervaloAlimentacion: 8 })));
