@@ -3,7 +3,7 @@
 from copy import deepcopy
 import dataclasses
 
-from services import graph_state
+from services import graph_state, session_state
 from flask import Blueprint, jsonify, request
 from acceso_datos.dataLoader import DataLoader
 from services.graphDataService import GraphDataService
@@ -17,7 +17,6 @@ _GRAPH_CONFIG = deepcopy(GRAPH_CONFIG_DEFAULTS)
 # In-memory runtime holders for the last loaded graph and active sessions.
 _LAST_GRAPH = None
 _ADVANCED_PLANNER: AdvancedPlanner | None = None
-_SESSIONS = {}
 
 
 def _serialize(obj):
@@ -160,7 +159,7 @@ def start_session():
     except Exception as exc:
         return jsonify({"error": str(exc)}), 400
 
-    _SESSIONS[session.session_id] = session
+    session_state.register_session(session)
     proposals = session.step_proposals()
     return jsonify({
         "message": "Session started",
@@ -172,7 +171,7 @@ def start_session():
 
 @graph_bp.route("/api/session/<session_id>/proposals", methods=["GET"])
 def session_proposals(session_id: str):
-    session = _SESSIONS.get(session_id)
+    session = session_state.get_session(session_id)
     if session is None:
         return jsonify({"error": "session not found"}), 404
     proposals = session.step_proposals()
@@ -181,7 +180,7 @@ def session_proposals(session_id: str):
 
 @graph_bp.route("/api/session/<session_id>/suggest-route", methods=["POST"])
 def session_suggest_route(session_id: str):
-    session = _SESSIONS.get(session_id)
+    session = session_state.get_session(session_id)
     if session is None:
         return jsonify({"error": "session not found"}), 404
 
@@ -196,7 +195,7 @@ def session_suggest_route(session_id: str):
 
 @graph_bp.route("/api/session/<session_id>/update-budget", methods=["POST"])
 def session_update_budget(session_id: str):
-    session = _SESSIONS.get(session_id)
+    session = session_state.get_session(session_id)
     if session is None:
         return jsonify({"error": "session not found"}), 404
 
@@ -227,7 +226,7 @@ def session_update_budget(session_id: str):
 
 @graph_bp.route("/api/session/<session_id>/choice", methods=["POST"])
 def session_choice(session_id: str):
-    session = _SESSIONS.get(session_id)
+    session = session_state.get_session(session_id)
     if session is None:
         return jsonify({"error": "session not found"}), 404
     payload = request.get_json(silent=True) or {}
@@ -242,12 +241,13 @@ def session_choice(session_id: str):
 
 @graph_bp.route("/api/session/<session_id>/report", methods=["GET"])
 def session_report(session_id: str):
-    session = _SESSIONS.get(session_id)
-    if session is None:
-        return jsonify({"error": "session not found"}), 404
+    from services.report_service import build_session_report
 
-    report = session.finalize_and_report()
-    return jsonify({
-        "session_id": session_id,
-        "report": _serialize(report),
-    })
+    try:
+        payload = build_session_report(session_id)
+    except LookupError as exc:
+        return jsonify({"error": str(exc)}), 404
+    except RuntimeError as exc:
+        return jsonify({"error": str(exc)}), 400
+
+    return jsonify(payload)

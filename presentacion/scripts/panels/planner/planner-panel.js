@@ -1,14 +1,12 @@
-// Coordina estado, render y llamadas a la API.
-// No construye DOM complejo ni formatea datos — eso está en planner-render.js.
-import { state }   from "./planner-state.js";
+// Coordinates planner panel: DOM shell, events, API calls and render updates.
+import { state } from "./planner-state.js";
 import { render, renderResults, showBanner } from "./planner-render.js";
-import { fetchBasicPlan, fetchBestRoute } from "./planner.js";
+import { fetchBasicPlan, fetchBestRoute } from "./planner-api.js";
 
 export function createPlannerPanel({ panelId = "plannerPanel" } = {}) {
   const panel = document.getElementById(panelId);
   if (!panel) throw new Error(`Panel #${panelId} no encontrado.`);
 
-  // ── Construir HTML del panel ─────────────────────────────────────────────
   panel.innerHTML = `
     <div class="info-row">
       <span class="info-label">Modo</span>
@@ -79,16 +77,14 @@ export function createPlannerPanel({ panelId = "plannerPanel" } = {}) {
       <div id="plannerResultsList" class="session-proposals-list"></div>
     </div>`;
 
-  // ── Referencias al DOM ───────────────────────────────────────────────────
-  const submitBtn      = panel.querySelector("#plannerSubmitBtn");
-  const banner         = panel.querySelector("#plannerBanner");
-  const resultsList    = panel.querySelector("#plannerResultsList");
+  const submitBtn = panel.querySelector("#plannerSubmitBtn");
+  const banner = panel.querySelector("#plannerBanner");
+  const resultsList = panel.querySelector("#plannerResultsList");
   const resultsSection = panel.querySelector("#plannerResultsSection");
 
   let _onHighlightRoute = null;
   function onHighlightRoute(handler) { _onHighlightRoute = handler; }
 
-  // ── Leer inputs ──────────────────────────────────────────────────────────
   function getOrigin() {
     return (panel.querySelector("#plannerOrigin")?.value || "").trim().toUpperCase();
   }
@@ -104,23 +100,27 @@ export function createPlannerPanel({ panelId = "plannerPanel" } = {}) {
     return panel.querySelector("#plannerSecondary")?.checked ?? true;
   }
 
-  // ── Llamadas a la API ────────────────────────────────────────────────────
   async function submitBasic() {
-    const origin    = getOrigin();
-    const budget    = parseFloat(panel.querySelector("#plannerBudget")?.value);
+    const origin = getOrigin();
+    const budget = parseFloat(panel.querySelector("#plannerBudget")?.value);
     const timeHours = parseFloat(panel.querySelector("#plannerTimeH")?.value);
 
-    if (!origin)              return showBanner(banner, "Ingresa el aeropuerto de origen.", "error");
-    if (!budget || budget<=0) return showBanner(banner, "Ingresa un presupuesto válido.", "error");
-    if (!timeHours||timeHours<=0) return showBanner(banner, "Ingresa el tiempo disponible.", "error");
+    if (!origin) return showBanner(banner, "Ingresa el aeropuerto de origen.", "error");
+    if (!budget || budget <= 0) return showBanner(banner, "Ingresa un presupuesto válido.", "error");
+    if (!timeHours || timeHours <= 0) return showBanner(banner, "Ingresa el tiempo disponible.", "error");
 
     state.loading = true;
     render(panel, submitBtn);
     banner.style.display = "none";
 
     try {
-      const data = await fetchBasicPlan({ origin, budget, time_hours: timeHours,
-       transport_types: getTransportTypes(), include_secondary: includeSecondary() })
+      const data = await fetchBasicPlan({
+        origin,
+        budget,
+        time_hours: timeHours,
+        transport_types: getTransportTypes(),
+        include_secondary: includeSecondary(),
+      });
       state.itinerary_a = data.itinerary_a;
       state.itinerary_b = data.itinerary_b;
       renderResults(resultsList, resultsSection, _onHighlightRoute);
@@ -133,20 +133,25 @@ export function createPlannerPanel({ panelId = "plannerPanel" } = {}) {
   }
 
   async function submitRoute() {
-    const origin   = getOrigin();
-    const dest     = (panel.querySelector("#plannerDest")?.value || "").trim().toUpperCase();
+    const origin = getOrigin();
+    const dest = (panel.querySelector("#plannerDest")?.value || "").trim().toUpperCase();
     const criteria = getCriteria();
 
     if (!origin || !dest) return showBanner(banner, "Ingresa origen y destino.", "error");
-    if (!criteria.length)  return showBanner(banner, "Selecciona al menos un criterio.", "error");
+    if (!criteria.length) return showBanner(banner, "Selecciona al menos un criterio.", "error");
 
     state.loading = true;
     render(panel, submitBtn);
     banner.style.display = "none";
 
     try {
-      const data = await fetchBestRoute({ origin, dest, criteria,
-       transport_types: getTransportTypes(), include_secondary: includeSecondary() });
+      const data = await fetchBestRoute({
+        origin,
+        dest,
+        criteria,
+        transport_types: getTransportTypes(),
+        include_secondary: includeSecondary(),
+      });
       state.routes = data.routes;
       renderResults(resultsList, resultsSection, _onHighlightRoute);
     } catch (err) {
@@ -157,7 +162,6 @@ export function createPlannerPanel({ panelId = "plannerPanel" } = {}) {
     }
   }
 
-  // ── Eventos ──────────────────────────────────────────────────────────────
   panel.querySelectorAll(".planner-mode-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       state.mode = btn.dataset.mode;
@@ -173,7 +177,6 @@ export function createPlannerPanel({ panelId = "plannerPanel" } = {}) {
     else submitRoute();
   });
 
-  // Forzar mayúsculas en los inputs de aeropuerto
   ["plannerOrigin", "plannerDest"].forEach(id => {
     panel.querySelector(`#${id}`)?.addEventListener("input", e => {
       const pos = e.target.selectionStart;
@@ -182,7 +185,6 @@ export function createPlannerPanel({ panelId = "plannerPanel" } = {}) {
     });
   });
 
-  // ── API pública ──────────────────────────────────────────────────────────
   function setAvailability({ graphLoaded } = {}) {
     if (graphLoaded !== undefined) state.graphLoaded = Boolean(graphLoaded);
     render(panel, submitBtn);

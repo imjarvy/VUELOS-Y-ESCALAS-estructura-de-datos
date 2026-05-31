@@ -89,7 +89,22 @@ def _serialize_activities(activities: List[Any]) -> List[Dict[str, Any]]:
                 "performed_at_min": record.performed_at_min,
             })
         elif isinstance(record, dict):
-            result.append(record)
+            result.append({
+                "name":             record.get("name", ""),
+                "type":             record.get("type")
+                                    or record.get("activity_type")
+                                    or record.get("tipo")
+                                    or record.get("kind", ""),
+                "duration_min":     record.get("duration_min")
+                                    or record.get("duracionMin")
+                                    or 0,
+                "cost_usd":         float(record.get("cost_usd")
+                                    or record.get("costoUSD")
+                                    or record.get("cost")
+                                    or 0.0),
+                "performed_at_min": record.get("performed_at_min"),
+                "airport_id":       record.get("airport_id", ""),
+            })
         elif is_dataclass(record):
             result.append(asdict(record))
     return result

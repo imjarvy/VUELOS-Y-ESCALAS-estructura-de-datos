@@ -3,7 +3,9 @@ import { createGraphUi, transformGraphToD3Data } from "./graphUI.js";
 import { FlightAnimator } from "./flightAnimator.js";
 import { createInfoPanel } from "./panels/infoPanel.js";
 import { createTripSessionPanel } from "./panels/tripSessionPanel.js";
-import { createPlannerPanel } from "./panels/planner-panel.js";
+import { createPlannerPanel } from "./panels/planner/planner-panel.js";
+import { createReportPanel } from "./panels/report/report-panel.js";
+import { legsToEdgeList } from "./panels/report/report-utils.js";
 import { createGraphConfigController } from "./graphConfigController.js";
 
 const status = document.getElementById("status");
@@ -13,6 +15,7 @@ const fileLabel = document.getElementById("fileLabel");
 const infoPanel = createInfoPanel({ panelId: "airportInfoPanel" });
 const tripSessionPanel = createTripSessionPanel({ panelId: "tripSessionPanel" });
 const plannerPanel = createPlannerPanel({ panelId: "plannerPanel" });
+const reportPanel = createReportPanel({ panelId: "reportPanel" });
 
 function setStatusMessage(message, kind = "info") {
   const text = String(message ?? "");
@@ -112,6 +115,9 @@ let currentSessionId = null;
 function resetSessionUi(message = "Sesión cancelada.") {
   currentSessionId = null;
   tripSessionPanel.setSessionId(null);
+  reportPanel.setSessionId(null);
+  reportPanel.clear();
+  reportPanel.setAvailability({ sessionActive: false });
   tripSessionPanel.setAvailability({ graphLoaded: true, sessionActive: false });
   tripSessionPanel.setSuggestedRoute(null);
   tripSessionPanel.setRoutePlan([]);
@@ -141,6 +147,9 @@ async function startSessionFromUi() {
     const res = await apiPost("/api/session/start", { origin, budget, time_h: timeHours });
     currentSessionId = res.session_id;
     tripSessionPanel.setSessionId(currentSessionId);
+    reportPanel.setSessionId(currentSessionId);
+    reportPanel.setAvailability({ sessionActive: true });
+    reportPanel.show();
     tripSessionPanel.setAvailability({ graphLoaded: true, sessionActive: true });
     tripSessionPanel.setSuggestedRoute(null);
     tripSessionPanel.setRoutePlan([]);
@@ -157,6 +166,7 @@ async function startSessionFromUi() {
     tripSessionPanel.setProposals(res.proposals ?? null);
     tripSessionPanel.setBanner(`Sesión iniciada: ${currentSessionId}. Revisa rutas, actividades y trabajos disponibles.`);
     setStatusMessage(`Sesión iniciada: ${currentSessionId}`);
+    reportPanel.loadReport(currentSessionId, { quiet: true });
   } catch (err) {
     tripSessionPanel.setBanner(`No se pudo iniciar la sesión: ${err.message || err}`, "error");
     setStatusMessage(`Error iniciando sesión: ${err.message || err}`, "error");
@@ -221,6 +231,14 @@ plannerPanel.onHighlightRoute((itinerary) => {
   graphUi.highlightRoute(edgeList); 
 });
 
+reportPanel.onHighlightRoute((report) => {
+  if (!report?.legs?.length) {
+    graphUi.clearRouteHighlight();
+    return;
+  }
+  graphUi.highlightRoute(legsToEdgeList(report.legs));
+});
+
 tripSessionPanel.onChoice(async choice => {
   if (!currentSessionId) {
     setStatusMessage("No hay sesión activa. Inicia una sesión primero.");
@@ -259,6 +277,7 @@ tripSessionPanel.onChoice(async choice => {
       tripSessionPanel.setBanner("Decisión aplicada correctamente.", "success");
       setStatusMessage("Decisión aplicada correctamente.");
     }
+    reportPanel.loadReport(currentSessionId, { quiet: true });
   } catch (err) {
     tripSessionPanel.setBanner(`Error aplicando decisión: ${err.message || err}`, "error");
     setStatusMessage(`Error aplicando decisión: ${err.message || err}`, "error");
@@ -309,7 +328,10 @@ document.getElementById("loadJsonConfirmBtn").addEventListener("click", async ()
   flightAnimator.stop();
   graphUi.renderGraph(d3Graph, "graphSvg", "graphContainer");
   document.getElementById("rightPanels")?.classList.remove("hidden");
-  document.getElementById("plannerPanel").classList.remove("hidden");
+  document.getElementById("plannerPanel")?.classList.remove("hidden");
+  document.getElementById("reportPanel")?.classList.remove("hidden");
+  reportPanel.clear();
+  reportPanel.setAvailability({ sessionActive: false });
   infoPanel.clear();
   tripSessionPanel.setState({
     budgetInitial: 1000,

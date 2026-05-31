@@ -727,3 +727,103 @@ Lo que incluye:
 - Totales: Resumen final (presupuesto usado, dinero ganado, tiempo total, distancia)
 
 Flexibilidad: Maneja tanto viajes simples (planificación básica) como sesiones interactivas completas (R3) con actividades y trabajos.
+
+# Resumen sesión — 30 mayo 2026  
+Proyecto **VUELOS-Y-ESCALAS**
+
+---
+
+## 1. PlannerPanel
+- Oculto por `hidden` y `aside#rightPanels`  
+- `createPlannerPanel()` borra `<h3>` inicial  
+
+**Frontend R2**  
+`planner-api.js` → HTTP  
+`planner-state.js` → estado  
+`planner-render.js` → DOM  
+`planner-panel.js` → coordinador  
+
+**Backend**  
+- Máx. destinos → `itinerary_planner.py` (DFS)  
+- Mejor ruta → `route_optimizer.py` (Dijkstra)  
+
+---
+
+## 2. Bug `route_optimizer.py`
+- No normalizaba `"Comercial"/"Hélice"`  
+- Fix: `_normalize_transport_keys()` con `_AIRCRAFT_NAME_MAP`
+
+---
+
+## 3. Aeropuertos
+- Hub: `"is_hub": true` → `Airport.is_hub = True`  
+- Secundario: `"is_hub": false` → `Airport.is_hub = False`  
+- Sin secundarios → solo hubs como escalas
+
+---
+
+## 4. Rutas en grafo
+`graphUI.js`  
+- `highlightRoute()` → azul  
+- `clearRouteHighlight()` → limpia  
+- Planner: botón “Ver en mapa”  
+- Reporte: carga todos los tramos
+
+---
+
+## 5. Reporte R5 Backend
+Archivos:  
+- `report_generator.py` → JSON  
+- `report_service.py` → orquesta  
+- `session_state.py` → sesiones  
+- `report_routes.py` → `GET /api/report/<id>`
+
+---
+
+## 6. Reporte R5 Frontend
+`report-api/state/render/utils/panel.js`  
+- 6 secciones: destinos, tramos, actividades, trabajos, decisiones, totales  
+- Auto-actualiza tras cada decisión  
+- Usa `graphUi.highlightRoute()`
+
+---
+
+## 7. Refactor SOLID
+Planner → `panels/planner/`  
+Reporte → `panels/report/`  
+Patrón: `*-api/state/render/panel.js`  
+Se eliminó `components/`
+
+---
+
+## 8. Verificación R5
+- Actividades: `type`, `cost_usd`, `duration_min` → corregido  
+- Trabajos: `hours_worked`, `income_usd`, `hourly_rate` → ok  
+- Totales: fórmula `final_balance = init + gained - spent` verificada
+
+---
+
+## 9. Endpoints
+- `POST /api/load-graph`  
+- `POST /api/plan/basic`  
+- `POST /api/plan/route`  
+- `POST /api/session/start`  
+- `POST /api/session/{id}/choice`  
+- `GET /api/report/{id}`  
+
+---
+
+## 10. Pendientes
+- README usa camelCase, API snake_case  
+- `graphOrchestrator.js` → no meter más lógica  
+- `tripSessionPanel.js` → migrar formatters a `utils`
+
+---
+
+## Flujo completo
+1. `python app.py` → abrir web  
+2. Cargar JSON  
+3. Planificador → calcular → ver mapa  
+4. Sesión R3 → iniciar → decisiones  
+5. Reporte R5 → panel auto-actualizado  
+6. API directa → `GET /api/report/{session_id}`

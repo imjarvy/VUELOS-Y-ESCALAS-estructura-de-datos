@@ -10,6 +10,7 @@ from flask_cors import CORS
 from routes.graph_routes import graph_bp
 from services.graphDataService import GraphDataService
 from routes.planner_routes import planner_bp
+from routes.report_routes import report_bp
 
 
 BASE_DIR = os.path.dirname(__file__)
@@ -27,6 +28,7 @@ app = Flask(
 CORS(app)  # Habilitar CORS para todas las rutas
 app.register_blueprint(graph_bp)
 app.register_blueprint(planner_bp)
+app.register_blueprint(report_bp)
 
 @app.route("/scripts/<path:filename>")
 def scripts_static(filename):
