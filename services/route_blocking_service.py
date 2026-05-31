@@ -4,13 +4,38 @@ from typing import Any, Dict, List, Optional
 
 
 class RouteBlockingService:
-    """Single-purpose service to mark routes as blocked in the in-memory graph."""
+    """Single-purpose service to mark routes as blocked in the in-memory graph.
+
+    Responsibilities:
+    - Find routes by origin and destination
+    - Serialize routes into plain dictionaries
+    - Mark routes as blocked or unblocked
+    - List blocked routes for UI and persistence use
+    """
 
     @staticmethod
     def _normalize_code(value: Any) -> str:
+        """Normalize an airport code.
+
+        Args:
+            value: Raw code value.
+
+        Returns:
+            str: Uppercased, trimmed code.
+        """
         return str(value or "").strip().upper()
 
     def find_route(self, graph: Any, origin: str, destination: str) -> Optional[Any]:
+        """Find a route between two airports.
+
+        Args:
+            graph: Graph instance containing airports and routes.
+            origin: Origin airport code.
+            destination: Destination airport code.
+
+        Returns:
+            Any: Matching route object, or None if no route is found.
+        """
         if graph is None:
             return None
 
@@ -30,6 +55,14 @@ class RouteBlockingService:
         return None
 
     def list_blocked_routes(self, graph: Any) -> List[Dict[str, Any]]:
+        """List all blocked routes in the graph.
+
+        Args:
+            graph: Graph instance to inspect.
+
+        Returns:
+            List[Dict[str, Any]]: Blocked routes serialized as dictionaries.
+        """
         if graph is None:
             return []
 
@@ -42,6 +75,14 @@ class RouteBlockingService:
         return blocked_routes
 
     def serialize_route(self, route: Any) -> Dict[str, Any]:
+        """Serialize a route into a dictionary.
+
+        Args:
+            route: Route object or route-like value.
+
+        Returns:
+            Dict[str, Any]: Plain route data with a normalized blocked flag.
+        """
         if hasattr(route, "to_dict"):
             payload = dict(route.to_dict())
         else:
@@ -59,6 +100,18 @@ class RouteBlockingService:
         return payload
 
     def block_route(self, graph: Any, origin: str, destination: str, reason: Optional[str] = None, blocked: bool = True) -> Dict[str, Any]:
+        """Block or unblock a route in the graph.
+
+        Args:
+            graph: Graph instance containing the route.
+            origin: Origin airport code.
+            destination: Destination airport code.
+            reason: Optional reason for the interruption.
+            blocked: Flag that indicates whether the route should be blocked.
+
+        Returns:
+            Dict[str, Any]: Result payload with the operation outcome and route data when available.
+        """
         route = self.find_route(graph, origin, destination)
         if route is None:
             return {

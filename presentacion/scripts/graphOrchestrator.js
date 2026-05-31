@@ -3,8 +3,9 @@ import { createGraphUi, transformGraphToD3Data } from "./graphUI.js";
 import { FlightAnimator } from "./flightAnimator.js";
 import { createInfoPanel } from "./panels/infoPanel.js";
 import { createTripSessionPanel } from "./panels/tripSessionPanel.js";
+import { createPlannerPanel } from "./panels/planner-panel.js";
 import { createGraphConfigController } from "./graphConfigController.js";
-import { createRouteBlockingController } from "./services/routeBlockingController.js";
+import { createRouteBlockingController } from "./routeBlockingController.js";
 
 const status = document.getElementById("status");
 const jsonModal = document.getElementById("jsonModal");
@@ -15,6 +16,7 @@ const tripSessionPanel = createTripSessionPanel({ panelId: "tripSessionPanel" })
 const configController = createGraphConfigController({
   statusElement: status,
 });
+const plannerPanel = createPlannerPanel({ panelId: "plannerPanel" });
 
 function setStatusMessage(message, kind = "info") {
   const text = String(message ?? "");
@@ -266,6 +268,15 @@ tripSessionPanel.onCancelSuggestedRoute(() => {
   void syncConfigControls();
 });
 
+plannerPanel.onHighlightRoute((itinerary) => {
+  // itinerary.legs tiene [{origin_id, destination_id, ...}
+  const edgeList = itinerary.legs.map(l => ({
+    source: l.origin_id,
+    target: l.destination_id,
+  }));
+  graphUi.highlightRoute(edgeList); 
+});
+
 tripSessionPanel.onChoice(async choice => {
   if (!currentSessionId) {
     setStatusMessage("No hay sesión activa. Inicia una sesión primero.");
@@ -420,9 +431,36 @@ document.getElementById("loadJsonConfirmBtn").addEventListener("click", async ()
   tripSessionPanel.setOptionalActivitiesVisible(false);
   tripSessionPanel.setBlockedRoutes(getBlockedRoutes());
   tripSessionPanel.setAvailability({ graphLoaded: true, sessionActive: false });
+  plannerPanel.setAvailability({ graphLoaded: true });
   tripSessionPanel.setBanner("Grafo cargado con exito", "success");
   infoPanel.setRules(await apiGet("/api/config").catch(() => ({ intervaloAlojamiento: 20 })));
   tripSessionPanel.setRules(await apiGet("/api/config").catch(() => ({ intervaloAlojamiento: 20, intervaloAlimentacion: 8 })));
   setStatusMessage(`Grafo cargado: ${response.airports ?? d3Graph.nodes.length} aeropuertos.`);
   closeModal();
+});
+
+// Budget change handler: propagate to server when session active
+tripSessionPanel.onBudgetChange(async newBudget => {
+  const parsed = Number(newBudget);
+  if (!Number.isFinite(parsed) || parsed < 0) return;
+  if (!currentSessionId) {
+    // No session: keep local values already set by panel
+    return;
+  }
+
+  setStatusMessage("Actualizando presupuesto...");
+  try {
+    const res = await apiPost(`/api/session/${currentSessionId}/update-budget`, { budget: parsed });
+    const meta = res.meta || {};
+    tripSessionPanel.setState({
+      budgetInitial: meta.budget_initial ?? tripSessionPanel.getState().budgetInitial,
+      budgetRemaining: meta.budget_remaining ?? tripSessionPanel.getState().budgetRemaining,
+    });
+    tripSessionPanel.setProposals(res.proposals ?? null);
+    tripSessionPanel.setBanner(`Presupuesto actualizado: $${parsed.toFixed(2)}`, "success");
+    setStatusMessage("Presupuesto actualizado.");
+  } catch (err) {
+    tripSessionPanel.setBanner(`No se pudo actualizar el presupuesto: ${err.message || err}`, "error");
+    setStatusMessage(`Error actualizando presupuesto: ${err.message || err}`, "error");
+  }
 });
