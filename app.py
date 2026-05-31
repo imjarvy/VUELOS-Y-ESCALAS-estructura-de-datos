@@ -8,7 +8,7 @@ import os
 from flask import Flask, render_template, send_from_directory
 from flask_cors import CORS
 from routes.graph_routes import graph_bp
-from services.graphDataService import GraphDataService
+from routes.trip_session_routes import trip_session_bp
 
 BASE_DIR = os.path.dirname(__file__)
 TEMPLATES_DIR = os.path.join(BASE_DIR, "presentacion", "vistas")
@@ -24,6 +24,7 @@ app = Flask(
 
 CORS(app)  # Habilitar CORS para todas las rutas
 app.register_blueprint(graph_bp)
+app.register_blueprint(trip_session_bp)
 
 @app.route("/scripts/<path:filename>")
 def scripts_static(filename):

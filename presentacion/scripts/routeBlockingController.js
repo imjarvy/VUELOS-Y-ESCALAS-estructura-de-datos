@@ -48,6 +48,7 @@ export function createRouteBlockingController({
   }
 
   function applyBlockedRouteVisual(origin, destination, blocked) {
+    // Keep the SVG state aligned with the server-side blocked route state.
     graphUi.markLinkBlocked(origin, destination, blocked);
 
     if (blocked) {

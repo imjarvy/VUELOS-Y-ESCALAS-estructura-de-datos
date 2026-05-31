@@ -17,7 +17,6 @@ class Airport:
 
     Useful methods:
     - add_adjacency(route): add a route object or dict
-    - neighbors(): return list of neighbor airport IDs
     - to_dict()/from_dict(): serialization helpers
     """
 
@@ -100,25 +99,23 @@ class Airport:
     def from_dict(cls, data: Dict[str, Any]) -> "Airport":
         """Create an `Airport` instance from a mapping (dict).
 
-        The factory accepts several key names (English/Spanish) for flexibility.
         If `adjacencies` contains route dicts and `Route.from_dict` is importable,
         it will convert them to `Route` objects.
         """
         airport = cls(
             airport_id=data.get("airport_id") or data.get("id") or "",
-            name=data.get("name") or data.get("nombre") or "",
-            city=data.get("city") or data.get("ciudad") or "",
-            country=data.get("country") or data.get("pais") or "",
-            timezone=data.get("timezone") or data.get("zonaHoraria") or "",
-            is_hub=data.get("is_hub") or data.get("esHub") or False,
-            accommodation_cost=data.get("accommodation_cost") or data.get("costoAlojamiento") or 0.0,
-            feeding_cost=data.get("feeding_cost") or data.get("costoAlimentacion") or 0.0,
-            activities=data.get("activities") or data.get("actividades") or [],
-            jobs=data.get("jobs") or data.get("trabajos") or [],
+            name=data.get("name") or "",
+            city=data.get("city") or "",
+            country=data.get("country") or "",
+            timezone=data.get("timezone") or "",
+            is_hub=data.get("is_hub") or False,
+            accommodation_cost=data.get("accommodation_cost") or 0.0,
+            feeding_cost=data.get("feeding_cost") or 0.0,
+            activities=data.get("activities") or [],
+            jobs=data.get("jobs") or [],
         )
 
-        # Cargar adyacencias si vienen como dicts
-        adj = data.get("adjacencies") or data.get("adyacencias") or []
+        adj = data.get("adjacencies") or []
         for r in adj:
             if isinstance(r, dict):
                 try:

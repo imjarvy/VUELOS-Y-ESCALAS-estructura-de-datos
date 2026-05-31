@@ -7,11 +7,6 @@ class Leg:
     Cost and flight time are pre-calculated (distance × aircraft rate)
     and stored here so the API can return them without recalculating.
 
-    Why a separate class and not a dict?
-    - Validation on construction (no negative distances or costs).
-    - to_dict() keeps the serialization format in one place.
-    - route_optimizer.py builds Leg objects; report_generator.py reads them.
-      Neither needs to know how the other works (Dependency Inversion).
     """
 
     def __init__(

@@ -49,6 +49,7 @@ export function createGraphConfigController({ statusElement = null } = {}) {
   }
 
   async function loadLockState() {
+    // The backend decides whether config editing is allowed.
     const lockState = await apiGet("/api/config/status");
     currentLockState = {
       locked: Boolean(lockState?.locked),
@@ -100,6 +101,7 @@ export function createGraphConfigController({ statusElement = null } = {}) {
   }
 
   async function loadConfig() {
+    // Populate the modal with the active graph configuration.
     const config = await apiGet("/api/config");
     currentConfig = config;
     fillForm(config);
@@ -107,6 +109,7 @@ export function createGraphConfigController({ statusElement = null } = {}) {
   }
 
   async function saveConfig() {
+    // Re-check the lock before sending an update.
     const lockState = await loadLockState();
     if (lockState.locked) {
       throw new Error(lockState.message || "No puedes cambiar la configuración mientras haya una sesión o ruta activa.");

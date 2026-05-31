@@ -4,9 +4,7 @@ services/itinerary_planner.py
 Builds maximum-coverage itineraries under budget or time constraints (R2).
 
 Algorithm justification:
-    Dijkstra (route_optimizer.py) finds the SHORTEST path between two fixed
-    endpoints. Here the goal is different: visit as MANY airports as possible
-    from a single origin within a hard resource constraint (budget USD or
+    Allows visiting as MANY airports as possible from a single origin within a hard resource constraint (budget USD or
     time minutes). These are fundamentally different problems.
 
     Solution: Depth-First Search (DFS) + backtracking.
@@ -208,7 +206,7 @@ def _assemble_itinerary(legs: List[Leg], criteria: str) -> Optional[Itinerary]:
 # ------------------------------------------------------------------ #
 
 class ItineraryPlanner:
-    """Generates maximum-coverage itineraries from a single origin (R2).
+    """Generates maximum-coverage itineraries from a single origin.
 
     Single Responsibility: explores the graph for maximum destination coverage.
     Does not load data, render UI, or generate reports.

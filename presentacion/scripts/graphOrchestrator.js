@@ -74,7 +74,7 @@ tripSessionPanel.setAvailability({ graphLoaded: false, sessionActive: false });
 tripSessionPanel.setBanner("Restaurando el grafo guardado...");
 void syncConfigControls();
 
-// Session control wired into the trip session panel
+// Session state is coordinated through the trip session panel and the backend session endpoints.
 let currentSessionId = null;
 let pendingTransportChoice = null;
 
@@ -166,7 +166,7 @@ flightAnimator.onRouteFinished(async ({ status } = {}) => {
 });
 
 async function startSessionFromUi() {
-  // Try DOM-selected node first
+  // Prefer the currently selected node in the graph if one exists.
   let selected = null;
   const selEl = document.querySelector('.graph-nodes .node.node-selected .node-code');
   if (selEl) selected = String(selEl.textContent || '').trim().toUpperCase();
@@ -269,7 +269,7 @@ tripSessionPanel.onCancelSuggestedRoute(() => {
 });
 
 plannerPanel.onHighlightRoute((itinerary) => {
-  // itinerary.legs tiene [{origin_id, destination_id, ...}
+  // Convert itinerary legs into the edge format expected by the graph renderer.
   const edgeList = itinerary.legs.map(l => ({
     source: l.origin_id,
     target: l.destination_id,
@@ -326,7 +326,7 @@ tripSessionPanel.onChoice(async choice => {
   }
 });
 
-// Load the current backend config so the UI can show the lodging rule consistently.
+// Load the current backend config so the panels stay aligned with the same rules.
 apiGet("/api/config")
   .then(config => {
     infoPanel.setRules(config ?? {});
@@ -342,6 +342,7 @@ async function restorePersistedGraph() {
     const response = await apiGet("/api/current-graph");
     const savedGraph = response?.graph ?? null;
     if (!savedGraph || !Array.isArray(savedGraph.vertices) || !savedGraph.vertices.length) {
+      // Nothing persisted yet, so the UI stays in the initial empty state.
       tripSessionPanel.setBanner("Carga un grafo para iniciar una sesión R3.");
       return;
     }

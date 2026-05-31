@@ -62,13 +62,13 @@ class Route:
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Route":
         """Create a Route from a mapping. Accepts English or Spanish keys (English priority)."""
-        origin = data.get("origin") or data.get("origin_vertex") or data.get("origen") or ""
-        dest = data.get("destination") or data.get("destination_vertex") or data.get("destino") or ""
-        distance = data.get("distanceKm") or data.get("distance") or data.get("distancia") or 0.0
-        aircrafts = data.get("aircraft") or data.get("aircrafts") or data.get("aeronaves") or []
-        cost = data.get("baseCost") or data.get("cost") or data.get("costoBase") or 0.0
-        minimum = data.get("minimumStay") or data.get("minimum_stay") or data.get("estanciaMinima") or 0
-        blocked = data.get("blocked") or data.get("isBlocked") or data.get("bloqueada") or False
+        origin = data.get("origin") or data.get("origin_vertex") or ""
+        dest = data.get("destination") or data.get("destination_vertex") or ""
+        distance = data.get("distanceKm") or data.get("distance") or 0.0
+        aircrafts = data.get("aircraft") or data.get("aircrafts") or []
+        cost = data.get("baseCost") or data.get("cost") or 0.0
+        minimum = data.get("minimumStay") or data.get("minimum_stay") or 0
+        blocked = data.get("blocked") or data.get("isBlocked") or False
         return cls(origin, dest, distance, aircrafts=aircrafts, cost=cost, minimum_stay=minimum, blocked=blocked)
 
     def __repr__(self) -> str:

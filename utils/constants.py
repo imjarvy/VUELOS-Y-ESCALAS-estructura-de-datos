@@ -35,4 +35,3 @@ DEFAULTS: Dict[str, float] = {
 
 
 __all__ = ["GRAPH_CONFIG_DEFAULTS", "AIRCRAFT_RATES", "DEFAULTS"]
-

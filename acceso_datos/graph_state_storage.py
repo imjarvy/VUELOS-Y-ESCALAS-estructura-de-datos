@@ -7,7 +7,7 @@ from typing import Any, Optional
 from core.graph import Graph
 
 
-class GraphLocalStorage:
+class GraphStateStorage:
     """Persist the last loaded graph snapshot to a local JSON file.
 
     Responsibilities:
@@ -18,7 +18,7 @@ class GraphLocalStorage:
     """
 
     def __init__(self, storage_path: Optional[str] = None) -> None:
-        """Initialize the local storage handler.
+        """Initialize the graph state storage handler.
 
         Args:
             storage_path: Optional custom path for the storage file.

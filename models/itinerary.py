@@ -6,8 +6,8 @@ from models.leg import Leg
 class Itinerary:
     """Complete ordered sequence of flight legs representing a trip plan.
 
-    This is the output of route_optimizer.py and itinerary_planner.py (R2),
-    and the main input for report_generator.py (R5).
+    This is the output of route_optimizer.py and itinerary_planner.py,
+    and the main input for report_generator.py.
 
     Key design decision - totals as @property, not stored attributes:
         total_cost and total_time_min are computed from self.legs on demand.
@@ -30,8 +30,7 @@ class Itinerary:
     ) -> None:
         """
         Args:
-            optimization_criteria: what this itinerary was optimized for.
-                                   Must be 'cost', 'time', or 'distance'.
+            optimization_criteria: 'cost', 'time', or 'distance'.
             legs: optional initial list of Leg objects. Defaults to empty list.
         """
         if optimization_criteria not in self.VALID_CRITERIA:
@@ -92,7 +91,7 @@ class Itinerary:
         self.legs.append(leg)
 
     def to_dict(self) -> Dict[str, Any]:
-        """Serialize the full itinerary for the REST API (R2 and R5).
+        """Serialize the full itinerary for the REST API
 
         Note: totals are rounded to 2 decimal places for clean JSON output.
         visited_airports is included so the frontend can highlight the route

@@ -5,7 +5,7 @@ import dataclasses
 
 from flask import Blueprint, jsonify, request
 from acceso_datos.dataLoader import DataLoader
-from acceso_datos.graph_local_storage import GraphLocalStorage
+from acceso_datos.graph_state_storage import GraphStateStorage
 from services.graphDataService import GraphDataService
 from services.advanced_planner import AdvancedPlanner
 from services.route_blocking_service import RouteBlockingService
@@ -20,7 +20,7 @@ _LAST_GRAPH = None
 _ADVANCED_PLANNER: AdvancedPlanner | None = None
 _SESSIONS = {}
 _ROUTE_BLOCKING_SERVICE = RouteBlockingService()
-_GRAPH_STORAGE = GraphLocalStorage()
+_GRAPH_STORAGE = GraphStateStorage()
 
 
 def _session_has_active_route(session: object) -> bool:
@@ -193,7 +193,9 @@ def save_config():
     for key in ("presupuestoMinimoPorc", "intervaloAlojamiento", "intervaloAlimentacion", "max_subsidized_distance_frac"):
         if key in payload:
             try:
-                next_config[key] = float(payload[key])
+                value = payload[key]
+                if value is not None:
+                    next_config[key] = float(value)
             except (TypeError, ValueError):
                 pass
 
@@ -203,26 +205,6 @@ def save_config():
 
     return jsonify({"message": "Configuración guardada correctamente", "config": deepcopy(_GRAPH_CONFIG)})
 
-
-@graph_bp.route("/api/session/<session_id>/close", methods=["POST"])
-def close_session(session_id: str):
-    """Close an active session.
-
-    Args:
-        session_id: Session identifier to close.
-
-    Returns:
-        Response: JSON response indicating whether the session was closed.
-    """
-    session = _SESSIONS.pop(session_id, None)
-    if session is None:
-        return jsonify({"error": "session not found"}), 404
-
-    return jsonify({
-        "message": "Session closed",
-        "session_id": session_id,
-        "lock_state": _config_lock_state(),
-    })
 
 @graph_bp.route("/api/load-graph", methods=["POST"])
 def load_graph():
@@ -285,164 +267,3 @@ def interrupt_route():
         **result,
         "blocked_routes": _ROUTE_BLOCKING_SERVICE.list_blocked_routes(_LAST_GRAPH),
     }), 200
-
-
-@graph_bp.route("/api/session/start", methods=["POST"])
-def start_session():
-    """Start a planning session.
-
-    Returns:
-        Response: JSON response with the session identifier, proposals, and metadata.
-    """
-    payload = request.get_json(silent=True) or {}
-    origin = (payload.get("origin") or payload.get("start") or "").strip().upper()
-    try:
-        budget = float(payload.get("budget", 0))
-    except (TypeError, ValueError):
-        budget = 0.0
-    try:
-        time_h = float(payload.get("time_h", payload.get("hours", 72)))
-    except (TypeError, ValueError):
-        time_h = 72.0
-
-    if _ADVANCED_PLANNER is None or _LAST_GRAPH is None:
-        return jsonify({"error": "No graph loaded. Upload a graph first."}), 400
-
-    try:
-        session = _ADVANCED_PLANNER.start_session(origin=origin, budget=budget, time_h=time_h)
-    except Exception as exc:
-        return jsonify({"error": str(exc)}), 400
-
-    _SESSIONS[session.session_id] = session
-    proposals = session.step_proposals()
-    return jsonify({
-        "message": "Session started",
-        "session_id": session.session_id,
-        "proposals": _serialize(proposals),
-        "meta": _serialize(proposals.meta),
-    })
-
-
-@graph_bp.route("/api/session/<session_id>/proposals", methods=["GET"])
-def session_proposals(session_id: str):
-    """Return the current proposals for a session.
-
-    Args:
-        session_id: Session identifier to inspect.
-
-    Returns:
-        Response: JSON response with proposals and metadata, or an error payload.
-    """
-    session = _SESSIONS.get(session_id)
-    if session is None:
-        return jsonify({"error": "session not found"}), 404
-    proposals = session.step_proposals()
-    return jsonify({"proposals": _serialize(proposals), "meta": _serialize(proposals.meta)})
-
-
-@graph_bp.route("/api/session/<session_id>/suggest-route", methods=["POST"])
-def session_suggest_route(session_id: str):
-    """Suggest the next route for a session.
-
-    Args:
-        session_id: Session identifier to inspect.
-
-    Returns:
-        Response: JSON response with the suggested route data, or an error payload.
-    """
-    session = _SESSIONS.get(session_id)
-    if session is None:
-        return jsonify({"error": "session not found"}), 404
-
-    result = session.suggest_route()
-    return jsonify({
-        "suggested_route": _serialize(result.get("suggested_route")),
-        "route_plan": _serialize(result.get("route_plan") or []),
-        "proposals": _serialize(result.get("proposals")),
-        "meta": _serialize(result.get("proposals").meta if result.get("proposals") is not None else {}),
-    })
-
-
-@graph_bp.route("/api/session/<session_id>/update-budget", methods=["POST"])
-def session_update_budget(session_id: str):
-    """Update the budget for a session.
-
-    Args:
-        session_id: Session identifier to update.
-
-    Returns:
-        Response: JSON response with the updated proposals or an error payload.
-    """
-    session = _SESSIONS.get(session_id)
-    if session is None:
-        return jsonify({"error": "session not found"}), 404
-
-    payload = request.get_json(silent=True) or {}
-    try:
-        budget = float(payload.get("budget"))
-    except (TypeError, ValueError):
-        return jsonify({"error": "invalid budget value"}), 400
-
-    if budget < 0:
-        return jsonify({"error": "budget must be >= 0"}), 400
-
-    # Update session state: set remaining budget, optionally raise initial budget
-    session.state.budget_remaining = round(float(budget), 2)
-    try:
-        if float(budget) > float(getattr(session.state, "budget_initial", 0)):
-            session.state.budget_initial = round(float(budget), 2)
-    except Exception:
-        session.state.budget_initial = round(float(budget), 2)
-
-    proposals = session.step_proposals()
-    return jsonify({
-        "message": "Budget updated",
-        "meta": _serialize(proposals.meta),
-        "proposals": _serialize(proposals),
-    })
-
-
-@graph_bp.route("/api/session/<session_id>/choice", methods=["POST"])
-def session_choice(session_id: str):
-    """Apply a user choice to a session.
-
-    Args:
-        session_id: Session identifier to update.
-
-    Returns:
-        Response: JSON response with the updated state and next proposals, or an error payload.
-    """
-    session = _SESSIONS.get(session_id)
-    if session is None:
-        return jsonify({"error": "session not found"}), 404
-    payload = request.get_json(silent=True) or {}
-    result = session.apply_choice(payload)
-    return jsonify({
-        "updated_state": _serialize(result.updated_state),
-        "next_proposals": _serialize(result.next_proposals) if result.next_proposals is not None else None,
-        "events": list(result.events or []),
-        "errors": list(result.errors or []),
-    })
-
-
-@graph_bp.route("/api/session/<session_id>/report", methods=["GET"])
-def session_report(session_id: str):
-    """Finalize a session and return its report.
-
-    Args:
-        session_id: Session identifier to finalize.
-
-    Returns:
-        Response: JSON response with the final report and lock state, or an error payload.
-    """
-    session = _SESSIONS.get(session_id)
-    if session is None:
-        return jsonify({"error": "session not found"}), 404
-
-    report = session.finalize_and_report()
-    _SESSIONS.pop(session_id, None)
-    return jsonify({
-        "session_id": session_id,
-        "report": _serialize(report),
-        "lock_state": _config_lock_state(),
-    })

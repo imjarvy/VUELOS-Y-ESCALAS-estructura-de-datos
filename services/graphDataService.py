@@ -67,7 +67,7 @@ class GraphDataService:
                     feeding_cost=airport_data.get("foodCost") or airport_data.get("feeding_cost", 0.0),
                     activities=[
                         Activity(
-                            id=(a.get("id") or a.get("name") or ""),
+                            id=(a.get("id") or ""),
                             name=(a.get("name") or ""),
                             type=(a.get("type") or ""),
                             duration_min=int(a.get("duration_min") or a.get("duration") or 0),
@@ -78,7 +78,7 @@ class GraphDataService:
                     ],
                     jobs=[
                         JobOffer(
-                            id=(j.get("id") or j.get("name") or ""),
+                            id=(j.get("id") or ""),
                             name=(j.get("name") or ""),
                             hourly_rate=float(j.get("hourly_rate") or 0.0),
                             max_hours=int(j.get("max_hours") or 0),
@@ -103,8 +103,7 @@ class GraphDataService:
                 continue
 
             # Accept multiple naming conventions, including *_vertex variants
-            # Only English keys allowed for routes
-            origin = route_data.get("origin_vertex") or route_data.get("origin") or route_data.get("from")
+            origin = route_data.get("origin_vertex") or route_data.get("origin")
             target = route_data.get("destination_vertex") or route_data.get("destination") or route_data.get("to")
 
             distance = route_data.get("distance") or route_data.get("distanceKm") or route_data.get("distance_km")
@@ -120,7 +119,7 @@ class GraphDataService:
                     aircrafts=route_data.get("aircraft", []) or route_data.get("aircrafts", []),
                     cost=route_data.get("baseCost", 0.0) or route_data.get("cost", 0.0),
                     minimum_stay=route_data.get("minimumStay", 0) or route_data.get("minimum_stay", 0),
-                    blocked=route_data.get("blocked", False) or route_data.get("isBlocked", False) or route_data.get("bloqueada", False),
+                    blocked=route_data.get("blocked", False) or route_data.get("isBlocked", False),
                 )
             )
 
@@ -145,9 +144,6 @@ class GraphDataService:
         return graph
 
     def export_payload(self) -> Dict[str, Any]:
-        """Return a serializable payload reconstructed from parsed airports.
-
-        The backend contract is English-only; the UI can adapt labels locally.
-        """
+        """Return a serializable payload reconstructed from parsed airports."""
         airports = self.get_parsed_airports()
         return {"airports": [a.to_dict() for a in airports]}

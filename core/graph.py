@@ -13,8 +13,8 @@ class Graph:
 
     def __init__(self) -> None:
         """Initialize an empty graph."""
-        self.vertices: List[Any] = []          # Lista ordenada de aeropuertos
-        self._vertex_map: Dict[str, Any] = {}  # airport_id → Airport (lookup O(1))
+        self.vertices: List[Any] = []         
+        self._vertex_map: Dict[str, Any] = {}  
 
     # ------------------- Vertex ------------------- #
 
