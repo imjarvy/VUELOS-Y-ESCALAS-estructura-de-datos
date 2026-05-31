@@ -309,6 +309,7 @@ document.getElementById("loadJsonConfirmBtn").addEventListener("click", async ()
   flightAnimator.stop();
   graphUi.renderGraph(d3Graph, "graphSvg", "graphContainer");
   document.getElementById("rightPanels")?.classList.remove("hidden");
+  document.getElementById("plannerPanel").classList.remove("hidden");
   infoPanel.clear();
   tripSessionPanel.setState({
     budgetInitial: 1000,
