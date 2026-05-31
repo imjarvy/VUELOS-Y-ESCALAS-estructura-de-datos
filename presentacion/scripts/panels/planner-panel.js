@@ -1,8 +1,8 @@
 // Coordina estado, render y llamadas a la API.
 // No construye DOM complejo ni formatea datos — eso está en planner-render.js.
-import { apiPost } from "../api/client.js";
 import { state }   from "./planner-state.js";
 import { render, renderResults, showBanner } from "./planner-render.js";
+import { fetchBasicPlan, fetchBestRoute } from "./planner.js";
 
 export function createPlannerPanel({ panelId = "plannerPanel" } = {}) {
   const panel = document.getElementById(panelId);
@@ -119,13 +119,8 @@ export function createPlannerPanel({ panelId = "plannerPanel" } = {}) {
     banner.style.display = "none";
 
     try {
-      const data = await apiPost("/api/plan/basic", {
-        origin,
-        budget,
-        time_hours:        timeHours,
-        transport_types:   getTransportTypes(),
-        include_secondary: includeSecondary(),
-      });
+      const data = await fetchBasicPlan({ origin, budget, time_hours: timeHours,
+       transport_types: getTransportTypes(), include_secondary: includeSecondary() })
       state.itinerary_a = data.itinerary_a;
       state.itinerary_b = data.itinerary_b;
       renderResults(resultsList, resultsSection, _onHighlightRoute);
@@ -150,11 +145,8 @@ export function createPlannerPanel({ panelId = "plannerPanel" } = {}) {
     banner.style.display = "none";
 
     try {
-      const data = await apiPost("/api/plan/route", {
-        origin, dest, criteria,
-        transport_types:   getTransportTypes(),
-        include_secondary: includeSecondary(),
-      });
+      const data = await fetchBestRoute({ origin, dest, criteria,
+       transport_types: getTransportTypes(), include_secondary: includeSecondary() });
       state.routes = data.routes;
       renderResults(resultsList, resultsSection, _onHighlightRoute);
     } catch (err) {
