@@ -3,6 +3,7 @@
 from copy import deepcopy
 import dataclasses
 
+from services import graph_state
 from flask import Blueprint, jsonify, request
 from acceso_datos.dataLoader import DataLoader
 from services.graphDataService import GraphDataService
@@ -91,6 +92,7 @@ def load_graph():
 
     service = GraphDataService(loader.get_raw_data())
     graph = service.build_graph()
+    graph_state.set_graph(graph)
 
     # persist the last loaded graph and prepare an AdvancedPlanner for session APIs
     global _LAST_GRAPH, _ADVANCED_PLANNER

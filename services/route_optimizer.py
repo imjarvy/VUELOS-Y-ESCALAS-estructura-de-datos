@@ -40,7 +40,11 @@ _AIRCRAFT_NAME_MAP: Dict[str, str] = {
     "helice":    "propeller",
     "hélice":    "propeller",
     "commercial": "commercial",
+    "Commercial": "commercial",  # ← Agregar mayúscula
+    "regional": "regional",
+    "Regional": "regional",      # ← Agregar mayúscula
     "propeller":  "propeller",
+    "Propeller": "propeller",    # ← Agregar mayúscula
 }
 
 
@@ -86,7 +90,7 @@ def _dijkstra(
     include_secondary: bool,
 ) -> Optional[Tuple[List[str], Dict[str, Tuple[Optional[str], str, str]]]]:
     """
-    Dijkstra shortest path adapted from class notebook.
+    Dijkstra shortest path.
 
     - Uses dist/pred/unvisited structure.
     - Adds aircraft choice and hub filtering.

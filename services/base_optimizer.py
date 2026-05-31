@@ -16,17 +16,7 @@ from models.itinerary import Itinerary
 
 
 class BaseOptimizer(ABC):
-    """
-    Abstract base class for all route optimizers.
-
-    Subclasses:
-        - CostOptimizer      → Dijkstra by cost (USD)
-        - TimeOptimizer      → Dijkstra by flight time (min)
-        - DistanceOptimizer  → Dijkstra by distance (km)
-
-    All share the same optimize() method so r2_routes.py
-    can use them interchangeably.
-    """
+    #All share the same optimize() method. Can use them interchangeably.
 
     @property
     @abstractmethod
@@ -44,31 +34,16 @@ class BaseOptimizer(ABC):
         origin: str,
         dest: str,
         transport_types: Optional[List[str]] = None,
-        include_secondary: bool = True,
-        **params: Any,
+        include_secondary: bool = True, #Exclude non-hub airports if False.
+        **params: Any, # **params: Extra options (e.g. max_stops=2).
     ) -> Optional[Itinerary]:
-        """
-        Find the best route between origin and dest.
-
-        Args:
-            graph: Loaded Graph from airports.json.
-            origin: Departure airport code (e.g. 'BOG').
-            dest: Arrival airport code (e.g. 'LIM').
-            transport_types: Allowed aircraft types.
-            include_secondary: Exclude non-hub airports if False.
-            **params: Extra options (e.g. max_stops=2).
-
-        Returns:
-            Itinerary with optimal path, or None if not found.
+        """Find the best route between origin and dest.
         """
 
     def validate_endpoints(self, graph: Graph, origin: str, dest: str) -> None:
-        """
-        Check that origin and dest exist in graph and are different.
+        
+        #Check that origin and dest exist in graph and are different.
 
-        Raises:
-            ValueError if airports are missing or identical.
-        """
         if origin not in graph:
             raise ValueError(f"Origin {origin!r} not found in graph.")
         if dest not in graph:
