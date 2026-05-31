@@ -143,7 +143,7 @@ export class FlightAnimator {
     plane.setAttribute("cy", String(y));
   }
 
-  animateRoute({ originId, destinationId, blocked = false } = {}) {
+  animateRoute({ originId, destinationId, blocked = false, suppressFinishCallback = false } = {}) {
     const found = this._findLink(originId, destinationId);
     if (!found?.data) return false;
 
@@ -187,7 +187,7 @@ export class FlightAnimator {
       this._animationFrame = null;
       this._isBlocked = false;
 
-      if (this._onRouteFinished) {
+      if (!suppressFinishCallback && this._onRouteFinished) {
         this._onRouteFinished({ status, route });
       }
     };

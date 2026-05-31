@@ -13,14 +13,14 @@
         "feeding_cost": 13.0,
         "activities": [
           {
-            "id": "Templo Mayor Archaeological Site",
+            "id": "",
             "name": "Templo Mayor Archaeological Site",
             "type": "Historical",
             "duration_min": 120,
             "cost_usd": 15.0
           },
           {
-            "id": "Frida Kahlo Museum Tour",
+            "id": "",
             "name": "Frida Kahlo Museum Tour",
             "type": "Cultural",
             "duration_min": 90,
@@ -29,7 +29,7 @@
         ],
         "jobs": [
           {
-            "id": "Museum Guide",
+            "id": "",
             "name": "Museum Guide",
             "hourly_rate": 16.0,
             "max_hours": 8
@@ -71,14 +71,14 @@
         "feeding_cost": 16.0,
         "activities": [
           {
-            "id": "Cenote Swimming",
+            "id": "",
             "name": "Cenote Swimming",
             "type": "Adventure",
             "duration_min": 180,
             "cost_usd": 40.0
           },
           {
-            "id": "Playa del Carmen Beach Day",
+            "id": "",
             "name": "Playa del Carmen Beach Day",
             "type": "Beach",
             "duration_min": 480,
@@ -87,7 +87,7 @@
         ],
         "jobs": [
           {
-            "id": "Resort Worker",
+            "id": "",
             "name": "Resort Worker",
             "hourly_rate": 12.0,
             "max_hours": 8
@@ -104,6 +104,17 @@
             "cost": 75.0,
             "minimum_stay": 180,
             "blocked": false
+          },
+          {
+            "origin_vertex": "CUN",
+            "destination_vertex": "GUA",
+            "distance": 900.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 130.0,
+            "minimum_stay": 180,
+            "blocked": false
           }
         ]
       },
@@ -118,14 +129,14 @@
         "feeding_cost": 10.0,
         "activities": [
           {
-            "id": "Chichicastenango Market Tour",
+            "id": "",
             "name": "Chichicastenango Market Tour",
             "type": "Cultural",
             "duration_min": 180,
             "cost_usd": 40.0
           },
           {
-            "id": "Lake Atitlán Boat Tour",
+            "id": "",
             "name": "Lake Atitlán Boat Tour",
             "type": "Adventure",
             "duration_min": 240,
@@ -134,7 +145,7 @@
         ],
         "jobs": [
           {
-            "id": "Market Guide",
+            "id": "",
             "name": "Market Guide",
             "hourly_rate": 11.0,
             "max_hours": 8
@@ -154,6 +165,17 @@
           },
           {
             "origin_vertex": "GUA",
+            "destination_vertex": "CUN",
+            "distance": 900.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 130.0,
+            "minimum_stay": 180,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "GUA",
             "destination_vertex": "SAL",
             "distance": 180.0,
             "aircrafts": [
@@ -165,13 +187,13 @@
           },
           {
             "origin_vertex": "GUA",
-            "destination_vertex": "LIR",
-            "distance": 1120.0,
+            "destination_vertex": "MGA",
+            "distance": 290.0,
             "aircrafts": [
-              "Commercial"
+              "Regional"
             ],
-            "cost": 210.0,
-            "minimum_stay": 240,
+            "cost": 65.0,
+            "minimum_stay": 120,
             "blocked": false
           }
         ]
@@ -187,14 +209,14 @@
         "feeding_cost": 9.5,
         "activities": [
           {
-            "id": "Volcano Hike Adventure",
+            "id": "",
             "name": "Volcano Hike Adventure",
             "type": "Adventure",
             "duration_min": 240,
             "cost_usd": 70.0
           },
           {
-            "id": "Mayan Ruins Tour",
+            "id": "",
             "name": "Mayan Ruins Tour",
             "type": "Historical",
             "duration_min": 180,
@@ -203,7 +225,7 @@
         ],
         "jobs": [
           {
-            "id": "Tour Guide",
+            "id": "",
             "name": "Tour Guide",
             "hourly_rate": 12.0,
             "max_hours": 8
@@ -231,6 +253,17 @@
             "cost": 35.0,
             "minimum_stay": 120,
             "blocked": false
+          },
+          {
+            "origin_vertex": "SAL",
+            "destination_vertex": "PTY",
+            "distance": 720.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 145.0,
+            "minimum_stay": 240,
+            "blocked": false
           }
         ]
       },
@@ -245,14 +278,14 @@
         "feeding_cost": 9.0,
         "activities": [
           {
-            "id": "Granada Colonial City Tour",
+            "id": "",
             "name": "Granada Colonial City Tour",
             "type": "Heritage",
             "duration_min": 120,
             "cost_usd": 30.0
           },
           {
-            "id": "Lake Nicaragua Island Cruise",
+            "id": "",
             "name": "Lake Nicaragua Island Cruise",
             "type": "Adventure",
             "duration_min": 360,
@@ -261,13 +294,35 @@
         ],
         "jobs": [
           {
-            "id": "Boat Captain",
+            "id": "",
             "name": "Boat Captain",
             "hourly_rate": 13.0,
             "max_hours": 8
           }
         ],
         "adjacencies": [
+          {
+            "origin_vertex": "MGA",
+            "destination_vertex": "SAL",
+            "distance": 130.0,
+            "aircrafts": [
+              "Regional"
+            ],
+            "cost": 35.0,
+            "minimum_stay": 120,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "MGA",
+            "destination_vertex": "GUA",
+            "distance": 290.0,
+            "aircrafts": [
+              "Regional"
+            ],
+            "cost": 65.0,
+            "minimum_stay": 120,
+            "blocked": false
+          },
           {
             "origin_vertex": "MGA",
             "destination_vertex": "PTY",
@@ -292,14 +347,14 @@
         "feeding_cost": 14.0,
         "activities": [
           {
-            "id": "Panama Canal Transit Tour",
+            "id": "",
             "name": "Panama Canal Transit Tour",
             "type": "Historical",
             "duration_min": 360,
             "cost_usd": 150.0
           },
           {
-            "id": "San Blas Islands Adventure",
+            "id": "",
             "name": "San Blas Islands Adventure",
             "type": "Beach",
             "duration_min": 720,
@@ -308,7 +363,7 @@
         ],
         "jobs": [
           {
-            "id": "Canal Guide",
+            "id": "",
             "name": "Canal Guide",
             "hourly_rate": 20.0,
             "max_hours": 8
@@ -317,12 +372,45 @@
         "adjacencies": [
           {
             "origin_vertex": "PTY",
+            "destination_vertex": "MGA",
+            "distance": 600.0,
+            "aircrafts": [
+              "Regional"
+            ],
+            "cost": 135.0,
+            "minimum_stay": 240,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "PTY",
+            "destination_vertex": "SAL",
+            "distance": 720.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 145.0,
+            "minimum_stay": 240,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "PTY",
             "destination_vertex": "BOG",
             "distance": 700.0,
             "aircrafts": [
               "Commercial"
             ],
             "cost": 155.0,
+            "minimum_stay": 300,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "PTY",
+            "destination_vertex": "MDE",
+            "distance": 870.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 165.0,
             "minimum_stay": 300,
             "blocked": false
           }
@@ -339,21 +427,21 @@
         "feeding_cost": 12.0,
         "activities": [
           {
-            "id": "Monserrate Sanctuary Visit",
+            "id": "",
             "name": "Monserrate Sanctuary Visit",
             "type": "Cultural",
             "duration_min": 120,
             "cost_usd": 8.0
           },
           {
-            "id": "Gold Museum Tour",
+            "id": "",
             "name": "Gold Museum Tour",
             "type": "Educational",
             "duration_min": 90,
             "cost_usd": 18.0
           },
           {
-            "id": "Historic La Candelaria Walk",
+            "id": "",
             "name": "Historic La Candelaria Walk",
             "type": "Heritage",
             "duration_min": 180,
@@ -362,13 +450,13 @@
         ],
         "jobs": [
           {
-            "id": "Tour Guide",
+            "id": "",
             "name": "Tour Guide",
             "hourly_rate": 15.0,
             "max_hours": 8
           },
           {
-            "id": "Hotel Staff",
+            "id": "",
             "name": "Hotel Staff",
             "hourly_rate": 8.5,
             "max_hours": 10
@@ -394,6 +482,17 @@
               "Commercial"
             ],
             "cost": 115.0,
+            "minimum_stay": 240,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "BOG",
+            "destination_vertex": "BAQ",
+            "distance": 610.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 120.0,
             "minimum_stay": 240,
             "blocked": false
           },
@@ -432,14 +531,14 @@
         "feeding_cost": 14.0,
         "activities": [
           {
-            "id": "Walled City Historic Tour",
+            "id": "",
             "name": "Walled City Historic Tour",
             "type": "Heritage",
             "duration_min": 180,
             "cost_usd": 15.0
           },
           {
-            "id": "Rosario Islands Cruise",
+            "id": "",
             "name": "Rosario Islands Cruise",
             "type": "Beach",
             "duration_min": 480,
@@ -448,13 +547,24 @@
         ],
         "jobs": [
           {
-            "id": "Boat Captain",
+            "id": "",
             "name": "Boat Captain",
             "hourly_rate": 18.0,
             "max_hours": 8
           }
         ],
         "adjacencies": [
+          {
+            "origin_vertex": "CTG",
+            "destination_vertex": "BOG",
+            "distance": 550.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 115.0,
+            "minimum_stay": 240,
+            "blocked": false
+          },
           {
             "origin_vertex": "CTG",
             "destination_vertex": "BAQ",
@@ -464,6 +574,28 @@
             ],
             "cost": 35.0,
             "minimum_stay": 120,
+            "blocked": true
+          },
+          {
+            "origin_vertex": "CTG",
+            "destination_vertex": "CCS",
+            "distance": 620.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 125.0,
+            "minimum_stay": 240,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "CTG",
+            "destination_vertex": "MDE",
+            "distance": 500.0,
+            "aircrafts": [
+              "Regional"
+            ],
+            "cost": 105.0,
+            "minimum_stay": 240,
             "blocked": false
           }
         ]
@@ -479,14 +611,14 @@
         "feeding_cost": 11.0,
         "activities": [
           {
-            "id": "Carnival Festival",
+            "id": "",
             "name": "Carnival Festival",
             "type": "Cultural",
             "duration_min": 240,
             "cost_usd": 30.0
           },
           {
-            "id": "Gold Museum Tour",
+            "id": "",
             "name": "Gold Museum Tour",
             "type": "Educational",
             "duration_min": 90,
@@ -495,13 +627,35 @@
         ],
         "jobs": [
           {
-            "id": "Event Coordinator",
+            "id": "",
             "name": "Event Coordinator",
             "hourly_rate": 16.0,
             "max_hours": 8
           }
         ],
         "adjacencies": [
+          {
+            "origin_vertex": "BAQ",
+            "destination_vertex": "CTG",
+            "distance": 110.0,
+            "aircrafts": [
+              "Regional"
+            ],
+            "cost": 35.0,
+            "minimum_stay": 120,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "BAQ",
+            "destination_vertex": "BOG",
+            "distance": 610.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 120.0,
+            "minimum_stay": 240,
+            "blocked": false
+          },
           {
             "origin_vertex": "BAQ",
             "destination_vertex": "CCS",
@@ -526,14 +680,14 @@
         "feeding_cost": 12.0,
         "activities": [
           {
-            "id": "Angel Falls Trek",
+            "id": "",
             "name": "Angel Falls Trek",
             "type": "Adventure",
             "duration_min": 1440,
             "cost_usd": 550.0
           },
           {
-            "id": "Los Llanos Wildlife Tour",
+            "id": "",
             "name": "Los Llanos Wildlife Tour",
             "type": "Nature",
             "duration_min": 480,
@@ -542,13 +696,47 @@
         ],
         "jobs": [
           {
-            "id": "Adventure Guide",
+            "id": "",
             "name": "Adventure Guide",
             "hourly_rate": 17.0,
             "max_hours": 8
           }
         ],
-        "adjacencies": []
+        "adjacencies": [
+          {
+            "origin_vertex": "CCS",
+            "destination_vertex": "BAQ",
+            "distance": 540.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 110.0,
+            "minimum_stay": 240,
+            "blocked": true
+          },
+          {
+            "origin_vertex": "CCS",
+            "destination_vertex": "CTG",
+            "distance": 620.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 125.0,
+            "minimum_stay": 240,
+            "blocked": true
+          },
+          {
+            "origin_vertex": "CCS",
+            "destination_vertex": "FOR",
+            "distance": 2400.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 320.0,
+            "minimum_stay": 360,
+            "blocked": false
+          }
+        ]
       },
       {
         "id": "MDE",
@@ -561,14 +749,14 @@
         "feeding_cost": 10.0,
         "activities": [
           {
-            "id": "Comuna 13 Graffiti Tour",
+            "id": "",
             "name": "Comuna 13 Graffiti Tour",
             "type": "Cultural",
             "duration_min": 150,
             "cost_usd": 20.0
           },
           {
-            "id": "Arví Park Cable Car Ride",
+            "id": "",
             "name": "Arví Park Cable Car Ride",
             "type": "Adventure",
             "duration_min": 120,
@@ -577,13 +765,58 @@
         ],
         "jobs": [
           {
-            "id": "Restaurant Server",
+            "id": "",
             "name": "Restaurant Server",
             "hourly_rate": 7.5,
             "max_hours": 8
           }
         ],
-        "adjacencies": []
+        "adjacencies": [
+          {
+            "origin_vertex": "MDE",
+            "destination_vertex": "PTY",
+            "distance": 870.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 165.0,
+            "minimum_stay": 300,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "MDE",
+            "destination_vertex": "BOG",
+            "distance": 430.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 95.0,
+            "minimum_stay": 240,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "MDE",
+            "destination_vertex": "CTG",
+            "distance": 500.0,
+            "aircrafts": [
+              "Regional"
+            ],
+            "cost": 105.0,
+            "minimum_stay": 240,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "MDE",
+            "destination_vertex": "UIO",
+            "distance": 680.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 140.0,
+            "minimum_stay": 300,
+            "blocked": false
+          }
+        ]
       },
       {
         "id": "UIO",
@@ -596,14 +829,14 @@
         "feeding_cost": 11.0,
         "activities": [
           {
-            "id": "Galápagos Islands Tour",
+            "id": "",
             "name": "Galápagos Islands Tour",
             "type": "Nature",
             "duration_min": 1440,
             "cost_usd": 1500.0
           },
           {
-            "id": "Amazon Rainforest Trek",
+            "id": "",
             "name": "Amazon Rainforest Trek",
             "type": "Adventure",
             "duration_min": 720,
@@ -612,13 +845,35 @@
         ],
         "jobs": [
           {
-            "id": "Naturalist Guide",
+            "id": "",
             "name": "Naturalist Guide",
             "hourly_rate": 22.0,
             "max_hours": 8
           }
         ],
         "adjacencies": [
+          {
+            "origin_vertex": "UIO",
+            "destination_vertex": "BOG",
+            "distance": 580.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 130.0,
+            "minimum_stay": 300,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "UIO",
+            "destination_vertex": "MDE",
+            "distance": 680.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 140.0,
+            "minimum_stay": 300,
+            "blocked": false
+          },
           {
             "origin_vertex": "UIO",
             "destination_vertex": "GYE",
@@ -654,14 +909,14 @@
         "feeding_cost": 11.0,
         "activities": [
           {
-            "id": "Coastal Beach Resort Day",
+            "id": "",
             "name": "Coastal Beach Resort Day",
             "type": "Beach",
             "duration_min": 480,
             "cost_usd": 0.0
           },
           {
-            "id": "Wildlife Reserve Tour",
+            "id": "",
             "name": "Wildlife Reserve Tour",
             "type": "Nature",
             "duration_min": 240,
@@ -670,13 +925,36 @@
         ],
         "jobs": [
           {
-            "id": "Resort Staff",
+            "id": "",
             "name": "Resort Staff",
             "hourly_rate": 10.0,
             "max_hours": 8
           }
         ],
-        "adjacencies": []
+        "adjacencies": [
+          {
+            "origin_vertex": "GYE",
+            "destination_vertex": "UIO",
+            "distance": 310.0,
+            "aircrafts": [
+              "Regional"
+            ],
+            "cost": 70.0,
+            "minimum_stay": 180,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "GYE",
+            "destination_vertex": "LIM",
+            "distance": 1350.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 185.0,
+            "minimum_stay": 300,
+            "blocked": false
+          }
+        ]
       },
       {
         "id": "LIM",
@@ -689,14 +967,14 @@
         "feeding_cost": 13.0,
         "activities": [
           {
-            "id": "Machu Picchu Trek",
+            "id": "",
             "name": "Machu Picchu Trek",
             "type": "Adventure",
             "duration_min": 1440,
             "cost_usd": 550.0
           },
           {
-            "id": "Lima Historic Center Tour",
+            "id": "",
             "name": "Lima Historic Center Tour",
             "type": "Heritage",
             "duration_min": 120,
@@ -705,13 +983,35 @@
         ],
         "jobs": [
           {
-            "id": "Mountain Guide",
+            "id": "",
             "name": "Mountain Guide",
             "hourly_rate": 20.0,
             "max_hours": 10
           }
         ],
         "adjacencies": [
+          {
+            "origin_vertex": "LIM",
+            "destination_vertex": "UIO",
+            "distance": 1580.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 200.0,
+            "minimum_stay": 300,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "LIM",
+            "destination_vertex": "GYE",
+            "distance": 1350.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 185.0,
+            "minimum_stay": 300,
+            "blocked": false
+          },
           {
             "origin_vertex": "LIM",
             "destination_vertex": "CUZ",
@@ -758,14 +1058,14 @@
         "feeding_cost": 11.0,
         "activities": [
           {
-            "id": "Machu Picchu Tour",
+            "id": "",
             "name": "Machu Picchu Tour",
             "type": "Historical",
             "duration_min": 720,
             "cost_usd": 350.0
           },
           {
-            "id": "Sacred Valley Trek",
+            "id": "",
             "name": "Sacred Valley Trek",
             "type": "Adventure",
             "duration_min": 480,
@@ -774,13 +1074,47 @@
         ],
         "jobs": [
           {
-            "id": "Trek Assistant",
+            "id": "",
             "name": "Trek Assistant",
             "hourly_rate": 15.0,
             "max_hours": 8
           }
         ],
-        "adjacencies": []
+        "adjacencies": [
+          {
+            "origin_vertex": "CUZ",
+            "destination_vertex": "LIM",
+            "distance": 560.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 130.0,
+            "minimum_stay": 300,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "CUZ",
+            "destination_vertex": "AQP",
+            "distance": 350.0,
+            "aircrafts": [
+              "Regional"
+            ],
+            "cost": 80.0,
+            "minimum_stay": 180,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "CUZ",
+            "destination_vertex": "LPB",
+            "distance": 530.0,
+            "aircrafts": [
+              "Regional"
+            ],
+            "cost": 115.0,
+            "minimum_stay": 240,
+            "blocked": false
+          }
+        ]
       },
       {
         "id": "AQP",
@@ -793,14 +1127,14 @@
         "feeding_cost": 10.0,
         "activities": [
           {
-            "id": "Colca Canyon Trek",
+            "id": "",
             "name": "Colca Canyon Trek",
             "type": "Adventure",
             "duration_min": 480,
             "cost_usd": 200.0
           },
           {
-            "id": "Santa Catalina Monastery Visit",
+            "id": "",
             "name": "Santa Catalina Monastery Visit",
             "type": "Religious",
             "duration_min": 120,
@@ -809,13 +1143,35 @@
         ],
         "jobs": [
           {
-            "id": "Canyon Guide",
+            "id": "",
             "name": "Canyon Guide",
             "hourly_rate": 18.0,
             "max_hours": 8
           }
         ],
         "adjacencies": [
+          {
+            "origin_vertex": "AQP",
+            "destination_vertex": "LIM",
+            "distance": 750.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 160.0,
+            "minimum_stay": 300,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "AQP",
+            "destination_vertex": "CUZ",
+            "distance": 350.0,
+            "aircrafts": [
+              "Regional"
+            ],
+            "cost": 80.0,
+            "minimum_stay": 180,
+            "blocked": false
+          },
           {
             "origin_vertex": "AQP",
             "destination_vertex": "LPB",
@@ -826,6 +1182,17 @@
             "cost": 100.0,
             "minimum_stay": 240,
             "blocked": false
+          },
+          {
+            "origin_vertex": "AQP",
+            "destination_vertex": "IQQ",
+            "distance": 700.0,
+            "aircrafts": [
+              "Regional"
+            ],
+            "cost": 140.0,
+            "minimum_stay": 240,
+            "blocked": true
           }
         ]
       },
@@ -840,14 +1207,14 @@
         "feeding_cost": 10.0,
         "activities": [
           {
-            "id": "Death Road Mountain Biking",
+            "id": "",
             "name": "Death Road Mountain Biking",
             "type": "Adventure",
             "duration_min": 240,
             "cost_usd": 90.0
           },
           {
-            "id": "Witches Market Tour",
+            "id": "",
             "name": "Witches Market Tour",
             "type": "Cultural",
             "duration_min": 120,
@@ -856,7 +1223,7 @@
         ],
         "jobs": [
           {
-            "id": "Mountain Bike Guide",
+            "id": "",
             "name": "Mountain Bike Guide",
             "hourly_rate": 18.0,
             "max_hours": 6
@@ -865,12 +1232,34 @@
         "adjacencies": [
           {
             "origin_vertex": "LPB",
+            "destination_vertex": "AQP",
+            "distance": 460.0,
+            "aircrafts": [
+              "Regional"
+            ],
+            "cost": 100.0,
+            "minimum_stay": 240,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "LPB",
             "destination_vertex": "VVI",
             "distance": 600.0,
             "aircrafts": [
               "Regional"
             ],
             "cost": 130.0,
+            "minimum_stay": 240,
+            "blocked": true
+          },
+          {
+            "origin_vertex": "LPB",
+            "destination_vertex": "CUZ",
+            "distance": 530.0,
+            "aircrafts": [
+              "Regional"
+            ],
+            "cost": 115.0,
             "minimum_stay": 240,
             "blocked": false
           }
@@ -887,14 +1276,14 @@
         "feeding_cost": 9.0,
         "activities": [
           {
-            "id": "Amazon Rainforest Expedition",
+            "id": "",
             "name": "Amazon Rainforest Expedition",
             "type": "Adventure",
             "duration_min": 720,
             "cost_usd": 400.0
           },
           {
-            "id": "Wildlife Spotting Tour",
+            "id": "",
             "name": "Wildlife Spotting Tour",
             "type": "Nature",
             "duration_min": 480,
@@ -903,13 +1292,24 @@
         ],
         "jobs": [
           {
-            "id": "Jungle Guide",
+            "id": "",
             "name": "Jungle Guide",
             "hourly_rate": 14.0,
             "max_hours": 8
           }
         ],
         "adjacencies": [
+          {
+            "origin_vertex": "VVI",
+            "destination_vertex": "LPB",
+            "distance": 600.0,
+            "aircrafts": [
+              "Regional"
+            ],
+            "cost": 130.0,
+            "minimum_stay": 240,
+            "blocked": false
+          },
           {
             "origin_vertex": "VVI",
             "destination_vertex": "ASU",
@@ -919,6 +1319,17 @@
             ],
             "cost": 170.0,
             "minimum_stay": 300,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "VVI",
+            "destination_vertex": "GRU",
+            "distance": 1700.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 250.0,
+            "minimum_stay": 360,
             "blocked": false
           }
         ]
@@ -934,14 +1345,14 @@
         "feeding_cost": 10.0,
         "activities": [
           {
-            "id": "Iguazu Falls Trip",
+            "id": "",
             "name": "Iguazu Falls Trip",
             "type": "Nature",
             "duration_min": 720,
             "cost_usd": 200.0
           },
           {
-            "id": "Gran Chaco Wildlife Safari",
+            "id": "",
             "name": "Gran Chaco Wildlife Safari",
             "type": "Adventure",
             "duration_min": 480,
@@ -950,7 +1361,7 @@
         ],
         "jobs": [
           {
-            "id": "Safari Guide",
+            "id": "",
             "name": "Safari Guide",
             "hourly_rate": 16.0,
             "max_hours": 8
@@ -959,12 +1370,34 @@
         "adjacencies": [
           {
             "origin_vertex": "ASU",
+            "destination_vertex": "VVI",
+            "distance": 1100.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 170.0,
+            "minimum_stay": 300,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "ASU",
             "destination_vertex": "EZE",
             "distance": 1050.0,
             "aircrafts": [
               "Commercial"
             ],
             "cost": 180.0,
+            "minimum_stay": 300,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "ASU",
+            "destination_vertex": "GIG",
+            "distance": 1400.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 220.0,
             "minimum_stay": 300,
             "blocked": false
           }
@@ -981,14 +1414,14 @@
         "feeding_cost": 15.0,
         "activities": [
           {
-            "id": "Andes Mountain Tour",
+            "id": "",
             "name": "Andes Mountain Tour",
             "type": "Adventure",
             "duration_min": 480,
             "cost_usd": 120.0
           },
           {
-            "id": "Wine Valley Tour",
+            "id": "",
             "name": "Wine Valley Tour",
             "type": "Gastronomic",
             "duration_min": 360,
@@ -997,7 +1430,7 @@
         ],
         "jobs": [
           {
-            "id": "Wine Sommelier",
+            "id": "",
             "name": "Wine Sommelier",
             "hourly_rate": 22.0,
             "max_hours": 8
@@ -1047,6 +1480,17 @@
             "cost": 280.0,
             "minimum_stay": 360,
             "blocked": false
+          },
+          {
+            "origin_vertex": "SCL",
+            "destination_vertex": "EZE",
+            "distance": 700.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 155.0,
+            "minimum_stay": 300,
+            "blocked": true
           }
         ]
       },
@@ -1061,14 +1505,14 @@
         "feeding_cost": 13.0,
         "activities": [
           {
-            "id": "Atacama Desert Tour",
+            "id": "",
             "name": "Atacama Desert Tour",
             "type": "Adventure",
             "duration_min": 360,
             "cost_usd": 150.0
           },
           {
-            "id": "Paragliding Experience",
+            "id": "",
             "name": "Paragliding Experience",
             "type": "Adventure",
             "duration_min": 120,
@@ -1077,13 +1521,36 @@
         ],
         "jobs": [
           {
-            "id": "Adventure Sport Guide",
+            "id": "",
             "name": "Adventure Sport Guide",
             "hourly_rate": 25.0,
             "max_hours": 6
           }
         ],
-        "adjacencies": []
+        "adjacencies": [
+          {
+            "origin_vertex": "IQQ",
+            "destination_vertex": "SCL",
+            "distance": 1900.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 400.0,
+            "minimum_stay": 360,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "IQQ",
+            "destination_vertex": "AQP",
+            "distance": 700.0,
+            "aircrafts": [
+              "Regional"
+            ],
+            "cost": 140.0,
+            "minimum_stay": 240,
+            "blocked": false
+          }
+        ]
       },
       {
         "id": "PMC",
@@ -1096,14 +1563,14 @@
         "feeding_cost": 12.0,
         "activities": [
           {
-            "id": "Chiloé Island Adventure",
+            "id": "",
             "name": "Chiloé Island Adventure",
             "type": "Cultural",
             "duration_min": 480,
             "cost_usd": 85.0
           },
           {
-            "id": "Seafood Market Tour",
+            "id": "",
             "name": "Seafood Market Tour",
             "type": "Gastronomic",
             "duration_min": 120,
@@ -1112,13 +1579,36 @@
         ],
         "jobs": [
           {
-            "id": "Fisheries Worker",
+            "id": "",
             "name": "Fisheries Worker",
             "hourly_rate": 11.0,
             "max_hours": 8
           }
         ],
-        "adjacencies": []
+        "adjacencies": [
+          {
+            "origin_vertex": "PMC",
+            "destination_vertex": "SCL",
+            "distance": 1000.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 220.0,
+            "minimum_stay": 300,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "PMC",
+            "destination_vertex": "EZE",
+            "distance": 1400.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 230.0,
+            "minimum_stay": 300,
+            "blocked": false
+          }
+        ]
       },
       {
         "id": "MDZ",
@@ -1131,14 +1621,14 @@
         "feeding_cost": 12.0,
         "activities": [
           {
-            "id": "Wine Estate Tour",
+            "id": "",
             "name": "Wine Estate Tour",
             "type": "Gastronomic",
             "duration_min": 240,
             "cost_usd": 85.0
           },
           {
-            "id": "Andes Mountain Trek",
+            "id": "",
             "name": "Andes Mountain Trek",
             "type": "Adventure",
             "duration_min": 480,
@@ -1147,13 +1637,24 @@
         ],
         "jobs": [
           {
-            "id": "Vineyard Worker",
+            "id": "",
             "name": "Vineyard Worker",
             "hourly_rate": 12.0,
             "max_hours": 8
           }
         ],
         "adjacencies": [
+          {
+            "origin_vertex": "MDZ",
+            "destination_vertex": "SCL",
+            "distance": 350.0,
+            "aircrafts": [
+              "Regional"
+            ],
+            "cost": 80.0,
+            "minimum_stay": 180,
+            "blocked": false
+          },
           {
             "origin_vertex": "MDZ",
             "destination_vertex": "EZE",
@@ -1163,6 +1664,17 @@
             ],
             "cost": 220.0,
             "minimum_stay": 300,
+            "blocked": true
+          },
+          {
+            "origin_vertex": "MDZ",
+            "destination_vertex": "COR",
+            "distance": 650.0,
+            "aircrafts": [
+              "Regional"
+            ],
+            "cost": 130.0,
+            "minimum_stay": 240,
             "blocked": false
           }
         ]
@@ -1178,14 +1690,14 @@
         "feeding_cost": 11.0,
         "activities": [
           {
-            "id": "Jesuit Block Historic Tour",
+            "id": "",
             "name": "Jesuit Block Historic Tour",
             "type": "Heritage",
             "duration_min": 120,
             "cost_usd": 15.0
           },
           {
-            "id": "Córdoba Cathedral Visit",
+            "id": "",
             "name": "Córdoba Cathedral Visit",
             "type": "Religious",
             "duration_min": 60,
@@ -1194,13 +1706,36 @@
         ],
         "jobs": [
           {
-            "id": "Museum Guide",
+            "id": "",
             "name": "Museum Guide",
             "hourly_rate": 12.0,
             "max_hours": 8
           }
         ],
-        "adjacencies": []
+        "adjacencies": [
+          {
+            "origin_vertex": "COR",
+            "destination_vertex": "MDZ",
+            "distance": 650.0,
+            "aircrafts": [
+              "Regional"
+            ],
+            "cost": 130.0,
+            "minimum_stay": 240,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "COR",
+            "destination_vertex": "EZE",
+            "distance": 700.0,
+            "aircrafts": [
+              "Regional"
+            ],
+            "cost": 155.0,
+            "minimum_stay": 240,
+            "blocked": false
+          }
+        ]
       },
       {
         "id": "EZE",
@@ -1213,14 +1748,14 @@
         "feeding_cost": 13.0,
         "activities": [
           {
-            "id": "Tango Show & Dinner",
+            "id": "",
             "name": "Tango Show & Dinner",
             "type": "Cultural",
             "duration_min": 240,
             "cost_usd": 120.0
           },
           {
-            "id": "La Boca Historic Walk",
+            "id": "",
             "name": "La Boca Historic Walk",
             "type": "Heritage",
             "duration_min": 120,
@@ -1229,13 +1764,35 @@
         ],
         "jobs": [
           {
-            "id": "Tango Dancer",
+            "id": "",
             "name": "Tango Dancer",
             "hourly_rate": 25.0,
             "max_hours": 4
           }
         ],
         "adjacencies": [
+          {
+            "origin_vertex": "EZE",
+            "destination_vertex": "ASU",
+            "distance": 1050.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 180.0,
+            "minimum_stay": 300,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "EZE",
+            "destination_vertex": "MDZ",
+            "distance": 1000.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 220.0,
+            "minimum_stay": 300,
+            "blocked": false
+          },
           {
             "origin_vertex": "EZE",
             "destination_vertex": "COR",
@@ -1268,6 +1825,28 @@
             "cost": 260.0,
             "minimum_stay": 300,
             "blocked": false
+          },
+          {
+            "origin_vertex": "EZE",
+            "destination_vertex": "SCL",
+            "distance": 700.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 155.0,
+            "minimum_stay": 300,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "EZE",
+            "destination_vertex": "PMC",
+            "distance": 1400.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 230.0,
+            "minimum_stay": 300,
+            "blocked": false
           }
         ]
       },
@@ -1282,14 +1861,14 @@
         "feeding_cost": 13.0,
         "activities": [
           {
-            "id": "Teatro Solís Tour",
+            "id": "",
             "name": "Teatro Solís Tour",
             "type": "Cultural",
             "duration_min": 60,
             "cost_usd": 8.0
           },
           {
-            "id": "Rambla Boardwalk Walk",
+            "id": "",
             "name": "Rambla Boardwalk Walk",
             "type": "Leisure",
             "duration_min": 120,
@@ -1298,13 +1877,36 @@
         ],
         "jobs": [
           {
-            "id": "Tour Guide",
+            "id": "",
             "name": "Tour Guide",
             "hourly_rate": 14.0,
             "max_hours": 8
           }
         ],
-        "adjacencies": []
+        "adjacencies": [
+          {
+            "origin_vertex": "MVD",
+            "destination_vertex": "EZE",
+            "distance": 250.0,
+            "aircrafts": [
+              "Regional"
+            ],
+            "cost": 60.0,
+            "minimum_stay": 120,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "MVD",
+            "destination_vertex": "GRU",
+            "distance": 1800.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 270.0,
+            "minimum_stay": 300,
+            "blocked": false
+          }
+        ]
       },
       {
         "id": "GRU",
@@ -1317,14 +1919,14 @@
         "feeding_cost": 14.0,
         "activities": [
           {
-            "id": "Art Museum Circuit",
+            "id": "",
             "name": "Art Museum Circuit",
             "type": "Cultural",
             "duration_min": 240,
             "cost_usd": 25.0
           },
           {
-            "id": "Nightlife in Vila Olímpia",
+            "id": "",
             "name": "Nightlife in Vila Olímpia",
             "type": "Entertainment",
             "duration_min": 360,
@@ -1333,13 +1935,46 @@
         ],
         "jobs": [
           {
-            "id": "Cultural Guide",
+            "id": "",
             "name": "Cultural Guide",
             "hourly_rate": 19.0,
             "max_hours": 8
           }
         ],
         "adjacencies": [
+          {
+            "origin_vertex": "GRU",
+            "destination_vertex": "VVI",
+            "distance": 1700.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 250.0,
+            "minimum_stay": 360,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "GRU",
+            "destination_vertex": "EZE",
+            "distance": 1700.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 260.0,
+            "minimum_stay": 300,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "GRU",
+            "destination_vertex": "MVD",
+            "distance": 1800.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 270.0,
+            "minimum_stay": 300,
+            "blocked": false
+          },
           {
             "origin_vertex": "GRU",
             "destination_vertex": "GIG",
@@ -1375,14 +2010,14 @@
         "feeding_cost": 16.0,
         "activities": [
           {
-            "id": "Christ the Redeemer Tour",
+            "id": "",
             "name": "Christ the Redeemer Tour",
             "type": "Religious",
             "duration_min": 180,
             "cost_usd": 30.0
           },
           {
-            "id": "Copacabana Beach Day",
+            "id": "",
             "name": "Copacabana Beach Day",
             "type": "Beach",
             "duration_min": 480,
@@ -1391,13 +2026,47 @@
         ],
         "jobs": [
           {
-            "id": "Beach Vendor",
+            "id": "",
             "name": "Beach Vendor",
             "hourly_rate": 10.0,
             "max_hours": 8
           }
         ],
-        "adjacencies": []
+        "adjacencies": [
+          {
+            "origin_vertex": "GIG",
+            "destination_vertex": "GRU",
+            "distance": 430.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 100.0,
+            "minimum_stay": 240,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "GIG",
+            "destination_vertex": "SSA",
+            "distance": 1200.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 200.0,
+            "minimum_stay": 300,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "GIG",
+            "destination_vertex": "ASU",
+            "distance": 1400.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 220.0,
+            "minimum_stay": 300,
+            "blocked": false
+          }
+        ]
       },
       {
         "id": "SSA",
@@ -1410,14 +2079,14 @@
         "feeding_cost": 12.0,
         "activities": [
           {
-            "id": "Capoeira Dance Class",
+            "id": "",
             "name": "Capoeira Dance Class",
             "type": "Cultural",
             "duration_min": 90,
             "cost_usd": 20.0
           },
           {
-            "id": "Historic Pelourinho Tour",
+            "id": "",
             "name": "Historic Pelourinho Tour",
             "type": "Heritage",
             "duration_min": 120,
@@ -1426,13 +2095,35 @@
         ],
         "jobs": [
           {
-            "id": "Dance Instructor",
+            "id": "",
             "name": "Dance Instructor",
             "hourly_rate": 14.0,
             "max_hours": 6
           }
         ],
         "adjacencies": [
+          {
+            "origin_vertex": "SSA",
+            "destination_vertex": "GRU",
+            "distance": 1140.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 240.0,
+            "minimum_stay": 300,
+            "blocked": false
+          },
+          {
+            "origin_vertex": "SSA",
+            "destination_vertex": "GIG",
+            "distance": 1200.0,
+            "aircrafts": [
+              "Commercial"
+            ],
+            "cost": 200.0,
+            "minimum_stay": 300,
+            "blocked": false
+          },
           {
             "origin_vertex": "SSA",
             "destination_vertex": "FOR",
@@ -1457,14 +2148,14 @@
         "feeding_cost": 11.0,
         "activities": [
           {
-            "id": "Beach Buggy Adventure",
+            "id": "",
             "name": "Beach Buggy Adventure",
             "type": "Adventure",
             "duration_min": 240,
             "cost_usd": 60.0
           },
           {
-            "id": "Jericoacoara National Park Trek",
+            "id": "",
             "name": "Jericoacoara National Park Trek",
             "type": "Nature",
             "duration_min": 480,
@@ -1473,7 +2164,7 @@
         ],
         "jobs": [
           {
-            "id": "Beach Tour Guide",
+            "id": "",
             "name": "Beach Tour Guide",
             "hourly_rate": 13.0,
             "max_hours": 8
@@ -1482,477 +2173,24 @@
         "adjacencies": [
           {
             "origin_vertex": "FOR",
-            "destination_vertex": "REC",
-            "distance": 650.0,
+            "destination_vertex": "SSA",
+            "distance": 600.0,
             "aircrafts": [
               "Commercial"
             ],
-            "cost": 145.0,
-            "minimum_stay": 240,
-            "blocked": false
-          }
-        ]
-      },
-      {
-        "id": "REC",
-        "name": "Recife/Guararapes International Airport",
-        "city": "Recife",
-        "country": "Brazil",
-        "timezone": "UTC-3",
-        "is_hub": false,
-        "accommodation_cost": 42.0,
-        "feeding_cost": 11.0,
-        "activities": [
-          {
-            "id": "Olinda Historic Center",
-            "name": "Olinda Historic Center",
-            "type": "Heritage",
-            "duration_min": 180,
-            "cost_usd": 25.0
-          },
-          {
-            "id": "Boa Viagem Beach Walk",
-            "name": "Boa Viagem Beach Walk",
-            "type": "Leisure",
-            "duration_min": 120,
-            "cost_usd": 0.0
-          }
-        ],
-        "jobs": [
-          {
-            "id": "Harbor Assistant",
-            "name": "Harbor Assistant",
-            "hourly_rate": 11.5,
-            "max_hours": 8
-          }
-        ],
-        "adjacencies": [
-          {
-            "origin_vertex": "REC",
-            "destination_vertex": "NAT",
-            "distance": 300.0,
-            "aircrafts": [
-              "Regional"
-            ],
-            "cost": 75.0,
-            "minimum_stay": 180,
-            "blocked": false
-          },
-          {
-            "origin_vertex": "REC",
-            "destination_vertex": "FOR",
-            "distance": 650.0,
-            "aircrafts": [
-              "Commercial"
-            ],
-            "cost": 145.0,
-            "minimum_stay": 240,
-            "blocked": false
-          }
-        ]
-      },
-      {
-        "id": "NAT",
-        "name": "Natal International Airport",
-        "city": "Natal",
-        "country": "Brazil",
-        "timezone": "UTC-3",
-        "is_hub": false,
-        "accommodation_cost": 40.0,
-        "feeding_cost": 10.5,
-        "activities": [
-          {
-            "id": "Dunes Buggy Tour",
-            "name": "Dunes Buggy Tour",
-            "type": "Adventure",
-            "duration_min": 240,
-            "cost_usd": 75.0
-          },
-          {
-            "id": "Fortes dos Reis Magos Visit",
-            "name": "Fortes dos Reis Magos Visit",
-            "type": "Heritage",
-            "duration_min": 120,
-            "cost_usd": 12.0
-          }
-        ],
-        "jobs": [
-          {
-            "id": "Coastal Guide",
-            "name": "Coastal Guide",
-            "hourly_rate": 12.0,
-            "max_hours": 8
-          }
-        ],
-        "adjacencies": [
-          {
-            "origin_vertex": "NAT",
-            "destination_vertex": "MAO",
-            "distance": 1300.0,
-            "aircrafts": [
-              "Commercial"
-            ],
-            "cost": 255.0,
-            "minimum_stay": 300,
-            "blocked": false
-          },
-          {
-            "origin_vertex": "NAT",
-            "destination_vertex": "REC",
-            "distance": 300.0,
-            "aircrafts": [
-              "Regional"
-            ],
-            "cost": 75.0,
-            "minimum_stay": 180,
-            "blocked": false
-          }
-        ]
-      },
-      {
-        "id": "MAO",
-        "name": "Eduardo Gomes International Airport",
-        "city": "Manaus",
-        "country": "Brazil",
-        "timezone": "UTC-4",
-        "is_hub": true,
-        "accommodation_cost": 46.0,
-        "feeding_cost": 12.0,
-        "activities": [
-          {
-            "id": "Amazon River Cruise",
-            "name": "Amazon River Cruise",
-            "type": "Nature",
-            "duration_min": 360,
-            "cost_usd": 80.0
-          },
-          {
-            "id": "Opera House Tour",
-            "name": "Opera House Tour",
-            "type": "Cultural",
-            "duration_min": 90,
-            "cost_usd": 18.0
-          }
-        ],
-        "jobs": [
-          {
-            "id": "River Assistant",
-            "name": "River Assistant",
-            "hourly_rate": 14.0,
-            "max_hours": 8
-          }
-        ],
-        "adjacencies": [
-          {
-            "origin_vertex": "MAO",
-            "destination_vertex": "BEL",
-            "distance": 850.0,
-            "aircrafts": [
-              "Commercial"
-            ],
-            "cost": 180.0,
+            "cost": 130.0,
             "minimum_stay": 240,
             "blocked": false
           },
           {
-            "origin_vertex": "MAO",
-            "destination_vertex": "NAT",
-            "distance": 1300.0,
+            "origin_vertex": "FOR",
+            "destination_vertex": "CCS",
+            "distance": 2400.0,
             "aircrafts": [
               "Commercial"
             ],
-            "cost": 255.0,
-            "minimum_stay": 300,
-            "blocked": false
-          }
-        ]
-      },
-      {
-        "id": "BEL",
-        "name": "Bel?m International Airport",
-        "city": "Bel?m",
-        "country": "Brazil",
-        "timezone": "UTC-3",
-        "is_hub": false,
-        "accommodation_cost": 41.0,
-        "feeding_cost": 10.0,
-        "activities": [
-          {
-            "id": "Ver-o-Peso Market Tour",
-            "name": "Ver-o-Peso Market Tour",
-            "type": "Cultural",
-            "duration_min": 120,
-            "cost_usd": 10.0
-          },
-          {
-            "id": "Amazon Delta Boat Ride",
-            "name": "Amazon Delta Boat Ride",
-            "type": "Nature",
-            "duration_min": 240,
-            "cost_usd": 55.0
-          }
-        ],
-        "jobs": [
-          {
-            "id": "Market Coordinator",
-            "name": "Market Coordinator",
-            "hourly_rate": 12.5,
-            "max_hours": 8
-          }
-        ],
-        "adjacencies": [
-          {
-            "origin_vertex": "BEL",
-            "destination_vertex": "TGU",
-            "distance": 1600.0,
-            "aircrafts": [
-              "Commercial"
-            ],
-            "cost": 280.0,
-            "minimum_stay": 300,
-            "blocked": false
-          },
-          {
-            "origin_vertex": "BEL",
-            "destination_vertex": "MAO",
-            "distance": 850.0,
-            "aircrafts": [
-              "Commercial"
-            ],
-            "cost": 180.0,
-            "minimum_stay": 240,
-            "blocked": false
-          }
-        ]
-      },
-      {
-        "id": "TGU",
-        "name": "Toncont?n International Airport",
-        "city": "Tegucigalpa",
-        "country": "Honduras",
-        "timezone": "UTC-6",
-        "is_hub": false,
-        "accommodation_cost": 37.0,
-        "feeding_cost": 9.5,
-        "activities": [
-          {
-            "id": "Historical Center Walk",
-            "name": "Historical Center Walk",
-            "type": "Heritage",
-            "duration_min": 120,
-            "cost_usd": 10.0
-          },
-          {
-            "id": "Comayagua Valley Tour",
-            "name": "Comayagua Valley Tour",
-            "type": "Adventure",
-            "duration_min": 240,
-            "cost_usd": 45.0
-          }
-        ],
-        "jobs": [
-          {
-            "id": "City Guide",
-            "name": "City Guide",
-            "hourly_rate": 11.0,
-            "max_hours": 8
-          }
-        ],
-        "adjacencies": [
-          {
-            "origin_vertex": "TGU",
-            "destination_vertex": "SAP",
-            "distance": 180.0,
-            "aircrafts": [
-              "Regional"
-            ],
-            "cost": 45.0,
-            "minimum_stay": 120,
-            "blocked": false
-          },
-          {
-            "origin_vertex": "TGU",
-            "destination_vertex": "BEL",
-            "distance": 1600.0,
-            "aircrafts": [
-              "Commercial"
-            ],
-            "cost": 280.0,
-            "minimum_stay": 300,
-            "blocked": false
-          }
-        ]
-      },
-      {
-        "id": "SAP",
-        "name": "Ramon Villeda Morales International Airport",
-        "city": "San Pedro Sula",
-        "country": "Honduras",
-        "timezone": "UTC-6",
-        "is_hub": false,
-        "accommodation_cost": 36.0,
-        "feeding_cost": 9.0,
-        "activities": [
-          {
-            "id": "Cop?n Ruins Excursion",
-            "name": "Cop?n Ruins Excursion",
-            "type": "Heritage",
-            "duration_min": 360,
-            "cost_usd": 85.0
-          },
-          {
-            "id": "Merendon Mountain Tour",
-            "name": "Merendon Mountain Tour",
-            "type": "Adventure",
-            "duration_min": 240,
-            "cost_usd": 60.0
-          }
-        ],
-        "jobs": [
-          {
-            "id": "Excursion Assistant",
-            "name": "Excursion Assistant",
-            "hourly_rate": 10.5,
-            "max_hours": 8
-          }
-        ],
-        "adjacencies": [
-          {
-            "origin_vertex": "SAP",
-            "destination_vertex": "SJO",
-            "distance": 460.0,
-            "aircrafts": [
-              "Regional"
-            ],
-            "cost": 100.0,
-            "minimum_stay": 180,
-            "blocked": false
-          },
-          {
-            "origin_vertex": "SAP",
-            "destination_vertex": "TGU",
-            "distance": 180.0,
-            "aircrafts": [
-              "Regional"
-            ],
-            "cost": 45.0,
-            "minimum_stay": 120,
-            "blocked": false
-          }
-        ]
-      },
-      {
-        "id": "SJO",
-        "name": "Juan Santamar?a International Airport",
-        "city": "San Jos?",
-        "country": "Costa Rica",
-        "timezone": "UTC-6",
-        "is_hub": true,
-        "accommodation_cost": 44.0,
-        "feeding_cost": 11.0,
-        "activities": [
-          {
-            "id": "Arenal Volcano Tour",
-            "name": "Arenal Volcano Tour",
-            "type": "Adventure",
-            "duration_min": 360,
-            "cost_usd": 95.0
-          },
-          {
-            "id": "San Jos? Museums Circuit",
-            "name": "San Jos? Museums Circuit",
-            "type": "Cultural",
-            "duration_min": 180,
-            "cost_usd": 20.0
-          }
-        ],
-        "jobs": [
-          {
-            "id": "Eco Guide",
-            "name": "Eco Guide",
-            "hourly_rate": 18.0,
-            "max_hours": 8
-          }
-        ],
-        "adjacencies": [
-          {
-            "origin_vertex": "SJO",
-            "destination_vertex": "LIR",
-            "distance": 220.0,
-            "aircrafts": [
-              "Regional"
-            ],
-            "cost": 55.0,
-            "minimum_stay": 120,
-            "blocked": false
-          },
-          {
-            "origin_vertex": "SJO",
-            "destination_vertex": "SAP",
-            "distance": 460.0,
-            "aircrafts": [
-              "Regional"
-            ],
-            "cost": 100.0,
-            "minimum_stay": 180,
-            "blocked": false
-          }
-        ]
-      },
-      {
-        "id": "LIR",
-        "name": "Daniel Oduber Quir?s International Airport",
-        "city": "Liberia",
-        "country": "Costa Rica",
-        "timezone": "UTC-6",
-        "is_hub": false,
-        "accommodation_cost": 39.0,
-        "feeding_cost": 10.0,
-        "activities": [
-          {
-            "id": "Guanacaste Beach Day",
-            "name": "Guanacaste Beach Day",
-            "type": "Beach",
-            "duration_min": 480,
-            "cost_usd": 0.0
-          },
-          {
-            "id": "Rinc?n de la Vieja Trek",
-            "name": "Rinc?n de la Vieja Trek",
-            "type": "Adventure",
-            "duration_min": 240,
-            "cost_usd": 70.0
-          }
-        ],
-        "jobs": [
-          {
-            "id": "Beach Host",
-            "name": "Beach Host",
-            "hourly_rate": 12.0,
-            "max_hours": 8
-          }
-        ],
-        "adjacencies": [
-          {
-            "origin_vertex": "LIR",
-            "destination_vertex": "GUA",
-            "distance": 1120.0,
-            "aircrafts": [
-              "Commercial"
-            ],
-            "cost": 210.0,
-            "minimum_stay": 240,
-            "blocked": false
-          },
-          {
-            "origin_vertex": "LIR",
-            "destination_vertex": "SJO",
-            "distance": 220.0,
-            "aircrafts": [
-              "Regional"
-            ],
-            "cost": 55.0,
-            "minimum_stay": 120,
+            "cost": 320.0,
+            "minimum_stay": 360,
             "blocked": false
           }
         ]
@@ -1999,6 +2237,19 @@
         "blocked": false
       },
       {
+        "source": "CUN",
+        "target": "GUA",
+        "origin_vertex": "CUN",
+        "destination_vertex": "GUA",
+        "distance": 900.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 130.0,
+        "minimum_stay": 180,
+        "blocked": false
+      },
+      {
         "source": "GUA",
         "target": "MEX",
         "origin_vertex": "GUA",
@@ -2009,6 +2260,19 @@
         ],
         "cost": 150.0,
         "minimum_stay": 240,
+        "blocked": false
+      },
+      {
+        "source": "GUA",
+        "target": "CUN",
+        "origin_vertex": "GUA",
+        "destination_vertex": "CUN",
+        "distance": 900.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 130.0,
+        "minimum_stay": 180,
         "blocked": false
       },
       {
@@ -2026,15 +2290,15 @@
       },
       {
         "source": "GUA",
-        "target": "LIR",
+        "target": "MGA",
         "origin_vertex": "GUA",
-        "destination_vertex": "LIR",
-        "distance": 1120.0,
+        "destination_vertex": "MGA",
+        "distance": 290.0,
         "aircrafts": [
-          "Commercial"
+          "Regional"
         ],
-        "cost": 210.0,
-        "minimum_stay": 240,
+        "cost": 65.0,
+        "minimum_stay": 120,
         "blocked": false
       },
       {
@@ -2064,6 +2328,45 @@
         "blocked": false
       },
       {
+        "source": "SAL",
+        "target": "PTY",
+        "origin_vertex": "SAL",
+        "destination_vertex": "PTY",
+        "distance": 720.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 145.0,
+        "minimum_stay": 240,
+        "blocked": false
+      },
+      {
+        "source": "MGA",
+        "target": "SAL",
+        "origin_vertex": "MGA",
+        "destination_vertex": "SAL",
+        "distance": 130.0,
+        "aircrafts": [
+          "Regional"
+        ],
+        "cost": 35.0,
+        "minimum_stay": 120,
+        "blocked": false
+      },
+      {
+        "source": "MGA",
+        "target": "GUA",
+        "origin_vertex": "MGA",
+        "destination_vertex": "GUA",
+        "distance": 290.0,
+        "aircrafts": [
+          "Regional"
+        ],
+        "cost": 65.0,
+        "minimum_stay": 120,
+        "blocked": false
+      },
+      {
         "source": "MGA",
         "target": "PTY",
         "origin_vertex": "MGA",
@@ -2078,6 +2381,32 @@
       },
       {
         "source": "PTY",
+        "target": "MGA",
+        "origin_vertex": "PTY",
+        "destination_vertex": "MGA",
+        "distance": 600.0,
+        "aircrafts": [
+          "Regional"
+        ],
+        "cost": 135.0,
+        "minimum_stay": 240,
+        "blocked": false
+      },
+      {
+        "source": "PTY",
+        "target": "SAL",
+        "origin_vertex": "PTY",
+        "destination_vertex": "SAL",
+        "distance": 720.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 145.0,
+        "minimum_stay": 240,
+        "blocked": false
+      },
+      {
+        "source": "PTY",
         "target": "BOG",
         "origin_vertex": "PTY",
         "destination_vertex": "BOG",
@@ -2086,6 +2415,19 @@
           "Commercial"
         ],
         "cost": 155.0,
+        "minimum_stay": 300,
+        "blocked": false
+      },
+      {
+        "source": "PTY",
+        "target": "MDE",
+        "origin_vertex": "PTY",
+        "destination_vertex": "MDE",
+        "distance": 870.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 165.0,
         "minimum_stay": 300,
         "blocked": false
       },
@@ -2117,6 +2459,19 @@
       },
       {
         "source": "BOG",
+        "target": "BAQ",
+        "origin_vertex": "BOG",
+        "destination_vertex": "BAQ",
+        "distance": 610.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 120.0,
+        "minimum_stay": 240,
+        "blocked": false
+      },
+      {
+        "source": "BOG",
         "target": "MDE",
         "origin_vertex": "BOG",
         "destination_vertex": "MDE",
@@ -2143,6 +2498,19 @@
       },
       {
         "source": "CTG",
+        "target": "BOG",
+        "origin_vertex": "CTG",
+        "destination_vertex": "BOG",
+        "distance": 550.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 115.0,
+        "minimum_stay": 240,
+        "blocked": false
+      },
+      {
+        "source": "CTG",
         "target": "BAQ",
         "origin_vertex": "CTG",
         "destination_vertex": "BAQ",
@@ -2152,6 +2520,58 @@
         ],
         "cost": 35.0,
         "minimum_stay": 120,
+        "blocked": true
+      },
+      {
+        "source": "CTG",
+        "target": "CCS",
+        "origin_vertex": "CTG",
+        "destination_vertex": "CCS",
+        "distance": 620.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 125.0,
+        "minimum_stay": 240,
+        "blocked": false
+      },
+      {
+        "source": "CTG",
+        "target": "MDE",
+        "origin_vertex": "CTG",
+        "destination_vertex": "MDE",
+        "distance": 500.0,
+        "aircrafts": [
+          "Regional"
+        ],
+        "cost": 105.0,
+        "minimum_stay": 240,
+        "blocked": false
+      },
+      {
+        "source": "BAQ",
+        "target": "CTG",
+        "origin_vertex": "BAQ",
+        "destination_vertex": "CTG",
+        "distance": 110.0,
+        "aircrafts": [
+          "Regional"
+        ],
+        "cost": 35.0,
+        "minimum_stay": 120,
+        "blocked": false
+      },
+      {
+        "source": "BAQ",
+        "target": "BOG",
+        "origin_vertex": "BAQ",
+        "destination_vertex": "BOG",
+        "distance": 610.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 120.0,
+        "minimum_stay": 240,
         "blocked": false
       },
       {
@@ -2165,6 +2585,123 @@
         ],
         "cost": 110.0,
         "minimum_stay": 240,
+        "blocked": false
+      },
+      {
+        "source": "CCS",
+        "target": "BAQ",
+        "origin_vertex": "CCS",
+        "destination_vertex": "BAQ",
+        "distance": 540.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 110.0,
+        "minimum_stay": 240,
+        "blocked": true
+      },
+      {
+        "source": "CCS",
+        "target": "CTG",
+        "origin_vertex": "CCS",
+        "destination_vertex": "CTG",
+        "distance": 620.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 125.0,
+        "minimum_stay": 240,
+        "blocked": true
+      },
+      {
+        "source": "CCS",
+        "target": "FOR",
+        "origin_vertex": "CCS",
+        "destination_vertex": "FOR",
+        "distance": 2400.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 320.0,
+        "minimum_stay": 360,
+        "blocked": false
+      },
+      {
+        "source": "MDE",
+        "target": "PTY",
+        "origin_vertex": "MDE",
+        "destination_vertex": "PTY",
+        "distance": 870.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 165.0,
+        "minimum_stay": 300,
+        "blocked": false
+      },
+      {
+        "source": "MDE",
+        "target": "BOG",
+        "origin_vertex": "MDE",
+        "destination_vertex": "BOG",
+        "distance": 430.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 95.0,
+        "minimum_stay": 240,
+        "blocked": false
+      },
+      {
+        "source": "MDE",
+        "target": "CTG",
+        "origin_vertex": "MDE",
+        "destination_vertex": "CTG",
+        "distance": 500.0,
+        "aircrafts": [
+          "Regional"
+        ],
+        "cost": 105.0,
+        "minimum_stay": 240,
+        "blocked": false
+      },
+      {
+        "source": "MDE",
+        "target": "UIO",
+        "origin_vertex": "MDE",
+        "destination_vertex": "UIO",
+        "distance": 680.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 140.0,
+        "minimum_stay": 300,
+        "blocked": false
+      },
+      {
+        "source": "UIO",
+        "target": "BOG",
+        "origin_vertex": "UIO",
+        "destination_vertex": "BOG",
+        "distance": 580.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 130.0,
+        "minimum_stay": 300,
+        "blocked": false
+      },
+      {
+        "source": "UIO",
+        "target": "MDE",
+        "origin_vertex": "UIO",
+        "destination_vertex": "MDE",
+        "distance": 680.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 140.0,
+        "minimum_stay": 300,
         "blocked": false
       },
       {
@@ -2190,6 +2727,58 @@
           "Commercial"
         ],
         "cost": 200.0,
+        "minimum_stay": 300,
+        "blocked": false
+      },
+      {
+        "source": "GYE",
+        "target": "UIO",
+        "origin_vertex": "GYE",
+        "destination_vertex": "UIO",
+        "distance": 310.0,
+        "aircrafts": [
+          "Regional"
+        ],
+        "cost": 70.0,
+        "minimum_stay": 180,
+        "blocked": false
+      },
+      {
+        "source": "GYE",
+        "target": "LIM",
+        "origin_vertex": "GYE",
+        "destination_vertex": "LIM",
+        "distance": 1350.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 185.0,
+        "minimum_stay": 300,
+        "blocked": false
+      },
+      {
+        "source": "LIM",
+        "target": "UIO",
+        "origin_vertex": "LIM",
+        "destination_vertex": "UIO",
+        "distance": 1580.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 200.0,
+        "minimum_stay": 300,
+        "blocked": false
+      },
+      {
+        "source": "LIM",
+        "target": "GYE",
+        "origin_vertex": "LIM",
+        "destination_vertex": "GYE",
+        "distance": 1350.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 185.0,
         "minimum_stay": 300,
         "blocked": false
       },
@@ -2233,6 +2822,71 @@
         "blocked": false
       },
       {
+        "source": "CUZ",
+        "target": "LIM",
+        "origin_vertex": "CUZ",
+        "destination_vertex": "LIM",
+        "distance": 560.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 130.0,
+        "minimum_stay": 300,
+        "blocked": false
+      },
+      {
+        "source": "CUZ",
+        "target": "AQP",
+        "origin_vertex": "CUZ",
+        "destination_vertex": "AQP",
+        "distance": 350.0,
+        "aircrafts": [
+          "Regional"
+        ],
+        "cost": 80.0,
+        "minimum_stay": 180,
+        "blocked": false
+      },
+      {
+        "source": "CUZ",
+        "target": "LPB",
+        "origin_vertex": "CUZ",
+        "destination_vertex": "LPB",
+        "distance": 530.0,
+        "aircrafts": [
+          "Regional"
+        ],
+        "cost": 115.0,
+        "minimum_stay": 240,
+        "blocked": false
+      },
+      {
+        "source": "AQP",
+        "target": "LIM",
+        "origin_vertex": "AQP",
+        "destination_vertex": "LIM",
+        "distance": 750.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 160.0,
+        "minimum_stay": 300,
+        "blocked": false
+      },
+      {
+        "source": "AQP",
+        "target": "CUZ",
+        "origin_vertex": "AQP",
+        "destination_vertex": "CUZ",
+        "distance": 350.0,
+        "aircrafts": [
+          "Regional"
+        ],
+        "cost": 80.0,
+        "minimum_stay": 180,
+        "blocked": false
+      },
+      {
         "source": "AQP",
         "target": "LPB",
         "origin_vertex": "AQP",
@@ -2246,10 +2900,62 @@
         "blocked": false
       },
       {
+        "source": "AQP",
+        "target": "IQQ",
+        "origin_vertex": "AQP",
+        "destination_vertex": "IQQ",
+        "distance": 700.0,
+        "aircrafts": [
+          "Regional"
+        ],
+        "cost": 140.0,
+        "minimum_stay": 240,
+        "blocked": true
+      },
+      {
+        "source": "LPB",
+        "target": "AQP",
+        "origin_vertex": "LPB",
+        "destination_vertex": "AQP",
+        "distance": 460.0,
+        "aircrafts": [
+          "Regional"
+        ],
+        "cost": 100.0,
+        "minimum_stay": 240,
+        "blocked": false
+      },
+      {
         "source": "LPB",
         "target": "VVI",
         "origin_vertex": "LPB",
         "destination_vertex": "VVI",
+        "distance": 600.0,
+        "aircrafts": [
+          "Regional"
+        ],
+        "cost": 130.0,
+        "minimum_stay": 240,
+        "blocked": true
+      },
+      {
+        "source": "LPB",
+        "target": "CUZ",
+        "origin_vertex": "LPB",
+        "destination_vertex": "CUZ",
+        "distance": 530.0,
+        "aircrafts": [
+          "Regional"
+        ],
+        "cost": 115.0,
+        "minimum_stay": 240,
+        "blocked": false
+      },
+      {
+        "source": "VVI",
+        "target": "LPB",
+        "origin_vertex": "VVI",
+        "destination_vertex": "LPB",
         "distance": 600.0,
         "aircrafts": [
           "Regional"
@@ -2272,6 +2978,32 @@
         "blocked": false
       },
       {
+        "source": "VVI",
+        "target": "GRU",
+        "origin_vertex": "VVI",
+        "destination_vertex": "GRU",
+        "distance": 1700.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 250.0,
+        "minimum_stay": 360,
+        "blocked": false
+      },
+      {
+        "source": "ASU",
+        "target": "VVI",
+        "origin_vertex": "ASU",
+        "destination_vertex": "VVI",
+        "distance": 1100.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 170.0,
+        "minimum_stay": 300,
+        "blocked": false
+      },
+      {
         "source": "ASU",
         "target": "EZE",
         "origin_vertex": "ASU",
@@ -2281,6 +3013,19 @@
           "Commercial"
         ],
         "cost": 180.0,
+        "minimum_stay": 300,
+        "blocked": false
+      },
+      {
+        "source": "ASU",
+        "target": "GIG",
+        "origin_vertex": "ASU",
+        "destination_vertex": "GIG",
+        "distance": 1400.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 220.0,
         "minimum_stay": 300,
         "blocked": false
       },
@@ -2337,10 +3082,153 @@
         "blocked": false
       },
       {
+        "source": "SCL",
+        "target": "EZE",
+        "origin_vertex": "SCL",
+        "destination_vertex": "EZE",
+        "distance": 700.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 155.0,
+        "minimum_stay": 300,
+        "blocked": true
+      },
+      {
+        "source": "IQQ",
+        "target": "SCL",
+        "origin_vertex": "IQQ",
+        "destination_vertex": "SCL",
+        "distance": 1900.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 400.0,
+        "minimum_stay": 360,
+        "blocked": false
+      },
+      {
+        "source": "IQQ",
+        "target": "AQP",
+        "origin_vertex": "IQQ",
+        "destination_vertex": "AQP",
+        "distance": 700.0,
+        "aircrafts": [
+          "Regional"
+        ],
+        "cost": 140.0,
+        "minimum_stay": 240,
+        "blocked": false
+      },
+      {
+        "source": "PMC",
+        "target": "SCL",
+        "origin_vertex": "PMC",
+        "destination_vertex": "SCL",
+        "distance": 1000.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 220.0,
+        "minimum_stay": 300,
+        "blocked": false
+      },
+      {
+        "source": "PMC",
+        "target": "EZE",
+        "origin_vertex": "PMC",
+        "destination_vertex": "EZE",
+        "distance": 1400.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 230.0,
+        "minimum_stay": 300,
+        "blocked": false
+      },
+      {
+        "source": "MDZ",
+        "target": "SCL",
+        "origin_vertex": "MDZ",
+        "destination_vertex": "SCL",
+        "distance": 350.0,
+        "aircrafts": [
+          "Regional"
+        ],
+        "cost": 80.0,
+        "minimum_stay": 180,
+        "blocked": false
+      },
+      {
         "source": "MDZ",
         "target": "EZE",
         "origin_vertex": "MDZ",
         "destination_vertex": "EZE",
+        "distance": 1000.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 220.0,
+        "minimum_stay": 300,
+        "blocked": true
+      },
+      {
+        "source": "MDZ",
+        "target": "COR",
+        "origin_vertex": "MDZ",
+        "destination_vertex": "COR",
+        "distance": 650.0,
+        "aircrafts": [
+          "Regional"
+        ],
+        "cost": 130.0,
+        "minimum_stay": 240,
+        "blocked": false
+      },
+      {
+        "source": "COR",
+        "target": "MDZ",
+        "origin_vertex": "COR",
+        "destination_vertex": "MDZ",
+        "distance": 650.0,
+        "aircrafts": [
+          "Regional"
+        ],
+        "cost": 130.0,
+        "minimum_stay": 240,
+        "blocked": false
+      },
+      {
+        "source": "COR",
+        "target": "EZE",
+        "origin_vertex": "COR",
+        "destination_vertex": "EZE",
+        "distance": 700.0,
+        "aircrafts": [
+          "Regional"
+        ],
+        "cost": 155.0,
+        "minimum_stay": 240,
+        "blocked": false
+      },
+      {
+        "source": "EZE",
+        "target": "ASU",
+        "origin_vertex": "EZE",
+        "destination_vertex": "ASU",
+        "distance": 1050.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 180.0,
+        "minimum_stay": 300,
+        "blocked": false
+      },
+      {
+        "source": "EZE",
+        "target": "MDZ",
+        "origin_vertex": "EZE",
+        "destination_vertex": "MDZ",
         "distance": 1000.0,
         "aircrafts": [
           "Commercial"
@@ -2389,6 +3277,97 @@
         "blocked": false
       },
       {
+        "source": "EZE",
+        "target": "SCL",
+        "origin_vertex": "EZE",
+        "destination_vertex": "SCL",
+        "distance": 700.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 155.0,
+        "minimum_stay": 300,
+        "blocked": false
+      },
+      {
+        "source": "EZE",
+        "target": "PMC",
+        "origin_vertex": "EZE",
+        "destination_vertex": "PMC",
+        "distance": 1400.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 230.0,
+        "minimum_stay": 300,
+        "blocked": false
+      },
+      {
+        "source": "MVD",
+        "target": "EZE",
+        "origin_vertex": "MVD",
+        "destination_vertex": "EZE",
+        "distance": 250.0,
+        "aircrafts": [
+          "Regional"
+        ],
+        "cost": 60.0,
+        "minimum_stay": 120,
+        "blocked": false
+      },
+      {
+        "source": "MVD",
+        "target": "GRU",
+        "origin_vertex": "MVD",
+        "destination_vertex": "GRU",
+        "distance": 1800.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 270.0,
+        "minimum_stay": 300,
+        "blocked": false
+      },
+      {
+        "source": "GRU",
+        "target": "VVI",
+        "origin_vertex": "GRU",
+        "destination_vertex": "VVI",
+        "distance": 1700.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 250.0,
+        "minimum_stay": 360,
+        "blocked": false
+      },
+      {
+        "source": "GRU",
+        "target": "EZE",
+        "origin_vertex": "GRU",
+        "destination_vertex": "EZE",
+        "distance": 1700.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 260.0,
+        "minimum_stay": 300,
+        "blocked": false
+      },
+      {
+        "source": "GRU",
+        "target": "MVD",
+        "origin_vertex": "GRU",
+        "destination_vertex": "MVD",
+        "distance": 1800.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 270.0,
+        "minimum_stay": 300,
+        "blocked": false
+      },
+      {
         "source": "GRU",
         "target": "GIG",
         "origin_vertex": "GRU",
@@ -2415,6 +3394,71 @@
         "blocked": false
       },
       {
+        "source": "GIG",
+        "target": "GRU",
+        "origin_vertex": "GIG",
+        "destination_vertex": "GRU",
+        "distance": 430.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 100.0,
+        "minimum_stay": 240,
+        "blocked": false
+      },
+      {
+        "source": "GIG",
+        "target": "SSA",
+        "origin_vertex": "GIG",
+        "destination_vertex": "SSA",
+        "distance": 1200.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 200.0,
+        "minimum_stay": 300,
+        "blocked": false
+      },
+      {
+        "source": "GIG",
+        "target": "ASU",
+        "origin_vertex": "GIG",
+        "destination_vertex": "ASU",
+        "distance": 1400.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 220.0,
+        "minimum_stay": 300,
+        "blocked": false
+      },
+      {
+        "source": "SSA",
+        "target": "GRU",
+        "origin_vertex": "SSA",
+        "destination_vertex": "GRU",
+        "distance": 1140.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 240.0,
+        "minimum_stay": 300,
+        "blocked": false
+      },
+      {
+        "source": "SSA",
+        "target": "GIG",
+        "origin_vertex": "SSA",
+        "destination_vertex": "GIG",
+        "distance": 1200.0,
+        "aircrafts": [
+          "Commercial"
+        ],
+        "cost": 200.0,
+        "minimum_stay": 300,
+        "blocked": false
+      },
+      {
         "source": "SSA",
         "target": "FOR",
         "origin_vertex": "SSA",
@@ -2429,223 +3473,28 @@
       },
       {
         "source": "FOR",
-        "target": "REC",
+        "target": "SSA",
         "origin_vertex": "FOR",
-        "destination_vertex": "REC",
-        "distance": 650.0,
+        "destination_vertex": "SSA",
+        "distance": 600.0,
         "aircrafts": [
           "Commercial"
         ],
-        "cost": 145.0,
+        "cost": 130.0,
         "minimum_stay": 240,
         "blocked": false
       },
       {
-        "source": "REC",
-        "target": "NAT",
-        "origin_vertex": "REC",
-        "destination_vertex": "NAT",
-        "distance": 300.0,
-        "aircrafts": [
-          "Regional"
-        ],
-        "cost": 75.0,
-        "minimum_stay": 180,
-        "blocked": false
-      },
-      {
-        "source": "REC",
-        "target": "FOR",
-        "origin_vertex": "REC",
-        "destination_vertex": "FOR",
-        "distance": 650.0,
+        "source": "FOR",
+        "target": "CCS",
+        "origin_vertex": "FOR",
+        "destination_vertex": "CCS",
+        "distance": 2400.0,
         "aircrafts": [
           "Commercial"
         ],
-        "cost": 145.0,
-        "minimum_stay": 240,
-        "blocked": false
-      },
-      {
-        "source": "NAT",
-        "target": "MAO",
-        "origin_vertex": "NAT",
-        "destination_vertex": "MAO",
-        "distance": 1300.0,
-        "aircrafts": [
-          "Commercial"
-        ],
-        "cost": 255.0,
-        "minimum_stay": 300,
-        "blocked": false
-      },
-      {
-        "source": "NAT",
-        "target": "REC",
-        "origin_vertex": "NAT",
-        "destination_vertex": "REC",
-        "distance": 300.0,
-        "aircrafts": [
-          "Regional"
-        ],
-        "cost": 75.0,
-        "minimum_stay": 180,
-        "blocked": false
-      },
-      {
-        "source": "MAO",
-        "target": "BEL",
-        "origin_vertex": "MAO",
-        "destination_vertex": "BEL",
-        "distance": 850.0,
-        "aircrafts": [
-          "Commercial"
-        ],
-        "cost": 180.0,
-        "minimum_stay": 240,
-        "blocked": false
-      },
-      {
-        "source": "MAO",
-        "target": "NAT",
-        "origin_vertex": "MAO",
-        "destination_vertex": "NAT",
-        "distance": 1300.0,
-        "aircrafts": [
-          "Commercial"
-        ],
-        "cost": 255.0,
-        "minimum_stay": 300,
-        "blocked": false
-      },
-      {
-        "source": "BEL",
-        "target": "TGU",
-        "origin_vertex": "BEL",
-        "destination_vertex": "TGU",
-        "distance": 1600.0,
-        "aircrafts": [
-          "Commercial"
-        ],
-        "cost": 280.0,
-        "minimum_stay": 300,
-        "blocked": false
-      },
-      {
-        "source": "BEL",
-        "target": "MAO",
-        "origin_vertex": "BEL",
-        "destination_vertex": "MAO",
-        "distance": 850.0,
-        "aircrafts": [
-          "Commercial"
-        ],
-        "cost": 180.0,
-        "minimum_stay": 240,
-        "blocked": false
-      },
-      {
-        "source": "TGU",
-        "target": "SAP",
-        "origin_vertex": "TGU",
-        "destination_vertex": "SAP",
-        "distance": 180.0,
-        "aircrafts": [
-          "Regional"
-        ],
-        "cost": 45.0,
-        "minimum_stay": 120,
-        "blocked": false
-      },
-      {
-        "source": "TGU",
-        "target": "BEL",
-        "origin_vertex": "TGU",
-        "destination_vertex": "BEL",
-        "distance": 1600.0,
-        "aircrafts": [
-          "Commercial"
-        ],
-        "cost": 280.0,
-        "minimum_stay": 300,
-        "blocked": false
-      },
-      {
-        "source": "SAP",
-        "target": "SJO",
-        "origin_vertex": "SAP",
-        "destination_vertex": "SJO",
-        "distance": 460.0,
-        "aircrafts": [
-          "Regional"
-        ],
-        "cost": 100.0,
-        "minimum_stay": 180,
-        "blocked": false
-      },
-      {
-        "source": "SAP",
-        "target": "TGU",
-        "origin_vertex": "SAP",
-        "destination_vertex": "TGU",
-        "distance": 180.0,
-        "aircrafts": [
-          "Regional"
-        ],
-        "cost": 45.0,
-        "minimum_stay": 120,
-        "blocked": false
-      },
-      {
-        "source": "SJO",
-        "target": "LIR",
-        "origin_vertex": "SJO",
-        "destination_vertex": "LIR",
-        "distance": 220.0,
-        "aircrafts": [
-          "Regional"
-        ],
-        "cost": 55.0,
-        "minimum_stay": 120,
-        "blocked": false
-      },
-      {
-        "source": "SJO",
-        "target": "SAP",
-        "origin_vertex": "SJO",
-        "destination_vertex": "SAP",
-        "distance": 460.0,
-        "aircrafts": [
-          "Regional"
-        ],
-        "cost": 100.0,
-        "minimum_stay": 180,
-        "blocked": false
-      },
-      {
-        "source": "LIR",
-        "target": "GUA",
-        "origin_vertex": "LIR",
-        "destination_vertex": "GUA",
-        "distance": 1120.0,
-        "aircrafts": [
-          "Commercial"
-        ],
-        "cost": 210.0,
-        "minimum_stay": 240,
-        "blocked": false
-      },
-      {
-        "source": "LIR",
-        "target": "SJO",
-        "origin_vertex": "LIR",
-        "destination_vertex": "SJO",
-        "distance": 220.0,
-        "aircrafts": [
-          "Regional"
-        ],
-        "cost": 55.0,
-        "minimum_stay": 120,
+        "cost": 320.0,
+        "minimum_stay": 360,
         "blocked": false
       }
     ]

@@ -3,6 +3,7 @@
 from copy import deepcopy
 import dataclasses
 
+from services import graph_state, session_state
 from flask import Blueprint, jsonify, request
 from acceso_datos.dataLoader import DataLoader
 from acceso_datos.graph_state_storage import GraphStateStorage
@@ -119,6 +120,7 @@ def _restore_saved_graph() -> None:
     restored_graph = _GRAPH_STORAGE.load_graph()
     if restored_graph is None:
         return
+    graph_state.set_graph(restored_graph)
     _LAST_GRAPH = restored_graph
     _ADVANCED_PLANNER = AdvancedPlanner(restored_graph, defaults=_GRAPH_CONFIG)
 
@@ -224,6 +226,7 @@ def load_graph():
 
     service = GraphDataService(loader.get_raw_data())
     graph = service.build_graph()
+    graph_state.set_graph(graph)
 
     # persist the last loaded graph and prepare an AdvancedPlanner for session APIs
     global _LAST_GRAPH, _ADVANCED_PLANNER
@@ -256,7 +259,15 @@ def interrupt_route():
         return jsonify({"error": "origin and destination are required"}), 400
 
     global _LAST_GRAPH
-    result = _ROUTE_BLOCKING_SERVICE.block_route(_LAST_GRAPH, origin, destination, reason=reason, blocked=blocked)
+    planner_context = payload.get("planner_context")
+    result = _ROUTE_BLOCKING_SERVICE.block_route(
+        _LAST_GRAPH,
+        origin,
+        destination,
+        reason=reason,
+        blocked=blocked,
+        planner_context=planner_context,
+    )
     if not result.get("found"):
         return jsonify({"error": f"No route from {origin} to {destination}"}), 404
 

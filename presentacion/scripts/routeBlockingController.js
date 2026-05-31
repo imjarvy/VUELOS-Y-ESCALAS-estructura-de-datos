@@ -1,7 +1,10 @@
+import { state as plannerState } from "./panels/planner/planner-state.js";
+
 export function createRouteBlockingController({
   apiPost,
   graphUi,
-  flightAnimator,
+  routeAnimationController,
+  plannerPanel,
   infoPanel,
   tripSessionPanel,
   setStatusMessage,
@@ -22,6 +25,29 @@ export function createRouteBlockingController({
 
   function getBlockedRoutes() {
     return [...blockedRouteCache.values()];
+  }
+
+  function getPlannerContext() {
+    const sessionActive = Boolean(tripSessionPanel?.getState?.()?.sessionActive);
+    if (sessionActive) {
+      return null;
+    }
+
+    const mode = String(plannerState.mode || "").trim().toLowerCase();
+    const lastRequest = plannerState.lastRequest;
+    const hasResults = Boolean(plannerState.itinerary_a || plannerState.itinerary_b || plannerState.routes);
+
+    if (!lastRequest || !hasResults) {
+      return null;
+    }
+
+    return {
+      mode,
+      request: lastRequest,
+      itinerary_a: plannerState.itinerary_a,
+      itinerary_b: plannerState.itinerary_b,
+      routes: plannerState.routes,
+    };
   }
 
   function syncBlockedRoutes(blockedRoutes = []) {
@@ -52,27 +78,38 @@ export function createRouteBlockingController({
     graphUi.markLinkBlocked(origin, destination, blocked);
 
     if (blocked) {
-      if (
-        flightAnimator.isAnimatingRoute(origin, destination)
-        || flightAnimator.isAnimatingRoute(destination, origin)
-      ) {
-        flightAnimator.blockCurrentRoute();
-      }
+      if (routeAnimationController?.handleBlockedRoute(origin, destination)) return;
     } else {
-      flightAnimator.stop();
+      routeAnimationController?.stop?.({ clearHighlight: true });
     }
   }
 
   async function interruptRoute(origin, destination, blocked = true, reason = "adverse-situation") {
+    const plannerContext = getPlannerContext();
     const response = await apiPost("/api/interrupt-route", {
       origin,
       destination,
       blocked,
       reason,
+      planner_context: plannerContext,
     });
 
     if (Array.isArray(response?.blocked_routes)) {
       syncBlockedRoutes(response.blocked_routes);
+    }
+
+    if (response?.planner_result && !tripSessionPanel?.getState?.()?.sessionActive) {
+      plannerPanel?.applyRecalculation?.(response.planner_result);
+
+      const updates = response.planner_result?.updates || {};
+      const updatedEntries = Object.entries(updates).filter(([, value]) => value?.itinerary?.legs?.length);
+      if (updatedEntries.length) {
+        setStatusMessage(`Ruta recalculada desde ${updatedEntries[0][1].cut_airport}.`, "success");
+      }
+
+      if (updatedEntries.length === 1) {
+        routeAnimationController?.playHighlightedRoute?.(updatedEntries[0][1].itinerary.legs, { suppressFinishCallback: true });
+      }
     }
 
     applyBlockedRouteVisual(origin, destination, Boolean(response?.blocked ?? blocked));
@@ -99,7 +136,7 @@ export function createRouteBlockingController({
 
     try {
       const selectedAirport = normalizeAirportCode(airportCode);
-      const activeRoute = flightAnimator.getCurrentRoute();
+      const activeRoute = routeAnimationController?.getCurrentRoute?.();
 
       if (!activeRoute) {
         setStatusMessage("No hay un avión en ruta activa para cancelar.", "info");
@@ -113,8 +150,8 @@ export function createRouteBlockingController({
         routeOrigin = activeRoute.origin;
         routeDestination = activeRoute.destination;
       } else if (selectedAirport === activeRoute.destination) {
-        routeOrigin = activeRoute.destination;
-        routeDestination = activeRoute.origin;
+        routeOrigin = activeRoute.origin;
+        routeDestination = activeRoute.destination;
       } else {
         setStatusMessage(
           `La cancelación aplica solo a la ruta activa (${activeRoute.origin} → ${activeRoute.destination}).`,

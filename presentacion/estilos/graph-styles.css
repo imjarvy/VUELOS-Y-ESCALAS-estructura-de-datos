@@ -880,10 +880,55 @@ button:active:not(:disabled) {
   color: var(--text);
 }
 
+/* Planned itinerary route highlight */
+.graph-links .link.link-route,
+.link.link-route {
+  stroke: #2563eb !important;
+  stroke-width: 4px !important;
+  opacity: 1 !important;
+  transition: stroke 0.18s ease, opacity 0.18s ease;
+}
+
+.graph-links .link.link-dimmed,
+.link.link-dimmed {
+  opacity: 0.2 !important;
+}
+
+.node-on-route circle {
+  stroke: #2563eb !important;
+  stroke-width: 3px !important;
+  filter: drop-shadow(0 0 6px rgba(37, 99, 235, 0.45));
+}
+
 /* =============================================================================
    UTILITY
    ============================================================================= */
+.report-panel .report-list {
+  margin-top: 6px;
+}
+
+.report-panel .report-empty-item {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.report-panel .report-totals {
+  margin-top: 6px;
+}
+
+.report-panel .report-total-row {
+  padding: 4px 0;
+}
+
+.report-panel .report-section + .report-section {
+  margin-top: 4px;
+}
+
 .hidden {
+  display: none !important;
+}
+
+.modal.hidden {
   display: none !important;
 }
 

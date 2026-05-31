@@ -89,13 +89,10 @@
           </select>
         </div>
       </section>
+    
 
       <section id="tripSessionPanel" class="info-panel session-panel" aria-live="polite">
         <h3>Resumen de la sesión</h3>
-      <section id="plannerPanel" class="info-panel hidden" aria-live="polite">
-         <h3>Planificación de itinerario</h3>
-      </section>
-
         <div class="info-row">
           <span class="info-label">Presupuesto inicial</span>
           <input id="sessionBudgetInitial" type="number" step="0.01" min="0" />
@@ -121,6 +118,12 @@
           <span id="sessionLodgingRule">Cada 20 horas desde el último hospedaje</span>
         </div>
       </section>
+      <section id="plannerPanel" class="info-panel hidden" aria-live="polite">
+      <h3>Planificación de itinerario</h3>
+      </section>
+
+      <section id="reportPanel" class="info-panel report-panel hidden" aria-live="polite"></section>
+     
     </aside>
   </section>
 
@@ -128,7 +131,7 @@
 
   <div id="jsonModal" class="modal hidden">
     <div class="modal-content">
-      <button class="modal-close" data-close="jsonModal">✕</button>
+      <button type="button" class="modal-close" data-close="jsonModal">✕</button>
       <h3>Cargar JSON</h3>
       <p class="card-desc">Selecciona un archivo JSON con la estructura de aeropuertos y rutas.</p>
       <label class="file-upload-label">
@@ -141,7 +144,7 @@
 
   <div id="configModal" class="modal hidden">
     <div class="modal-content modal-large">
-      <button class="modal-close" data-close="configModal">✕</button>
+      <button type="button" class="modal-close" data-close="configModal">✕</button>
       <h3>Configuración general</h3>
       <p class="card-desc">Ajusta los valores globales del planificador y las tarifas por tipo de aeronave.</p>
 
@@ -194,8 +197,8 @@
       </div>
 
       <div class="modal-actions">
-        <button id="cancelConfigBtn" class="modal-secondary">Cancelar</button>
-        <button id="saveConfigBtn" class="btn btn-blue">Guardar configuración</button>
+        <button id="cancelConfigBtn" type="button" class="modal-secondary">Cancelar</button>
+        <button id="saveConfigBtn" type="button" class="btn btn-blue">Guardar configuración</button>
       </div>
     </div>
   </div>
