@@ -81,6 +81,14 @@ def _pick_best_aircraft(
     return best_weight, best_name, best_key
 
 
+def _normalize_transport_keys(transport_types: Optional[List[str]]) -> Optional[Set[str]]:
+    """cuando llegan en español o con mayúscula, las normaliza a los keys de constants.py"""
+    if not transport_types:
+        return None
+    allowed = {_AIRCRAFT_NAME_MAP.get(t, t) for t in transport_types}
+    return allowed or None
+
+
 def _dijkstra(
     graph: Graph,
     origin: str,
@@ -193,7 +201,7 @@ class CostOptimizer(BaseOptimizer):
                  transport_types: Optional[List[str]] = None,
                  include_secondary: bool = True, **params: Any) -> Optional[Itinerary]:
         self.validate_endpoints(graph, origin, dest)
-        allowed = set(transport_types) if transport_types else None
+        allowed = _normalize_transport_keys(transport_types)
         result = _dijkstra(graph, origin, dest,
                            lambda d, r: d * r.get("cost_per_km", math.inf),
                            allowed, include_secondary)
@@ -211,7 +219,7 @@ class TimeOptimizer(BaseOptimizer):
                  transport_types: Optional[List[str]] = None,
                  include_secondary: bool = True, **params: Any) -> Optional[Itinerary]:
         self.validate_endpoints(graph, origin, dest)
-        allowed = set(transport_types) if transport_types else None
+        allowed = _normalize_transport_keys(transport_types)
         result = _dijkstra(graph, origin, dest,
                            lambda d, r: d * r.get("time_per_km_min", math.inf),
                            allowed, include_secondary)
@@ -229,7 +237,7 @@ class DistanceOptimizer(BaseOptimizer):
                  transport_types: Optional[List[str]] = None,
                  include_secondary: bool = True, **params: Any) -> Optional[Itinerary]:
         self.validate_endpoints(graph, origin, dest)
-        allowed = set(transport_types) if transport_types else None
+        allowed = _normalize_transport_keys(transport_types)
         result = _dijkstra(graph, origin, dest,
                            lambda d, r: d, allowed, include_secondary)
         return None if result is None else _build_itinerary(graph, *result, criteria="distance")

@@ -155,12 +155,15 @@ export function createGraphUi({ state = {}, onNodeSelect = () => {} } = {}) {
   // Internal references to rendered links/selection for runtime updates
   let _renderedLinks = [];
   let _linkSelection = null;
+  let _nodeSelection = null;
+  let _routeNodeIds = new Set();
 
   function nodeCssClass(node) {
     let cssClass = "node";
     if (node.is_critical) cssClass += " node-critical";
     if (node.is_hub) cssClass += " node-root";
     if (String(node.id) === String(selectedNodeId)) cssClass += " node-selected";
+    if (_routeNodeIds.has(String(node.id ?? "").trim().toUpperCase())) cssClass += " node-on-route";
     return cssClass;
   }
 
@@ -207,6 +210,66 @@ export function createGraphUi({ state = {}, onNodeSelect = () => {} } = {}) {
     }
 
     return updated;
+  }
+
+  function _edgeKey(originId, destinationId) {
+    return `${String(originId ?? "").trim().toUpperCase()}|${String(destinationId ?? "").trim().toUpperCase()}`;
+  }
+
+  function _applyRouteHighlightStyles() {
+    if (!_linkSelection) return;
+
+    const hasHighlight = _renderedLinks.some(link => link.highlighted);
+    _linkSelection
+      .classed("link-route", link => !!link.highlighted)
+      .classed("link-dimmed", link => hasHighlight && !link.highlighted && !link.blocked);
+
+    if (_nodeSelection) {
+      _nodeSelection.attr("class", node => nodeCssClass(node));
+    }
+  }
+
+  /** Remove route highlight from all links and nodes. */
+  function clearRouteHighlight() {
+    if (!Array.isArray(_renderedLinks)) return;
+
+    _renderedLinks.forEach(link => {
+      link.highlighted = false;
+    });
+    _routeNodeIds.clear();
+    _applyRouteHighlightStyles();
+  }
+
+  /**
+   * Highlight a planned route on the rendered graph.
+   * @param {Array<{source?: string, target?: string, origin_id?: string, destination_id?: string}>} edgeList
+   * @returns {boolean} true if at least one edge was highlighted
+   */
+  function highlightRoute(edgeList = []) {
+    if (!Array.isArray(_renderedLinks) || !_linkSelection || !Array.isArray(edgeList)) {
+      return false;
+    }
+
+    clearRouteHighlight();
+
+    const edgeSet = new Set(
+      edgeList.map(edge => _edgeKey(
+        edge.source ?? edge.origin ?? edge.origin_id,
+        edge.target ?? edge.destination ?? edge.destination_id,
+      )),
+    );
+
+    let matched = 0;
+    _renderedLinks.forEach(link => {
+      if (!edgeSet.has(_edgeKey(link._originId, link._destinationId))) return;
+      link.highlighted = true;
+      matched += 1;
+      _routeNodeIds.add(String(link._originId).trim().toUpperCase());
+      _routeNodeIds.add(String(link._destinationId).trim().toUpperCase());
+    });
+
+    _applyRouteHighlightStyles();
+    return matched > 0;
   }
 
   /**
@@ -298,6 +361,7 @@ export function createGraphUi({ state = {}, onNodeSelect = () => {} } = {}) {
     // Store selection and rendered links for runtime updates
     _linkSelection = linkSelection;
     _renderedLinks = renderedLinks;
+    _routeNodeIds.clear();
 
     // Apply blocked styling when route contains a `blocked` truthy flag
     try {
@@ -317,6 +381,8 @@ export function createGraphUi({ state = {}, onNodeSelect = () => {} } = {}) {
       .on("click", (_, d) => selectNode(d, nodeSelection));
 
     nodeSelection.append("circle").attr("r", 22);
+
+    _nodeSelection = nodeSelection;
 
     nodeSelection
       .append("text")
@@ -376,5 +442,7 @@ export function createGraphUi({ state = {}, onNodeSelect = () => {} } = {}) {
     selectNode,
     stop: () => {},
     markLinkBlocked,
+    highlightRoute,
+    clearRouteHighlight,
   };
 }

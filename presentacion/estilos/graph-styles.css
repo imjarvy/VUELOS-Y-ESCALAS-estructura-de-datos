@@ -846,6 +846,26 @@ button:active:not(:disabled) {
   transition: stroke 0.18s ease;
 }
 
+/* Planned itinerary route highlight */
+.graph-links .link.link-route,
+.link.link-route {
+  stroke: #2563eb !important;
+  stroke-width: 4px !important;
+  opacity: 1 !important;
+  transition: stroke 0.18s ease, opacity 0.18s ease;
+}
+
+.graph-links .link.link-dimmed,
+.link.link-dimmed {
+  opacity: 0.2 !important;
+}
+
+.node-on-route circle {
+  stroke: #2563eb !important;
+  stroke-width: 3px !important;
+  filter: drop-shadow(0 0 6px rgba(37, 99, 235, 0.45));
+}
+
 /* =============================================================================
    UTILITY
    ============================================================================= */
