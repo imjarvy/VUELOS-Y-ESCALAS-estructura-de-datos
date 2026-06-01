@@ -14,14 +14,12 @@ class AdvancedPlanner:
     Receives a graph instance and exposes methods to start step-by-step sessions.
     """
     def __init__(self, graph: Any, defaults: Optional[Dict[str, Any]] = None) -> None:
+        """Store the graph and the default configuration used to build sessions."""
         self.graph = graph
         self.defaults = defaults or {}
 
     def start_session(self, origin: str, budget: float, time_h: float, preferences: Optional[TripConfig] = None) -> "TripSession":
-        """Create and return a new ``TripSession``.
-
-        This method only initializes session state.
-        """
+        """Create a new trip session with the initial budget, time, and planner state."""
         if not origin or origin not in self.graph:
             raise ValueError(f"Origin airport {origin!r} not found in graph.")
         if budget < 0:

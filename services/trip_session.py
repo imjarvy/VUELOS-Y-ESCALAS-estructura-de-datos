@@ -22,7 +22,7 @@ class TripSession(
     TripSessionPersistenceMixin,
     TripSessionReportingMixin,
 ):
-    """Represents a step-by-step interactive session.
+    """Represents a step-by-step interactive session managed by the advanced planner.
 
     The UI should call ``step_proposals()`` and then ``apply_choice()``
     according to the traveler decision. Every decision is stored in
@@ -30,6 +30,7 @@ class TripSession(
     """
 
     def __init__(self, config: TripConfig, initial_state: TripState, planner: "AdvancedPlanner") -> None:
+        """Store the session configuration, initial state, and parent planner."""
         self.config = config
         self.state = initial_state
         self.planner = planner

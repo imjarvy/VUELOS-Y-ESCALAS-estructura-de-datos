@@ -9,6 +9,7 @@ from services.trip_session_utils import build_visited_from_legs, total_gained_fr
 
 class TripSessionReportingMixin:
     def procesar_interrupcion_vuelo(self, tramo: Any) -> List[str]:
+        """Handle an in-flight interruption by sending the traveler back to the origin."""
         import random
 
         is_subsidized = float(getattr(tramo, "cost", 0.0)) == 0.0
@@ -46,6 +47,7 @@ class TripSessionReportingMixin:
         return [f"¡Vuelo interrumpido al {int(porcentaje_recorrido * 100)}%! El viajero regresó a {tramo.origen}.", *trigger_events]
 
     def force_recalculate_after_network_change(self, changed_edges: List[Any]) -> Dict[str, Any]:
+        """Rebuild the proposal list after a network change affects one or more routes."""
         return {
             "recalculated": True,
             "changed_edges": list(changed_edges),
@@ -54,6 +56,7 @@ class TripSessionReportingMixin:
         }
 
     def finalize_and_report(self) -> TripReport:
+        """Build the final trip report with visited airports, legs, activities, and totals."""
         visited = build_visited_from_legs(self.state.itinerary)
         total_gained = total_gained_from_jobs(self.state.jobs_done)
         total_spent = round(self.state.budget_initial + total_gained - self.state.budget_remaining, 2)

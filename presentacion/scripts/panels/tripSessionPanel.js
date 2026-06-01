@@ -4,12 +4,14 @@
 // =============================================================================
 
 function formatMoney(value) {
+  // Format numeric values as compact USD amounts for the session panel.
   const amount = Number(value);
   if (!Number.isFinite(amount)) return "-";
   return `$${amount.toFixed(2)}`;
 }
 
 function formatMinutes(totalMinutes) {
+  // Format raw minutes as a readable hours-and-minutes label.
   const minutes = Number(totalMinutes);
   if (!Number.isFinite(minutes) || minutes < 0) return "-";
   const hours = Math.floor(minutes / 60);
@@ -18,6 +20,7 @@ function formatMinutes(totalMinutes) {
 }
 
 function createTag(text) {
+  // Create a small pill-style label used by route and activity cards.
   const tag = document.createElement("span");
   tag.textContent = text;
   tag.className = "session-tag";
@@ -25,6 +28,7 @@ function createTag(text) {
 }
 
 export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {} } = {}) {
+  // Build the advanced planner panel, wire all controls, and expose a small API.
   const panel = document.getElementById(panelId);
 
   if (!panel) {
@@ -149,40 +153,49 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
   let _onBudgetChange = null;
 
   function onStart(handler) {
+    // Register the handler that starts or toggles the active session.
     _onStart = handler;
   }
 
   function onSuggestRoute(handler) {
+    // Register the handler that asks the backend for a route suggestion.
     _onSuggestRoute = handler;
   }
 
   function onCancelSuggestedRoute(handler) {
+    // Register the handler that clears the current suggested route.
     _onCancelSuggestedRoute = handler;
   }
 
   function onChoice(handler) {
+    // Register the handler that applies a selected activity, job, or flight.
     _onChoice = handler;
   }
 
   function onToggleSession(handler) {
+    // Register the handler that opens or closes the advanced planner session.
     _onToggleSession = handler;
   }
 
   function onBudgetChange(handler) {
+    // Register the handler that propagates budget updates to the backend.
     _onBudgetChange = handler;
   }
 
   function getMealLabel() {
+    // Describe the current meal interval rule using the active configuration.
     const intervalHours = Number(rules.intervaloAlimentacion ?? 8);
     return `Cada ${Number.isFinite(intervalHours) && intervalHours > 0 ? intervalHours : 8} horas desde la última comida`;
   }
 
   function getLodgingLabel() {
+    // Describe the current lodging interval rule using the active configuration.
     const intervalHours = Number(rules.intervaloAlojamiento ?? 20);
     return `Cada ${Number.isFinite(intervalHours) && intervalHours > 0 ? intervalHours : 20} horas desde el último hospedaje`;
   }
 
   function createProposalCard(title, subtitle) {
+    // Create a reusable card container for routes, activities, or jobs.
     const card = document.createElement("div");
     card.className = "session-proposal-card";
 
@@ -199,16 +212,19 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
   }
 
   function setBanner(text, kind = "info") {
+    // Update the banner state even if the banner is not shown in the panel.
     statusBanner.textContent = text;
     statusBanner.dataset.kind = kind;
   }
 
   function toggleOptionalActivities() {
+    // Flip the optional activities visibility and rerender the panel.
     state.showOptionalActivities = !state.showOptionalActivities;
     render();
   }
 
   function setSuggestedRoute(nextRoute = null) {
+    // Persist the current suggested route so it can survive later updates.
     state.suggestedRoute = nextRoute;
     if (!nextRoute) {
       state.routePlan = [];
@@ -217,21 +233,25 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
   }
 
   function setRoutePlan(nextPlan = []) {
+    // Update the full route plan displayed under the suggested route.
     state.routePlan = Array.isArray(nextPlan) ? nextPlan : [];
     render();
   }
 
   function setBlockedRoutes(nextBlockedRoutes = []) {
+    // Store the routes that should be rendered as blocked in the UI.
     state.blockedRoutes = Array.isArray(nextBlockedRoutes) ? nextBlockedRoutes.filter(Boolean) : [];
     render();
   }
 
   function setAdvancedVisible(nextVisible = false) {
+    // Show or hide the expanded advanced planner content.
     state.advancedVisible = Boolean(nextVisible);
     render();
   }
 
   function isRouteBlocked(origin, destination) {
+    // Check whether the requested transport route is currently blocked.
     const key = `${String(origin ?? "").trim().toUpperCase()}::${String(destination ?? "").trim().toUpperCase()}`;
     return state.blockedRoutes.some(route => {
       const blockedKey = `${String(route?.origin_vertex ?? route?.origin ?? "").trim().toUpperCase()}::${String(route?.destination_vertex ?? route?.destination ?? "").trim().toUpperCase()}`;
@@ -240,6 +260,7 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
   }
 
   function setAvailability(nextAvailability = {}) {
+    // Enable or disable controls depending on graph and session availability.
     state.graphLoaded = Boolean(nextAvailability.graphLoaded ?? state.graphLoaded);
     state.sessionActive = Boolean(nextAvailability.sessionActive ?? state.sessionActive);
     sessionBtn.disabled = !state.graphLoaded;
@@ -248,6 +269,7 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
   }
 
   function formatRouteOption(option) {
+    // Render a compact text summary for each available transport option.
     const cost = Number(option?.cost_usd ?? option?.cost ?? 0);
     const time = Number(option?.time_min ?? option?.time ?? 0);
     const subsidized = Boolean(option?.is_subsidized);
@@ -255,6 +277,7 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
   }
 
   function renderProposals() {
+    // Rebuild the proposals list using the current session state and suggestions.
     proposalsList.innerHTML = "";
 
     const proposals = state.proposals ?? {};
@@ -498,6 +521,7 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
 
 
   function render() {
+    // Keep the DOM in sync with the panel state.
     // Ensure collapsed button and content wrapper are placed once
     if (!collapsedContainer.isConnected) panel.insertBefore(collapsedContainer, panel.firstChild);
     if (!contentContainer.isConnected) panel.appendChild(contentContainer);
@@ -512,7 +536,6 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
       }
     });
     if (!sessionIdRow.isConnected || sessionIdRow.parentElement !== contentContainer) contentContainer.appendChild(sessionIdRow);
-    if (!statusBanner.isConnected || statusBanner.parentElement !== contentContainer) contentContainer.appendChild(statusBanner);
     if (!summaryBar.isConnected || summaryBar.parentElement !== contentContainer) contentContainer.appendChild(summaryBar);
     if (!actionsRow.isConnected || actionsRow.parentElement !== contentContainer) contentContainer.appendChild(actionsRow);
     if (!proposalsSection.isConnected || proposalsSection.parentElement !== contentContainer) contentContainer.appendChild(proposalsSection);
@@ -558,36 +581,43 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
   }
 
   function setRules(nextRules = {}) {
+    // Refresh the panel labels and thresholds using the latest configuration.
     rules = { ...rules, ...nextRules };
     render();
   }
 
   function setState(nextState = {}) {
+    // Merge a partial state update and rerender the panel.
     Object.assign(state, nextState);
     render();
   }
 
   function setSessionId(sessionId) {
+    // Store the active session identifier shown in the panel header.
     state.sessionId = sessionId || null;
     render();
   }
 
   function setOptionalActivitiesVisible(nextVisible = false) {
+    // Control whether the optional activities section is visible.
     state.showOptionalActivities = Boolean(nextVisible);
     render();
   }
 
   function clearProposals() {
+    // Remove all current proposals from the panel.
     state.proposals = null;
     render();
   }
 
   function setProposals(nextProposals = null) {
+    // Replace the current proposal payload and rerender the list.
     state.proposals = nextProposals;
     render();
   }
 
   sessionBtn.addEventListener("click", () => {
+    // The main button starts or toggles the current session.
     if (typeof _onToggleSession === "function") {
       _onToggleSession();
       return;
@@ -596,6 +626,7 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
   });
 
   suggestBtn.addEventListener("click", () => {
+    // Request or clear the suggested route from the planner.
     if (state.suggestedRoute && typeof _onCancelSuggestedRoute === "function") {
       _onCancelSuggestedRoute();
       return;
@@ -604,21 +635,25 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
   });
 
   activitiesBtn.addEventListener("click", () => {
+    // Show or hide optional activities in the proposals list.
     toggleOptionalActivities();
   });
 
   // Toggle advanced planner visibility
   useAdvancedBtn.addEventListener("click", () => {
+    // Expand the advanced planner panel from the collapsed view.
     state.advancedVisible = !state.advancedVisible;
     render();
   });
 
   collapseAdvancedBtn.addEventListener("click", () => {
+    // Collapse the advanced planner panel back to the compact button.
     state.advancedVisible = false;
     render();
   });
 
   proposalsList.addEventListener("click", event => {
+    // Dispatch the selected proposal back to the orchestrator.
     const button = event.target.closest("button[data-kind]");
     if (!button || typeof _onChoice !== "function") return;
 
@@ -649,6 +684,7 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
 
   if (budgetInitialInput) {
     budgetInitialInput.addEventListener("change", () => {
+      // Propagate budget edits to local state and to the backend if possible.
       const parsed = Number(budgetInitialInput.value);
       if (!Number.isFinite(parsed) || parsed < 0) return;
       // Update locally

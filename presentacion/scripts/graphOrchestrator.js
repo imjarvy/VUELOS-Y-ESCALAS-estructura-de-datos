@@ -23,6 +23,7 @@ const plannerPanel = createPlannerPanel({ panelId: "plannerPanel" });
 const reportPanel = createReportPanel({ panelId: "reportPanel" });
 
 function setStatusMessage(message, kind = "info") {
+  // Mirror important events in the global status bar.
   const text = String(message ?? "");
   status.textContent = text;
 
@@ -35,14 +36,17 @@ function setStatusMessage(message, kind = "info") {
 }
 
 function openModal() {
+  // Open the JSON upload modal.
   jsonModal.classList.remove("hidden");
 }
 
 function closeModal() {
+  // Close the JSON upload modal.
   jsonModal.classList.add("hidden");
 }
 
 function showGraphPanels() {
+  // Reveal the right-side panels once a graph is available.
   document.getElementById("rightPanels")?.classList.remove("hidden");
   document.getElementById("plannerPanel")?.classList.remove("hidden");
   reportPanel?.show?.();
@@ -80,6 +84,7 @@ const {
 } = routeBlockingController;
 
 function syncConfigControls() {
+  // Refresh configuration widgets so they stay aligned with the backend.
   if (configController?.refreshControls) {
     return configController.refreshControls();
   }
@@ -87,7 +92,6 @@ function syncConfigControls() {
 }
 
 tripSessionPanel.setAvailability({ graphLoaded: false, sessionActive: false });
-tripSessionPanel.setBanner("Restaurando el grafo guardado...");
 void syncConfigControls();
 
 // Session state is coordinated through the trip session panel and the backend session endpoints.
@@ -99,6 +103,7 @@ const {
 } = routeAnimationController;
 
 function resetSessionUi(message = "Sesión cancelada.") {
+  // Clear all session-specific UI state after a session ends.
   pendingTransportChoice = null;
   stopRouteAnimation();
   currentSessionId = null;
@@ -118,12 +123,14 @@ function resetSessionUi(message = "Sesión cancelada.") {
 }
 
 async function closeCurrentSession() {
+  // Notify the backend that the current session should be closed.
   if (!currentSessionId) return;
 
   await apiPost(`/api/session/${currentSessionId}/close`, {});
 }
 
 async function applySessionChoice(choice) {
+  // Send the selected action to the backend and refresh the UI with the response.
   const res = await apiPost(`/api/session/${currentSessionId}/choice`, choice);
   const updatedState = res.updated_state ?? {};
   const nextProposals = res.next_proposals ?? null;
@@ -164,6 +171,7 @@ async function applySessionChoice(choice) {
 }
 
 flightAnimator.onRouteFinished(async ({ status } = {}) => {
+  // Wait for the animated flight to finish before applying the transport choice.
   if (!pendingTransportChoice) return;
 
   const pending = pendingTransportChoice;
@@ -189,6 +197,7 @@ flightAnimator.onRouteFinished(async ({ status } = {}) => {
 });
 
 async function startSessionFromUi() {
+  // Start a new trip session using the currently selected airport and panel values.
   // Prefer the currently selected node in the graph if one exists.
   let selected = null;
   const selEl = document.querySelector('.graph-nodes .node.node-selected .node-code');
@@ -237,6 +246,7 @@ async function startSessionFromUi() {
 }
 
 tripSessionPanel.onToggleSession(async () => {
+  // Toggle the advanced planner session from the panel button.
   if (currentSessionId) {
     try {
       setStatusMessage("Cerrando sesión...");
@@ -253,6 +263,7 @@ tripSessionPanel.onToggleSession(async () => {
 });
 
 tripSessionPanel.onSuggestRoute(async () => {
+  // Ask the backend for the next suggested route and display it in the panel.
   if (!currentSessionId) {
     setStatusMessage("No hay sesión activa. Inicia una sesión primero.");
     return;
@@ -288,6 +299,7 @@ tripSessionPanel.onSuggestRoute(async () => {
 });
 
 tripSessionPanel.onCancelSuggestedRoute(() => {
+  // Clear the current suggested route from the panel.
   tripSessionPanel.setSuggestedRoute(null);
   tripSessionPanel.setRoutePlan([]);
   tripSessionPanel.setBanner("Ruta sugerida cancelada.");
@@ -296,10 +308,12 @@ tripSessionPanel.onCancelSuggestedRoute(() => {
 });
 
 plannerPanel.onHighlightRoute((itinerary) => {
+  // Highlight the full itinerary selected from the planner panel.
   playHighlightedRoute(itinerary?.legs ?? [], { suppressFinishCallback: true });
 });
 
 reportPanel.onHighlightRoute((report) => {
+  // Highlight the completed route shown in the report panel.
   if (!report?.legs?.length) {
     graphUi.clearRouteHighlight();
     return;
@@ -308,6 +322,7 @@ reportPanel.onHighlightRoute((report) => {
 });
 
 tripSessionPanel.onChoice(async choice => {
+  // Apply the selected transport, activity, or job choice.
   if (!currentSessionId) {
     setStatusMessage("No hay sesión activa. Inicia una sesión primero.");
     return;
@@ -389,6 +404,7 @@ tripSessionPanel.onChoice(async choice => {
 // Load the current backend config so the panels stay aligned with the same rules.
 apiGet("/api/config")
   .then(config => {
+    // Load the active configuration into both the info panel and session panel.
     infoPanel.setRules(config ?? {});
     tripSessionPanel.setRules(config ?? {});
   })
@@ -398,6 +414,7 @@ apiGet("/api/config")
   });
 
 async function restorePersistedGraph() {
+  // Restore the last saved graph and rebuild the UI around it.
   try {
     const response = await apiGet("/api/current-graph");
     const savedGraph = response?.graph ?? null;
@@ -430,7 +447,6 @@ async function restorePersistedGraph() {
     tripSessionPanel.setBlockedRoutes(getBlockedRoutes());
     tripSessionPanel.setAvailability({ graphLoaded: true, sessionActive: false });
     plannerPanel.setAvailability({ graphLoaded: true });
-    tripSessionPanel.setBanner("Grafo restaurado desde almacenamiento local.", "success");
     infoPanel.setRules(await apiGet("/api/config").catch(() => ({ intervaloAlojamiento: 20 })));
     tripSessionPanel.setRules(await apiGet("/api/config").catch(() => ({ intervaloAlojamiento: 20, intervaloAlimentacion: 8 })));
     setStatusMessage(`Grafo restaurado: ${response.airports ?? d3Graph.nodes.length} aeropuertos.`);
@@ -449,6 +465,7 @@ jsonFileInput.addEventListener("change", event => {
 
 document.querySelectorAll(".modal-close[data-close]").forEach(button => {
   button.addEventListener("click", event => {
+    // Close the upload or config modal when the user clicks a close button.
     const targetModalId = event.currentTarget?.dataset?.close;
     if (targetModalId === "jsonModal") {
       closeModal();
@@ -459,12 +476,14 @@ document.querySelectorAll(".modal-close[data-close]").forEach(button => {
 });
 
 jsonModal.addEventListener("click", event => {
+  // Close the modal when the backdrop itself is clicked.
   if (event.target === jsonModal) closeModal();
 });
 
 document.getElementById("btnLoadSample").addEventListener("click", openModal);
 
 document.getElementById("loadJsonConfirmBtn").addEventListener("click", async () => {
+  // Load the selected JSON file and rebuild the graph view.
   const file = jsonFileInput.files?.[0];
   if (!file) {
     setStatusMessage("Selecciona un archivo JSON primero.");
@@ -514,6 +533,7 @@ document.getElementById("loadJsonConfirmBtn").addEventListener("click", async ()
 
 // Budget change handler: propagate to server when session active
 tripSessionPanel.onBudgetChange(async newBudget => {
+  // Persist budget changes immediately when a session is active.
   const parsed = Number(newBudget);
   if (!Number.isFinite(parsed) || parsed < 0) return;
   if (!currentSessionId) {

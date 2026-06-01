@@ -11,6 +11,7 @@ from services.trip_session_utils import AIRCRAFT_NAME_MAP, normalize_aircraft_na
 
 class TripSessionTransportMixin:
     def _planning_settings(self) -> Dict[str, int]:
+        """Resolve the route-planning limits used by the coverage beam search."""
         graph_size = max(1, len(getattr(self.planner.graph, "vertices", []) or []))
 
         source_overrides: Dict[str, Any] = {}
@@ -40,6 +41,7 @@ class TripSessionTransportMixin:
         visited: Optional[Set[str]] = None,
         limit: Optional[int] = None,
     ) -> List[RouteProposal]:
+        """Rank nearby routes for the current airport using the route proposal score."""
         visited_set = set(visited or set())
         proposals: List[RouteProposal] = []
 
@@ -72,6 +74,7 @@ class TripSessionTransportMixin:
         return proposals
 
     def _resolved_aircraft_rates(self) -> Dict[str, Dict[str, float]]:
+        """Merge default and overridden aircraft rates into a normalized lookup table."""
         base = {
             key: {
                 "cost_per_km": float(value.get("costoKm", 0.0)),
@@ -102,6 +105,7 @@ class TripSessionTransportMixin:
         return base
 
     def _cheapest_route_option(self, route: Any) -> Optional[Dict[str, Any]]:
+        """Pick the lowest-cost and fastest valid aircraft option for a route."""
         route_is_subsidized = float(getattr(route, "cost", 0.0)) == 0.0
         rates = self._resolved_aircraft_rates()
         best_option: Optional[Dict[str, Any]] = None
@@ -134,6 +138,7 @@ class TripSessionTransportMixin:
         return best_option
 
     def _airport_coverage_potential(self, airport_id: str) -> float:
+        """Estimate how much future coverage an airport can unlock."""
         cache = getattr(self, "_coverage_potential_cache", None)
         if not isinstance(cache, dict):
             cache = {}
@@ -169,6 +174,7 @@ class TripSessionTransportMixin:
         return score
 
     def _dijkstra_shortest_paths(self, origin: str) -> Tuple[Dict[str, float], Dict[str, Tuple[Optional[str], str, str, float, int, bool]]]:
+        """Compute shortest paths from an origin airport using route cost as weight."""
         all_ids = [v.airport_id for v in self.planner.graph.vertices]
         dist = {airport_id: float("inf") for airport_id in all_ids}
         pred: Dict[str, Tuple[Optional[str], str, str, float, int, bool]] = {
@@ -208,6 +214,7 @@ class TripSessionTransportMixin:
         return dist, pred
 
     def _reconstruct_path(self, origin: str, destination: str, pred: Dict[str, Tuple[Optional[str], str, str, float, int, bool]]) -> List[str]:
+        """Rebuild a path from the Dijkstra predecessor table."""
         path: List[str] = []
         current = destination
 
@@ -223,6 +230,7 @@ class TripSessionTransportMixin:
         return path
 
     def calculate_tramo(self, distance_km: float, tipo_aeronave: str, es_subsidiada: bool) -> Dict[str, Any]:
+        """Calculate the cost and time for a flight segment and validate subsidy limits."""
         if distance_km < 0:
             return {"ok": False, "error": "distance_km must be >= 0"}
 
@@ -259,6 +267,7 @@ class TripSessionTransportMixin:
         }
 
     def _build_coverage_route_plan(self, origin: str) -> List[Dict[str, Any]]:
+        """Build a multi-step route plan that prioritizes destination coverage."""
         all_airports = [airport.airport_id for airport in self.planner.graph.vertices]
         if origin not in all_airports:
             return []
@@ -400,6 +409,7 @@ class TripSessionTransportMixin:
         return frontier[0]["path"]
 
     def _best_job_income(self, airport: Any) -> float:
+        """Return the best possible income from the jobs available at an airport."""
         best_income = 0.0
         for job in getattr(airport, "jobs", []):
             hourly_rate = float(getattr(job, "hourly_rate", 0.0))
@@ -408,6 +418,7 @@ class TripSessionTransportMixin:
         return round(best_income, 2)
 
     def _best_route_option(self, route: Any, budget_remaining: float, time_remaining_min: int) -> Optional[Dict[str, Any]]:
+        """Select the best transport option that still fits the remaining budget and time."""
         route_is_subsidized = float(getattr(route, "cost", 0.0)) == 0.0
         best_calc: Optional[Dict[str, Any]] = None
 
@@ -440,6 +451,7 @@ class TripSessionTransportMixin:
         visited: Optional[Set[str]] = None,
         branch_limit: Optional[int] = None,
     ) -> Tuple[int, float]:
+        """Estimate how many future destinations remain reachable from an airport."""
         if depth <= 0:
             return 0, 0.0
 
@@ -501,6 +513,7 @@ class TripSessionTransportMixin:
         return best_count, round(best_cost, 2)
 
     def _build_route_proposal(self, route: Any, *, include_future: bool = True) -> Optional[RouteProposal]:
+        """Turn a raw graph edge into a scored route proposal for the UI."""
         route_is_subsidized = float(getattr(route, "cost", 0.0)) == 0.0
         options: List[TransportOption] = []
 
@@ -586,9 +599,11 @@ class TripSessionTransportMixin:
         )
 
     def _plan_from_state(self, simulated_state: Any, max_steps: int = 6) -> List[Dict[str, Any]]:
+        """Generate a coverage-oriented plan from the current simulated airport."""
         return self._build_coverage_route_plan(simulated_state.current_airport)
 
     def _serialize_route_suggestion(self, proposal: RouteProposal) -> Dict[str, Any]:
+        """Convert a route proposal into a JSON-friendly suggestion payload."""
         return {
             "id": proposal.id,
             "destination": proposal.destination,
@@ -614,6 +629,7 @@ class TripSessionTransportMixin:
         }
 
     def suggest_route(self) -> Dict[str, Any]:
+        """Choose the best current route and persist the planned path in session state."""
         proposals = self.step_proposals()
         suggested = next((route for route in proposals.routes if not bool(getattr(route, "blocked", False))), None)
         settings = self._planning_settings()
@@ -639,6 +655,7 @@ class TripSessionTransportMixin:
         }
 
     def step_proposals(self) -> StepProposalResult:
+        """Build the available routes, activities, jobs, and mandatory actions for the step."""
         routes: List[RouteProposal] = []
         activities: List[Any] = []
         jobs: List[Any] = []

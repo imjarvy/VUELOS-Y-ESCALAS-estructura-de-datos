@@ -8,6 +8,7 @@ from utils.constants import GRAPH_CONFIG_DEFAULTS
 
 class TripSessionClockMixin:
     def _resolved_intervals_min(self) -> Dict[str, int]:
+        """Resolve the meal and lodging intervals in minutes from the active configuration."""
         source_overrides: Dict[str, Any] = {}
         if isinstance(self.planner.defaults, dict):
             source_overrides.update(self.planner.defaults)
@@ -23,6 +24,7 @@ class TripSessionClockMixin:
         }
 
     def _apply_mandatory_charge(self, *, airport_id: str, charge_kind: str, timestamp_min: int, interval_min: int) -> str:
+        """Apply a mandatory meal or lodging charge and register the corresponding event."""
         airport = self.planner.graph.get_vertex(airport_id)
         if airport is None:
             return ""
@@ -64,6 +66,7 @@ class TripSessionClockMixin:
         return f"{label} en {airport_id}: -${amount:.2f} {reason}."
 
     def advance_time(self, minutes: int, *, is_flight: bool, meal_airport_id: str) -> List[str]:
+        """Advance the session clock and trigger meal or lodging rules when thresholds are reached."""
         if minutes < 0:
             raise ValueError("minutes must be >= 0")
 
@@ -111,6 +114,7 @@ class TripSessionClockMixin:
         return events
 
     def settle_lodging_after_landing(self) -> List[str]:
+        """Apply any lodging charge that remained pending after a flight landing."""
         if not self.state.lodging_pending_after_flight:
             return []
 

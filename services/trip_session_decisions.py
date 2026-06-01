@@ -7,6 +7,7 @@ from models.planner_models import ApplyResult, DecisionRecord, Leg
 
 class TripSessionDecisionMixin:
     def _finalize_stay_time(self) -> int:
+        """Convert the pending stay time into free time and reset the stay counters."""
         required = int(getattr(self.state, "current_stay_required_min", 0) or 0)
         optional_spent = int(getattr(self.state, "current_optional_stay_min", 0) or 0)
         free_time = max(required - optional_spent, 0)
@@ -16,6 +17,7 @@ class TripSessionDecisionMixin:
         return free_time
 
     def apply_choice(self, choice: Dict[str, Any]) -> ApplyResult:
+        """Apply the selected activity, job, or transport choice to the active session."""
         kind = (choice.get("kind") or choice.get("type") or "").lower()
         if kind not in {"transport", "activity", "job"}:
             return ApplyResult(updated_state=self.state, errors=["Unsupported choice kind."])

@@ -9,9 +9,11 @@ from services.trip_session_utils import serialize_item
 
 class TripSessionPersistenceMixin:
     def _serialize_item(self, item: Any) -> Any:
+        """Convert session items into a JSON-friendly representation."""
         return serialize_item(item)
 
     def serialize(self) -> Dict[str, Any]:
+        """Serialize the session config and state so it can be stored or restored later."""
         return {
             "session_id": self.session_id,
             "config": {
@@ -46,6 +48,7 @@ class TripSessionPersistenceMixin:
 
     @staticmethod
     def deserialize(data: Dict[str, Any], planner: "AdvancedPlanner") -> "TripSession":
+        """Rebuild a TripSession from serialized data and the active planner instance."""
         from services.trip_session import TripSession
 
         config_data = data.get("config", {})

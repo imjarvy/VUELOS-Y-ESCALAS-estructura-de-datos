@@ -201,13 +201,14 @@ button:active:not(:disabled) {
 
 .session-actions-row {
   display: grid;
-  gap: 8px;
+  gap: 12px;
+  margin-top: 4px;
 }
 
 .session-actions-primary-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 8px;
+  gap: 12px;
 }
 
 .session-panel .info-row button {
@@ -461,6 +462,7 @@ button:active:not(:disabled) {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+  margin-bottom: 12px;
 }
 
 .session-chip {
@@ -507,7 +509,7 @@ button:active:not(:disabled) {
 
 .session-actions-row {
   display: flex;
-  gap: 6px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
