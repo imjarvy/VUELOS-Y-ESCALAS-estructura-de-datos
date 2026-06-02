@@ -1,6 +1,9 @@
 from typing import List, Dict, Any, Optional, cast
 import dataclasses
 
+from .activity import Activity
+from .job_offer import JobOffer
+
 class Airport:
     """Airport model.
 
@@ -111,8 +114,27 @@ class Airport:
             is_hub=data.get("is_hub") or False,
             accommodation_cost=data.get("accommodation_cost") or 0.0,
             feeding_cost=data.get("feeding_cost") or 0.0,
-            activities=data.get("activities") or [],
-            jobs=data.get("jobs") or [],
+            activities=[
+                Activity(
+                    id=(a.get("id") or ""),
+                    name=(a.get("name") or ""),
+                    type=(a.get("type") or ""),
+                    duration_min=int(a.get("duration_min") or a.get("duration") or 0),
+                    cost_usd=float(a.get("cost_usd") or a.get("cost") or 0.0),
+                )
+                for a in (data.get("activities") or [])
+                if isinstance(a, dict)
+            ],
+            jobs=[
+                JobOffer(
+                    id=(j.get("id") or ""),
+                    name=(j.get("name") or ""),
+                    hourly_rate=float(j.get("hourly_rate") or 0.0),
+                    max_hours=int(j.get("max_hours") or 0),
+                )
+                for j in (data.get("jobs") or [])
+                if isinstance(j, dict)
+            ],
         )
 
         adj = data.get("adjacencies") or []

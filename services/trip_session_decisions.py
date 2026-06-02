@@ -6,6 +6,13 @@ from models.planner_models import ApplyResult, DecisionRecord, Leg
 
 
 class TripSessionDecisionMixin:
+    @staticmethod
+    def _get_item_field(item: Any, field_name: str, default: Any = None) -> Any:
+        """Read a field from either a model object or a plain dictionary."""
+        if isinstance(item, dict):
+            return item.get(field_name, default)
+        return getattr(item, field_name, default)
+
     def _finalize_stay_time(self) -> int:
         """Convert the pending stay time into free time and reset the stay counters."""
         required = int(getattr(self.state, "current_stay_required_min", 0) or 0)
@@ -33,7 +40,10 @@ class TripSessionDecisionMixin:
             activity_ref = choice.get("activity") or choice.get("activity_id") or choice.get("id") or choice.get("name")
             selected_activity = None
             for activity in getattr(current_airport, "activities", []):
-                if activity_ref in {getattr(activity, "id", None), getattr(activity, "name", None)}:
+                if activity_ref in {
+                    self._get_item_field(activity, "id"),
+                    self._get_item_field(activity, "name"),
+                }:
                     selected_activity = activity
                     break
 
@@ -43,8 +53,8 @@ class TripSessionDecisionMixin:
                     errors=[f"Activity {activity_ref!r} is not available at current airport"],
                 )
 
-            duration_min = int(getattr(selected_activity, "duration_min", 0))
-            cost_usd = float(getattr(selected_activity, "cost_usd", 0.0))
+            duration_min = int(self._get_item_field(selected_activity, "duration_min", 0))
+            cost_usd = float(self._get_item_field(selected_activity, "cost_usd", 0.0))
             if cost_usd > self.state.budget_remaining:
                 return ApplyResult(updated_state=self.state, errors=["Budget exceeded for selected activity"])
             if duration_min > self.state.time_remaining_min:
@@ -60,12 +70,12 @@ class TripSessionDecisionMixin:
             performed_at_min = self.state.time_elapsed_min
             activity_record = {
                 "kind": "activity",
-                "name": getattr(selected_activity, "name", activity_ref),
+                "name": self._get_item_field(selected_activity, "name", activity_ref),
                 "airport_id": self.state.current_airport,
                 "performed_at_min": performed_at_min,
                 "cost_usd": cost_usd,
                 "duration_min": duration_min,
-                "activity_type": getattr(selected_activity, "type", "optional"),
+                "activity_type": self._get_item_field(selected_activity, "type", "optional"),
             }
             self.state.activities_done.append(activity_record)
             self.state.decisions.append(
@@ -73,8 +83,8 @@ class TripSessionDecisionMixin:
                     timestamp_min=performed_at_min,
                     kind="activity",
                     details={
-                        "activity_id": getattr(selected_activity, "id", activity_ref),
-                        "name": getattr(selected_activity, "name", activity_ref),
+                        "activity_id": self._get_item_field(selected_activity, "id", activity_ref),
+                        "name": self._get_item_field(selected_activity, "name", activity_ref),
                         "airport_id": self.state.current_airport,
                         "duration_min": duration_min,
                         "cost_usd": cost_usd,
@@ -93,7 +103,10 @@ class TripSessionDecisionMixin:
             job_ref = choice.get("job") or choice.get("job_id") or choice.get("id") or choice.get("name")
             selected_job = None
             for job in getattr(current_airport, "jobs", []):
-                if job_ref in {getattr(job, "id", None), getattr(job, "name", None)}:
+                if job_ref in {
+                    self._get_item_field(job, "id"),
+                    self._get_item_field(job, "name"),
+                }:
                     selected_job = job
                     break
 
@@ -113,14 +126,14 @@ class TripSessionDecisionMixin:
             if hours_worked <= 0:
                 return ApplyResult(updated_state=self.state, errors=["hours worked must be greater than zero"])
 
-            max_hours = float(getattr(selected_job, "max_hours", 0))
+            max_hours = float(self._get_item_field(selected_job, "max_hours", 0))
             available_hours = self.state.time_remaining_min / 60.0
             if hours_worked > max_hours:
                 return ApplyResult(updated_state=self.state, errors=["Requested hours exceed the job maximum"])
             if hours_worked > available_hours:
                 return ApplyResult(updated_state=self.state, errors=["Requested hours exceed the remaining travel time"])
 
-            income_usd = round(float(getattr(selected_job, "hourly_rate", 0.0)) * hours_worked, 2)
+            income_usd = round(float(self._get_item_field(selected_job, "hourly_rate", 0.0)) * hours_worked, 2)
             minutes_worked = int(round(hours_worked * 60.0))
             self.state.budget_remaining = round(self.state.budget_remaining + income_usd, 2)
             trigger_events = self.advance_time(
@@ -131,7 +144,7 @@ class TripSessionDecisionMixin:
             performed_at_min = self.state.time_elapsed_min
             job_record = {
                 "kind": "job",
-                "name": getattr(selected_job, "name", job_ref),
+                "name": self._get_item_field(selected_job, "name", job_ref),
                 "airport_id": self.state.current_airport,
                 "performed_at_min": performed_at_min,
                 "hours_worked": hours_worked,
@@ -144,8 +157,8 @@ class TripSessionDecisionMixin:
                     timestamp_min=performed_at_min,
                     kind="job",
                     details={
-                        "job_id": getattr(selected_job, "id", job_ref),
-                        "name": getattr(selected_job, "name", job_ref),
+                        "job_id": self._get_item_field(selected_job, "id", job_ref),
+                        "name": self._get_item_field(selected_job, "name", job_ref),
                         "airport_id": self.state.current_airport,
                         "hours_worked": hours_worked,
                         "income_usd": income_usd,
