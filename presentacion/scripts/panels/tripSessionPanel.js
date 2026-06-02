@@ -461,7 +461,7 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
         btn.className = "btn btn-sm";
         btn.textContent = "Elegir actividad";
         btn.dataset.kind = "activity";
-        btn.dataset.activityId = activity.id ?? activity.name ?? "";
+        btn.dataset.activityId = activity.id || activity.name || "";
 
         row.appendChild(main);
         row.appendChild(typeTag);
@@ -506,7 +506,7 @@ export function createTripSessionPanel({ panelId = "tripSessionPanel", rules = {
         btn.className = "btn btn-sm";
         btn.textContent = "Elegir trabajo";
         btn.dataset.kind = "job";
-        btn.dataset.jobId = job.id ?? job.name ?? "";
+        btn.dataset.jobId = job.id || job.name || "";
 
         row.appendChild(main);
         row.appendChild(jobTag);
