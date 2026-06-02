@@ -1,18 +1,17 @@
-"""Abstract base class for all route optimizers.
-
-Dependency Inversion in practice:
-    planner_panel.js calls POST /api/plan/basic.
-    r2_routes.py receives a BaseOptimizer instance (injected in app.py).
-    The endpoint calls optimizer.optimize(...) without knowing whether
-    it's running Dijkstra by cost, time, or distance.
-    The UI depends on the abstraction, not the concrete implementation.
-"""
-
 from abc import ABC, abstractmethod
 from typing import Any, List, Optional
 
 from core.graph import Graph
 from models.itinerary import Itinerary
+
+"""Abstract base class for all route optimizers.
+
+Dependency Inversion in practice:
+    planner_panel.js calls POST /api/plan/basic.
+    receives a BaseOptimizer instance (injected in app.py).
+    The endpoint calls optimizer.optimize(...) without knowing whether
+    it's running Dijkstra by cost, time, or distance.
+"""
 
 
 class BaseOptimizer(ABC):

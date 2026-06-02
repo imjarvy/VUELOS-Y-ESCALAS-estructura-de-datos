@@ -516,7 +516,7 @@
             ],
             "cost": 130.0,
             "minimum_stay": 300,
-            "blocked": false
+            "blocked": true
           }
         ]
       },
@@ -574,7 +574,7 @@
             ],
             "cost": 35.0,
             "minimum_stay": 120,
-            "blocked": true
+            "blocked": false
           },
           {
             "origin_vertex": "CTG",
@@ -712,7 +712,7 @@
             ],
             "cost": 110.0,
             "minimum_stay": 240,
-            "blocked": true
+            "blocked": false
           },
           {
             "origin_vertex": "CCS",
@@ -723,7 +723,7 @@
             ],
             "cost": 125.0,
             "minimum_stay": 240,
-            "blocked": true
+            "blocked": false
           },
           {
             "origin_vertex": "CCS",
@@ -894,7 +894,7 @@
             ],
             "cost": 200.0,
             "minimum_stay": 300,
-            "blocked": false
+            "blocked": true
           }
         ]
       },
@@ -1090,7 +1090,7 @@
             ],
             "cost": 130.0,
             "minimum_stay": 300,
-            "blocked": false
+            "blocked": true
           },
           {
             "origin_vertex": "CUZ",
@@ -1192,7 +1192,7 @@
             ],
             "cost": 140.0,
             "minimum_stay": 240,
-            "blocked": true
+            "blocked": false
           }
         ]
       },
@@ -1250,7 +1250,7 @@
             ],
             "cost": 130.0,
             "minimum_stay": 240,
-            "blocked": true
+            "blocked": false
           },
           {
             "origin_vertex": "LPB",
@@ -1490,7 +1490,7 @@
             ],
             "cost": 155.0,
             "minimum_stay": 300,
-            "blocked": true
+            "blocked": false
           }
         ]
       },
@@ -1664,7 +1664,7 @@
             ],
             "cost": 220.0,
             "minimum_stay": 300,
-            "blocked": true
+            "blocked": false
           },
           {
             "origin_vertex": "MDZ",
@@ -2494,7 +2494,7 @@
         ],
         "cost": 130.0,
         "minimum_stay": 300,
-        "blocked": false
+        "blocked": true
       },
       {
         "source": "CTG",
@@ -2520,7 +2520,7 @@
         ],
         "cost": 35.0,
         "minimum_stay": 120,
-        "blocked": true
+        "blocked": false
       },
       {
         "source": "CTG",
@@ -2598,7 +2598,7 @@
         ],
         "cost": 110.0,
         "minimum_stay": 240,
-        "blocked": true
+        "blocked": false
       },
       {
         "source": "CCS",
@@ -2611,7 +2611,7 @@
         ],
         "cost": 125.0,
         "minimum_stay": 240,
-        "blocked": true
+        "blocked": false
       },
       {
         "source": "CCS",
@@ -2728,7 +2728,7 @@
         ],
         "cost": 200.0,
         "minimum_stay": 300,
-        "blocked": false
+        "blocked": true
       },
       {
         "source": "GYE",
@@ -2832,7 +2832,7 @@
         ],
         "cost": 130.0,
         "minimum_stay": 300,
-        "blocked": false
+        "blocked": true
       },
       {
         "source": "CUZ",
@@ -2910,7 +2910,7 @@
         ],
         "cost": 140.0,
         "minimum_stay": 240,
-        "blocked": true
+        "blocked": false
       },
       {
         "source": "LPB",
@@ -2936,7 +2936,7 @@
         ],
         "cost": 130.0,
         "minimum_stay": 240,
-        "blocked": true
+        "blocked": false
       },
       {
         "source": "LPB",
@@ -3092,7 +3092,7 @@
         ],
         "cost": 155.0,
         "minimum_stay": 300,
-        "blocked": true
+        "blocked": false
       },
       {
         "source": "IQQ",
@@ -3170,7 +3170,7 @@
         ],
         "cost": 220.0,
         "minimum_stay": 300,
-        "blocked": true
+        "blocked": false
       },
       {
         "source": "MDZ",

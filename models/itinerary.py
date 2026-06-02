@@ -5,20 +5,8 @@ from models.leg import Leg
 
 class Itinerary:
     """Complete ordered sequence of flight legs representing a trip plan.
-
     This is the output of route_optimizer.py and itinerary_planner.py,
     and the main input for report_generator.py.
-
-    Key design decision - totals as @property, not stored attributes:
-        total_cost and total_time_min are computed from self.legs on demand.
-        This means they are always consistent: add a leg and the totals
-        update automatically. Storing them separately would require
-        keeping them in sync manually, which is a common source of bugs.
-
-    Key design decision - add_leg validates connectivity:
-        The itinerary must be a connected path (A->B->C, never A->C with B missing).
-        This is enforced in add_leg() so route_optimizer.py cannot accidentally
-        build a disconnected itinerary.
     """
 
     VALID_CRITERIA = {"cost", "time", "distance"}
@@ -27,7 +15,7 @@ class Itinerary:
         self,
         optimization_criteria: str = "cost",
         legs: Optional[List[Leg]] = None,
-    ) -> None:
+     ) -> None:
         """
         Args:
             optimization_criteria: 'cost', 'time', or 'distance'.
@@ -68,16 +56,8 @@ class Itinerary:
 
     def add_leg(self, leg: Leg) -> None:
         """Append a flight leg and enforce path connectivity.
-
-        The new leg's origin must match the last leg's destination.
-        A->B then C->D is invalid; A->B then B->C is valid.
-
-        Args:
-            leg: Leg object to append.
-
-        Raises:
-            TypeError: if leg is not a Leg instance.
-            ValueError: if the leg breaks path connectivity.
+          The new leg's origin must match the last leg's destination.
+        A->B then C->D is invalid; A->B then B->C is valid.y.
         """
         if not isinstance(leg, Leg):
             raise TypeError(f"Expected a Leg instance, got {type(leg).__name__!r}")
@@ -107,10 +87,9 @@ class Itinerary:
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Itinerary":
-        """Reconstruct an Itinerary from a plain dict.
-
-        Used when restoring session state or deserializing an API response.
-        """
+        #Reconstruct an Itinerary from a plain dict.
+        #Used when restoring session state or deserializing an API response.
+        
         raw_legs = data.get("legs", [])
         legs = [Leg.from_dict(l) for l in raw_legs]
         return cls(
