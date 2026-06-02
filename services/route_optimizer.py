@@ -1,19 +1,3 @@
-"""Route optimizer — Dijkstra implementation (R2).
-
-Structure:
-    _AIRCRAFT_NAME_MAP  — normalizes JSON keys ("Comercial") to
-                          constants.py keys ("commercial").
-    _pick_best_aircraft — for a given route, selects the aircraft that
-                          minimizes the current weight criterion.
-    _dijkstra           — core algorithm, adapted directly from el collab of the professor.
-                          Same dist/pred/unvisited structure, same min() call.
-    _build_itinerary    — converts the path + pred dict into an Itinerary
-                          with proper Leg objects.
-    CostOptimizer       — Dijkstra weighted by USD cost.
-    TimeOptimizer       — Dijkstra weighted by flight time (min).
-    DistanceOptimizer   — Dijkstra weighted by distance (km).
-"""
-
 import math
 from typing import Any, Callable, Dict, List, Optional, Set, Tuple
 
@@ -40,11 +24,11 @@ _AIRCRAFT_NAME_MAP: Dict[str, str] = {
     "helice":    "propeller",
     "hélice":    "propeller",
     "commercial": "commercial",
-    "Commercial": "commercial",  # ← Agregar mayúscula
+    "Commercial": "commercial",  
     "regional": "regional",
-    "Regional": "regional",      # ← Agregar mayúscula
+    "Regional": "regional",      
     "propeller":  "propeller",
-    "Propeller": "propeller",    # ← Agregar mayúscula
+    "Propeller": "propeller",    
 }
 
 
@@ -96,14 +80,8 @@ def _dijkstra(
     weight_fn: Callable[[float, Dict[str, float]], float],
     allowed_keys: Optional[Set[str]],
     include_secondary: bool,
-) -> Optional[Tuple[List[str], Dict[str, Tuple[Optional[str], str, str]]]]:
-    """
-    Dijkstra shortest path.
-
-    - Uses dist/pred/unvisited structure.
-    - Adds aircraft choice and hub filtering.
-    - Returns (path, pred) or None if unreachable.
-    """
+    ) -> Optional[Tuple[List[str], Dict[str, Tuple[Optional[str], str, str]]]]:
+    
     all_ids = [v.airport_id for v in graph.vertices]
     dist = {v: math.inf for v in all_ids}
     dist[origin] = 0.0
@@ -136,7 +114,7 @@ def _dijkstra(
             )
             if edge_weight == math.inf:
                 continue
-
+          #refrescar
             new_dist = dist[u] + edge_weight
             if new_dist < dist[v]:
                 dist[v] = new_dist
@@ -162,7 +140,6 @@ def _build_itinerary(
 ) -> Itinerary:
     """
     Build an Itinerary from Dijkstra result.
-
     Each hop becomes a Leg with distance, cost, and time.
     """
     itinerary = Itinerary(optimization_criteria=criteria)
@@ -190,9 +167,6 @@ def _build_itinerary(
     return itinerary
 
 
-# ------------------------------------------------------------------ #
-# Public optimizer classes                                            #
-# ------------------------------------------------------------------ #
 class CostOptimizer(BaseOptimizer):
     """Dijkstra weighted by cost (USD)."""
 

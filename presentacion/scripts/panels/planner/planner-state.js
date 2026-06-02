@@ -1,4 +1,4 @@
-// Planner panel state only. No logic, no DOM.
+// Planner panel state only. 
 export const state = {
   graphLoaded: false,
   loading: false,

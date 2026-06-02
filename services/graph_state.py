@@ -1,10 +1,3 @@
-"""
-The idea is that we just use 1 object(graph).
-Singleton that holds the graph built after a JSON upload.
-Shared between graph_routes.py (writer) and planner_routes.py (reader).
-
-"""
-
 from typing import Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -20,5 +13,13 @@ def set_graph(graph: "Graph") -> None:
 
 
 def get_graph() -> Optional["Graph"]:
-    """Return the current graph, or None if no JSON has been loaded yet."""
     return _current_graph
+
+
+
+"""
+The idea is that we just use 1 object(graph).
+Singleton that holds the graph built after a JSON upload.
+Shared between graph_routes.py (writer) and planner_routes.py (reader).
+
+"""

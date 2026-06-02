@@ -1,24 +1,3 @@
-"""
-services/itinerary_planner.py
-
-Builds maximum-coverage itineraries under budget or time constraints .
-
-Algorithm justification:
-    Allows visiting as MANY airports as possible from a single origin within a hard resource constraint (budget USD or
-    time minutes). These are fundamentally different problems.
-
-    Solution: Depth-First Search (DFS) + backtracking.
-    - DFS explores all possible paths from the origin.
-    - Backtracking abandons branches that exceed the constraint and tries others.
-    - The algorithm records the path with the most visited airports found so far.
-
-    Mapping from Grafos.ipynb → this implementation:
-        no_visitados set  → visited set (same idea, inverted)
-        arista.getPeso()  → edge_weight from _pick_best_aircraft (per criterion)
-        dist[u] update    → resource_remaining decremented each hop
-        pred dict         → legs list (backtracked on each return).
-"""
-
 import math
 from typing import Any, Callable, Dict, List, Optional, Set, Tuple
 
@@ -29,24 +8,24 @@ from models.trip_config import TripConfig
 from utils.constants import AIRCRAFT_RATES
 from services.route_optimizer import _AIRCRAFT_NAME_MAP, _pick_best_aircraft
 
+"""
+Builds maximum-coverage itineraries under budget or time constraints .
+
+    Allows visiting as MANY airports as possible from a single origin within a hard resource constraint (budget USD or
+    time minutes). These are fundamentally different problems.
+
+    Solution: Depth-First Search (DFS) + backtracking.
+    - DFS explores all possible paths from the origin.
+    - Backtracking abandons branches that exceed the constraint and tries others.
+    - The algorithm records the path with the most visited airports found so far.
+"""
 
 
 # Internal helpers                                                     
 # ---------------------------------------------------------
 
 def _rebuild_used_types(legs: List[Leg]) -> Set[str]:
-    """Recompute the set of aircraft type keys from a list of legs.
-
-    Called after backtracking to keep used_types consistent.
-    A simple discard() would incorrectly remove a type still used
-    by an earlier leg on the path.
-
-    Args:
-        legs: current legs on the active DFS path.
-
-    Returns:
-        Set of constants.py aircraft keys present in those legs.
-    """
+    # Set of constants.py aircraft keys present in those legs.
     return {
         _AIRCRAFT_NAME_MAP.get(leg.aircraft, leg.aircraft)
         for leg in legs
@@ -87,7 +66,7 @@ def _dfs(
         best["count"] = n
         best["legs"]  = list(legs)  # snapshot — legs will be mutated
 
-    # Update best fallback (no type constraint) — used if no constrained path exists
+    #  used if no constrained path exists
     if n > best["fallback_count"]:
         best["fallback_count"] = n
         best["fallback_legs"]  = list(legs)
@@ -137,7 +116,7 @@ def _dfs(
             leg_cost        = round(route.distance * rates.get("cost_per_km",     0.0), 2),
         )
 
-        # ── Go deeper
+        #  Go deeper
         legs.append(leg)
         visited.add(next_id)
         used_types.add(aircraft_key)
@@ -156,7 +135,7 @@ def _dfs(
             required_types     = required_types,
         )
 
-        # ── Backtrack ─────────────────────────────────────────────
+        # ── Backtrack 
         legs.pop()
         visited.discard(next_id)
         # Rebuild used_types from remaining legs — simple discard() would
@@ -214,12 +193,11 @@ class ItineraryPlanner:
     ) -> Optional[Itinerary]:
         """Shared DFS runner used by both public plan methods.
 
-        Args:
             origin:         IATA departure code.
             config:         TripConfig with budget, time, transport preferences.
-            weight_fn:      (distance, rates) → float, defines the edge weight.
+            weight_fn:      (distance, rates)  float, defines the edge weight.
             resource_limit: max budget (USD) or max time (min).
-            criteria:       'cost' or 'time' — stored in the returned Itinerary.
+            criteria:       "cost" or "time"  stored in the returned Itinerary.
         """
         if origin not in graph:
             raise ValueError(f"Origin airport {origin!r} not found in graph.")
@@ -266,9 +244,6 @@ class ItineraryPlanner:
 
         Uses cheapest aircraft per route (minimizes cost_per_km × distance).
         Resource limit: config.budget_initial in USD.
-
-        Returns:
-            Itinerary or None if no route is reachable within budget.
         """
         return self._run_dfs(
             graph          = graph,
@@ -289,10 +264,7 @@ class ItineraryPlanner:
 
         Uses fastest aircraft per route (minimizes time_per_km_min × distance).
         Resource limit: config.time_available_h × 60 converted to minutes.
-
-        Returns:
-            Itinerary or None if no route is reachable within time limit.
-        """
+   """
         return self._run_dfs(
             graph          = graph,
             origin         = origin,

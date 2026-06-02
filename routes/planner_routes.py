@@ -1,26 +1,17 @@
-"""
-REST endpoints  — basic itinerary planning.
-
-Single Responsibility: this module only handles HTTP concerns:
-    - parse and validate the request JSON
-    - call the appropriate service
-    - return a JSON response
-
-No algorithm logic lives here. All computation is in:
-    services/route_optimizer.py  (Dijkstra — best single route)
-    services/itinerary_planner.py (DFS — max destinations)
-
-Registered in app.py as:
-    from routes.planner_routes import planner_bp
-    app.register_blueprint(planner_bp)
-"""
-
 from flask import Blueprint, jsonify, request
 
 from services import graph_state
 from services.route_optimizer import CostOptimizer, TimeOptimizer, DistanceOptimizer
 from services.itinerary_planner import ItineraryPlanner
 from models.trip_config import TripConfig
+
+"""
+REST endpoints  — basic itinerary planning.
+this module only handles HTTP concerns.   
+Registered in app.py as:
+    from routes.planner_routes import planner_bp
+    app.register_blueprint(planner_bp)
+"""
 
 planner_bp  = Blueprint("planner", __name__)
 _planner    = ItineraryPlanner()
@@ -32,7 +23,6 @@ _optimizers = {
 
 
 def _graph_or_error():
-    """Return (graph, None) if a graph is loaded, or (None, error_response)."""
     graph = graph_state.get_graph()
     if graph is None:
         return None, (
@@ -66,23 +56,6 @@ def _parse_transport_types(raw) -> list:
 
 @planner_bp.route("/api/plan/basic", methods=["POST"])
 def plan_basic():
-    """
-    Expected JSON body:
-    {
-        "origin":            "BOG",
-        "budget":            600.0,
-        "time_hours":        50.0,
-        "transport_types":   ["Comercial", "Regional"],  // [] = all allowed
-        "include_secondary": true
-    }
-
-    Response:
-    {
-        "itinerary_a": { ...Itinerary.to_dict() },  // max destinations by budget
-        "itinerary_b": { ...Itinerary.to_dict() },  // max destinations by time
-        "origin":      "BOG"
-    }
-    """
     graph, err = _graph_or_error()
     if err:
         return err
@@ -119,7 +92,7 @@ def plan_basic():
         allow_secondary_airports = include_secondary,
     )
 
-    # ── Run planner 
+    #  Run planner 
     try:
         itin_a, itin_b = _planner.plan_both(graph, origin, config)
     except ValueError as e:
@@ -131,6 +104,24 @@ def plan_basic():
         "itinerary_b": itin_b.to_dict() if itin_b else None,
     })
 
+    """
+        Expected JSON body:
+        {
+            "origin":            "BOG",
+            "budget":            600.0,
+            "time_hours":        50.0,
+            "transport_types":   ["Comercial", "Regional"],  // [] = all allowed
+            "include_secondary": true
+        }
+
+        Response:
+        {
+            "itinerary_a": { ...Itinerary.to_dict() },  // max destinations by budget
+            "itinerary_b": { ...Itinerary.to_dict() },  // max destinations by time
+            "origin":      "BOG"
+        }
+        """
+
 
 
 # POST /api/plan/route                                                 
@@ -139,27 +130,7 @@ def plan_basic():
 
 @planner_bp.route("/api/plan/route", methods=["POST"])
 def plan_route():
-    """
-    Expected JSON body:
-    {
-        "origin":            "BOG",
-        "dest":              "LIM",
-        "criteria":          ["cost", "time", "distance"],  // one or more
-        "transport_types":   ["Comercial"],                 // [] = all allowed
-        "include_secondary": true
-    }
-
-    Response:
-    {
-        "origin": "BOG",
-        "dest":   "LIM",
-        "routes": {
-            "cost":     { ...Itinerary.to_dict() },
-            "time":     { ...Itinerary.to_dict() },
-            "distance": { ...Itinerary.to_dict() }
-        }
-    }
-    """
+    
     graph, err = _graph_or_error()
     if err:
         return err
@@ -190,7 +161,7 @@ def plan_route():
     transport_types   = _parse_transport_types(body.get("transport_types"))
     include_secondary = bool(body.get("include_secondary", True))
 
-    # ── Run one Dijkstra per selected criterion ─────────────────
+    # ── Run one Dijkstra per selected criterion 
     results = {}
     for criterion in criteria:
         optimizer = _optimizers[criterion]
@@ -211,3 +182,25 @@ def plan_route():
         "dest":   dest,
         "routes": results,
     })
+
+"""
+    Expected JSON body:
+    {
+        "origin":            "BOG",
+        "dest":              "LIM",
+        "criteria":          ["cost", "time", "distance"],  // one or more
+        "transport_types":   ["Comercial"],                 // [] = all allowed
+        "include_secondary": true
+    }
+
+    Response:
+    {
+        "origin": "BOG",
+        "dest":   "LIM",
+        "routes": {
+            "cost":     { ...Itinerary.to_dict() },
+            "time":     { ...Itinerary.to_dict() },
+            "distance": { ...Itinerary.to_dict() }
+        }
+    }
+    """

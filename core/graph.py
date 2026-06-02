@@ -34,26 +34,13 @@ class Graph:
         self._vertex_map[airport_id] = vertex
 
     def get_vertex(self, airport_id: str) -> Optional[Any]:
-        """Get an airport vertex by its identifier.
-
-        Args:
-            airport_id: Airport code to look up.
-
-        Returns:
-            Airport: Matching airport, or None if it does not exist.
-        """
+        #Retrieve an airport vertex by its ID.
         return self._vertex_map.get(airport_id)
 
     # ------------------- Edge ------------------- #
 
     def add_edge(self, route: Any) -> None:
         """Add a route to the origin airport adjacency list.
-
-        Args:
-            route: Route object to add to the graph.
-
-        Returns:
-            None: This method only mutates the graph.
         """
         origin = self._vertex_map.get(route.origin_vertex)
         if origin is None:
@@ -61,14 +48,7 @@ class Graph:
         origin.add_adjacency(route)
 
     def get_neighbors(self, airport_id: str) -> List[Any]:
-        """Get the outgoing routes for an airport.
-
-        Args:
-            airport_id: Airport code whose routes will be returned.
-
-        Returns:
-            List[Any]: Adjacent routes, or an empty list if the airport does not exist.
-        """
+        #Get the outgoing routes for an airport.
         airport = self._vertex_map.get(airport_id)
         if airport is None:
             return []
@@ -76,13 +56,9 @@ class Graph:
 
     def remove_edge(self, origin_id: str, destination_id: str) -> bool:
         """Remove a route from the graph.
-
         Args:
             origin_id: Origin airport code.
             destination_id: Destination airport code.
-
-        Returns:
-            bool: True if at least one route was removed, False otherwise.
         """
         airport = self._vertex_map.get(origin_id)
         if airport is None:
@@ -95,21 +71,14 @@ class Graph:
         return len(airport.adjacencies) < original_count
 
     def has_edge(self, origin_id: str, destination_id: str) -> bool:
-        """Check whether a route exists between two airports.
+        #Check whether a route exists between two airports.
 
-        Args:
-            origin_id: Origin airport code.
-            destination_id: Destination airport code.
-
-        Returns:
-            bool: True when the route exists, False otherwise.
-        """
         for route in self.get_neighbors(origin_id):
             if hasattr(route, "destination_vertex") and route.destination_vertex == destination_id:
                 return True
         return False
 
-    # ------------------- Serialization ------------------- #
+    # ---------- Serialization 
 
     def to_dict(self) -> Dict[str, Any]:
         """Serialize the graph into a dictionary.
@@ -131,14 +100,7 @@ class Graph:
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Graph":
-        """Build a graph from a dictionary snapshot.
-
-        Args:
-            data: Serialized graph data.
-
-        Returns:
-            Graph: Reconstructed graph instance, or an empty graph if the input is invalid.
-        """
+     #Build a graph from a dictionary snapshot.
         graph = cls()
         if not isinstance(data, dict):
             return graph
@@ -169,32 +131,16 @@ class Graph:
 
         return graph
 
-    # ------------------- Helpers ------------------- #
-
+    # ----------------- Helpers 
     def __len__(self) -> int:
-        """Return the number of vertices in the graph.
-
-        Returns:
-            int: Vertex count.
-        """
         return len(self.vertices)
 
     def __contains__(self, airport_id: str) -> bool:
-        """Check whether an airport exists in the graph.
-
-        Args:
-            airport_id: Airport code to check.
-
-        Returns:
-            bool: True if the airport exists, False otherwise.
-        """
+        #Check whether an airport exists in the graph.
         return airport_id in self._vertex_map
 
     def __repr__(self) -> str:
-        """Return a compact representation of the graph.
+        #Return a compact representation of the graph.
 
-        Returns:
-            str: Human-readable graph summary.
-        """
         edge_count = sum(len(v.adjacencies) for v in self.vertices)
         return f"Graph(vertices={len(self.vertices)}, edges={edge_count})"

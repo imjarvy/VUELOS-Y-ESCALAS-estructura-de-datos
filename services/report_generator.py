@@ -1,19 +1,3 @@
-"""
-services/report_generator.py
-
-Assembles the final trip report for the REST API.
-Purpose:
-    Combines data from (Itinerary) and (TripReport) into one
-    serializable dict.
-    This is the final step before sending the response to the frontend.
-    The report includes visited airports, legs, activities, jobs,
-    Receives Graph, Itinerary and TripReport as parameters.
-
-A traveler may use only basic
-    planning  and never start an advanced session, or vice
-    versa. The report must be useful in both scenarios.
-"""
-
 from dataclasses import asdict, is_dataclass
 from typing import Any, Dict, List, Optional
 
@@ -25,6 +9,15 @@ from models.planner_models import (
     JobRecord,
     TripReport,
 )
+"""
+Assembles the final trip report for the REST API.
+Purpose:
+    Combines data from (Itinerary) and (TripReport) into one
+    serializable dict.
+A traveler may use only basic
+    planning  and never start an advanced session, or vice
+    versa. The report must be useful in both scenarios.
+"""
 
 
 # --------------------------------------------------------
@@ -116,7 +109,7 @@ def _serialize_jobs(jobs: List[Any]) -> List[Dict[str, Any]]:
         name, hourly_rate, hours_worked, income_usd
 
     jobs may be stored as dicts in some
-    sessions. Both formats are handled here.
+    sessions. Both formats are handled.
     """
     result = []
     for record in jobs:
@@ -159,8 +152,7 @@ def _serialize_decisions(decisions: List[Any]) -> List[Dict[str, Any]]:
     return result
 
 
-# Public class                                                         #
-# ------------------------------------------------------------------ #
+# Public class                                                         
 
 class ReportGenerator:
     """Combine (Itinerary) and (TripReport) into final report."""
@@ -198,12 +190,12 @@ class ReportGenerator:
             trip_report.activities if trip_report else []
         )
 
-        # ── Jobs (R3 only) ──────
+        # ── Jobs (R3 only)
         jobs = _serialize_jobs(
             trip_report.jobs if trip_report else []
         )
 
-        # ── Decisions (R3 only) ─
+        # ── Decisions (R3 only) 
         serialized_decisions = _serialize_decisions(decisions or [])
 
         # ── Totals 
